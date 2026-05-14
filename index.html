@@ -369,6 +369,92 @@
   footer ul a:hover { color: var(--cream); text-decoration: underline; }
   @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* ---------- Hamburger nav (hidden on desktop) ---------- */
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--interactive-border);
+    border-radius: 6px;
+    width: 40px; height: 40px;
+    padding: 0;
+    cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+  }
+  .nav-toggle:hover { background: var(--hover-tint); }
+  .nav-toggle span {
+    display: block; width: 18px; height: 1.5px;
+    background: var(--charcoal); border-radius: 1px;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  nav.top.is-open .nav-toggle span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  nav.top.is-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.top.is-open .nav-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  /* ---------- Mobile (≤760px) ---------- */
+  @media (max-width: 760px) {
+    .container { padding: 0 20px; }
+    nav.top { padding: 18px 20px; position: relative; }
+    nav.top .wordmark img { width: 140px; }
+    .nav-toggle { display: flex; }
+    nav.top ul {
+      display: none;
+      position: absolute;
+      top: calc(100% - 4px);
+      right: 20px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px;
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 30;
+    }
+    nav.top.is-open ul { display: flex; }
+    nav.top ul li { width: 100%; }
+    nav.top ul a {
+      display: block; padding: 10px 12px;
+      font-size: 15px; border-radius: 6px;
+    }
+    nav.top ul a:hover { background: var(--hover-tint); text-decoration: none; }
+    nav.top .nav-cta {
+      background: var(--charcoal); color: var(--off-white);
+      padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
+    }
+    h1 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; overflow-wrap: break-word; }
+    h2 { font-size: 24px; letter-spacing: -0.4px; line-height: 1.2; margin-bottom: 28px; max-width: none; overflow-wrap: break-word; }
+    .lede { font-size: 16px; max-width: none; }
+    section.block, section.cta-section { padding: 64px 0 0; }
+    footer { padding: 56px 0; }
+    footer .container { gap: 32px; }
+
+    /* Index-specific */
+    .hero-wrap { padding: 40px 0 64px; }
+    .hero { grid-template-columns: 1fr; gap: 32px; }
+    .hero > * { min-width: 0; }
+    .hero-image { aspect-ratio: 4 / 5; max-width: 320px; margin: 0 auto; }
+    .hero-text { min-width: 0; }
+    .cta-row { flex-wrap: wrap; gap: 12px; }
+    .stats { grid-template-columns: 1fr; gap: 0; max-width: none; }
+    .stat { padding: 32px 0; border-bottom: 1px solid var(--hairline); }
+    .stat:last-child { border-bottom: none; }
+    .stat .num { font-size: 44px; margin-bottom: 8px; }
+    section.about { padding: 72px 0 64px; }
+    .about-cta-row { margin-top: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 24px; }
+    .two-col p { font-size: 16px; max-width: none; }
+    .pullquote { padding: 64px 0; }
+    .pullquote q { font-size: 24px; line-height: 1.3; }
+    section.members { padding: 64px 0 72px; }
+    .member-grid { grid-template-columns: 1fr; gap: 16px; }
+    .member-body { padding: 20px 20px 24px; }
+    .member-card h3 { font-size: 20px; }
+    footer .container { grid-template-columns: 1fr; gap: 32px; }
+    footer .wordmark img { width: 200px; }
+  }
 </style>
 <link rel="stylesheet" href="assets/edit.css" >
 </head>
@@ -378,7 +464,10 @@
   <div class="wordmark">
     <img src="logo-lockup.png" alt="Pathways to Family Success." >
   </div>
-  <ul>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="about.html">About</a></li>
     <li><a href="members.html">Members</a></li>
     <li><a href="how-it-works.html">How It Works</a></li>
@@ -657,6 +746,24 @@
   <button id="edit-revert" type="button" class="ghost" style="display:none;">Discard</button>
 </div>
 <script src="assets/edit.js" defer></script>
+
+<script>
+  document.querySelectorAll('nav.top .nav-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.closest('nav');
+      const open = nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', e => {
+    document.querySelectorAll('nav.top.is-open').forEach(nav => {
+      if (!nav.contains(e.target)) {
+        nav.classList.remove('is-open');
+        nav.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

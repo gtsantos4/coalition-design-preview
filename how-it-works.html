@@ -302,6 +302,86 @@
   footer ul a:hover { color: var(--cream); text-decoration: underline; }
   @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* ---------- Hamburger nav (hidden on desktop) ---------- */
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--interactive-border);
+    border-radius: 6px;
+    width: 40px; height: 40px;
+    padding: 0;
+    cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+  }
+  .nav-toggle:hover { background: var(--hover-tint); }
+  .nav-toggle span {
+    display: block; width: 18px; height: 1.5px;
+    background: var(--charcoal); border-radius: 1px;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  nav.top.is-open .nav-toggle span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  nav.top.is-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.top.is-open .nav-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  /* ---------- Mobile (≤760px) ---------- */
+  @media (max-width: 760px) {
+    html, body { overflow-x: hidden; }
+    .container { padding: 0 20px; }
+    nav.top { padding: 18px 20px; position: relative; }
+    nav.top .wordmark img { width: 140px; }
+    .nav-toggle { display: flex; }
+    nav.top ul {
+      display: none;
+      position: absolute;
+      top: calc(100% - 4px);
+      right: 20px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px;
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 30;
+    }
+    nav.top.is-open ul { display: flex; }
+    nav.top ul li { width: 100%; }
+    nav.top ul a {
+      display: block; padding: 10px 12px;
+      font-size: 15px; border-radius: 6px;
+    }
+    nav.top ul a:hover { background: var(--hover-tint); text-decoration: none; }
+    nav.top .nav-cta {
+      background: var(--charcoal); color: var(--off-white);
+      padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
+    }
+    h1 { font-size: 36px; letter-spacing: -0.5px; line-height: 1.1; }
+    h2 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; margin-bottom: 28px; max-width: none; }
+    .lede { font-size: 16px; max-width: none; }
+    section.block, section.cta-section { padding: 64px 0 0; }
+    footer { padding: 56px 0; }
+    footer .container { gap: 32px; }
+
+    /* Per-page: how-it-works lineup + detail */
+    .lineup { padding: 20px 16px 16px; overflow: hidden; }
+    .lineup-row {
+      gap: 16px;
+      transform: scale(0.5);
+      transform-origin: bottom center;
+      margin-bottom: -30px;
+    }
+    .detail-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .detail-name { font-size: 34px; letter-spacing: -0.5px; }
+    .detail-stats { gap: 24px; }
+    .stat-block { align-items: flex-start; }
+    .stat-num { font-size: 28px; }
+  }
 </style>
 <link rel="stylesheet" href="assets/edit.css" >
 </head>
@@ -311,7 +391,10 @@
   <div class="wordmark">
     <a href="index.html"><img src="logo-lockup.png" alt="Pathways to Family Success." ></a>
   </div>
-  <ul>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="about.html">About</a></li>
     <li><a href="members.html">Members</a></li>
     <li><a href="how-it-works.html" class="is-active">How It Works</a></li>
@@ -561,6 +644,23 @@
   const INITIAL = 'teen';
   renderLineup(INITIAL);
   renderDetail(INITIAL);
+
+  // ---------- Nav toggle ----------
+  document.querySelectorAll('nav.top .nav-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.closest('nav');
+      const open = nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', e => {
+    document.querySelectorAll('nav.top.is-open').forEach(nav => {
+      if (!nav.contains(e.target)) {
+        nav.classList.remove('is-open');
+        nav.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 </script>
 
 

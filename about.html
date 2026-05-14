@@ -471,6 +471,95 @@
   footer ul a:hover { color: var(--cream); text-decoration: underline; }
   @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* ---------- Hamburger nav (hidden on desktop) ---------- */
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--interactive-border);
+    border-radius: 6px;
+    width: 40px; height: 40px;
+    padding: 0;
+    cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+  }
+  .nav-toggle:hover { background: var(--hover-tint); }
+  .nav-toggle span {
+    display: block; width: 18px; height: 1.5px;
+    background: var(--charcoal); border-radius: 1px;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  nav.top.is-open .nav-toggle span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  nav.top.is-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.top.is-open .nav-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  /* ---------- Mobile (≤760px) ---------- */
+  @media (max-width: 760px) {
+    html, body { overflow-x: hidden; }
+    .container { padding: 0 20px; }
+    img { max-width: 100%; height: auto; }
+    nav.top { padding: 18px 20px; position: relative; }
+    nav.top .wordmark img { width: 140px; }
+    .nav-toggle { display: flex; }
+    nav.top ul {
+      display: none;
+      position: absolute;
+      top: calc(100% - 4px);
+      right: 20px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px;
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 30;
+    }
+    nav.top.is-open ul { display: flex; }
+    nav.top ul li { width: 100%; }
+    nav.top ul a {
+      display: block; padding: 10px 12px;
+      font-size: 15px; border-radius: 6px;
+    }
+    nav.top ul a:hover { background: var(--hover-tint); text-decoration: none; }
+    nav.top .nav-cta {
+      background: var(--charcoal); color: var(--off-white);
+      padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
+    }
+    h1 { font-size: 36px; letter-spacing: -0.5px; line-height: 1.1; }
+    h2 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; margin-bottom: 28px; max-width: none; }
+    .lede { font-size: 16px; max-width: none; }
+    section.block, section.cta-section { padding: 64px 0 0; }
+    footer { padding: 56px 0; }
+    footer .container { gap: 32px; }
+
+    /* About page-specific stacking */
+    .two-col { grid-template-columns: 1fr; gap: 28px; }
+    .two-col p { max-width: none; font-size: 16px; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { padding: 40px 0; }
+    .stat .num { font-size: 44px; }
+    .pilot-detail { grid-template-columns: 1fr; padding: 24px; gap: 24px; margin-top: 32px; }
+    .day-structure { grid-template-columns: 1fr; }
+    .day-block { padding: 24px; }
+    .partner-row { grid-template-columns: 1fr; gap: 12px; padding: 24px 0; }
+    .partner-row .pname { font-size: 22px; }
+    .timeline { grid-template-columns: 1fr; }
+    .tl-body { padding: 22px 22px 26px; }
+    .measures { grid-template-columns: 1fr; gap: 0; }
+    .pullquote { grid-template-columns: 1fr; gap: 32px; padding: 56px 0; margin-top: 64px; }
+    .pq-image { aspect-ratio: 16 / 10; }
+    .pq-text { max-width: none; }
+    .pullquote q { font-size: 24px; letter-spacing: -0.3px; }
+    .feature-image { margin: 48px 0; }
+    .cta-section { padding: 56px 0 80px; margin-top: 48px; }
+    .cta-section h2 { max-width: none; }
+    .cta-section .cta-lede { font-size: 16px; max-width: none; }
+    .cta-row { flex-wrap: wrap; }
+    .tail-pad { padding-bottom: 80px; }
+  }
 </style>
 <link rel="stylesheet" href="assets/edit.css" >
 </head>
@@ -480,7 +569,10 @@
   <div class="wordmark">
     <a href="index.html"><img src="logo-lockup.png" alt="Pathways to Family Success." ></a>
   </div>
-  <ul>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="about.html" class="is-active">About</a></li>
     <li><a href="members.html">Members</a></li>
     <li><a href="how-it-works.html">How It Works</a></li>
@@ -690,6 +782,24 @@
   <button id="edit-revert" type="button" class="ghost" style="display:none;">Discard</button>
 </div>
 <script src="assets/edit.js" defer></script>
+
+<script>
+  document.querySelectorAll('nav.top .nav-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.closest('nav');
+      const open = nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', e => {
+    document.querySelectorAll('nav.top.is-open').forEach(nav => {
+      if (!nav.contains(e.target)) {
+        nav.classList.remove('is-open');
+        nav.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
