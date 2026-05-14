@@ -82,33 +82,31 @@
   }
   nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
 
-  /* Page header */
+  /* Page header — matches about.html section-label + heading pattern */
   .container.content-top { position: relative; z-index: 1; padding-top: 0; }
   .page-header {
     padding: 24px 0 16px;
     max-width: 940px;
   }
-  .eyebrow {
-    font-family: var(--sans); font-size: 12px; font-weight: 500;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 18px;
+  .section-label {
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 24px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; width: 16px; height: 1px; background: var(--muted);
   }
   h1 {
     font-family: var(--display); font-weight: 500;
-    font-variation-settings: 'opsz' 72;
-    font-size: 64px; line-height: 1.04; letter-spacing: -1.2px;
-    margin: 0 0 22px; color: var(--charcoal);
-    max-width: 900px;
+    font-variation-settings: 'opsz' 60;
+    font-size: 50px; line-height: 1.12; letter-spacing: -0.8px;
+    margin: 0; color: var(--charcoal);
+    max-width: 860px;
   }
   h1 em {
     font-style: normal;
     font-weight: 500;
     color: var(--accent);
-  }
-  .page-header .lede {
-    font-size: 18px; line-height: 1.55;
-    color: var(--fg-2); max-width: 720px;
-    margin: 0;
   }
 
   /* Mono-styled small labels (no actual mono font — Plus Jakarta uppercase + tracking) */
@@ -199,7 +197,13 @@
     padding-bottom: 22px;
     border-bottom: 1px solid var(--hairline);
   }
-  .detail-eyebrow { margin-bottom: 10px; }
+  .detail-eyebrow {
+    margin-bottom: 10px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .detail-eyebrow::before {
+    content: ''; width: 16px; height: 1px; background: var(--muted);
+  }
   .detail-name {
     font-family: var(--display); font-size: 52px; font-weight: 500;
     letter-spacing: -0.9px; line-height: 1.05; margin: 0;
@@ -318,8 +322,8 @@
 <div class="container content-top">
 
   <div class="page-header">
-    <h1 data-field="f-1">How one family <em>actually uses</em> the coalition.</h1>
-    <p class="lede" data-field="f-2">A single parent with three children — ages 14, 8, and 2 — receives roughly twenty distinct services from four organizations. Select a family member below to see what they personally rely on, who delivers it, and how often it shows up in their week.</p>
+    <div class="section-label" data-field="f-1">How one family actually uses the coalition</div>
+    <h1 data-field="f-2">A family receives roughly twenty distinct services. <em>Select a family member</em> below.</h1>
   </div>
 
   <section class="lineup" aria-label="Family lineup">
