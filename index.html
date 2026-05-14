@@ -47,27 +47,14 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 40px; max-width: 1200px; margin: 0 auto;
   }
-  nav.top .wordmark {
-    font-family: var(--display);
-    color: var(--charcoal);
-    line-height: 1;
-    display: inline-block;
-    text-align: left;
+  nav.top .wordmark { display: inline-block; line-height: 1; }
+  nav.top .wordmark svg { display: block; }
+  nav.top .wordmark text {
+    font-family: var(--display); font-weight: 500; font-style: normal;
+    fill: var(--charcoal);
   }
-  nav.top .wordmark .top {
-    display: block;
-    font-size: 13px; font-weight: 500;
-    font-variation-settings: 'opsz' 18;
-    letter-spacing: -0.1px;
-    margin-bottom: 2px;
-  }
-  nav.top .wordmark .bottom {
-    display: block;
-    font-size: 22px; font-weight: 400; font-style: italic;
-    font-variation-settings: 'opsz' 36;
-    letter-spacing: -0.5px;
-  }
-  nav.top .wordmark .period { color: var(--accent); font-style: normal; }
+  nav.top .wordmark .persimmon { fill: var(--accent); }
+  nav.top .wordmark .rule { stroke: var(--charcoal); fill: none; }
   nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
   nav.top a {
     color: var(--charcoal); text-decoration: none;
@@ -333,26 +320,14 @@
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
   }
-  footer .wordmark {
-    font-family: var(--display);
-    color: var(--charcoal);
-    line-height: 1; display: inline-block; text-align: left;
-    margin-bottom: 12px;
+  footer .wordmark { display: inline-block; line-height: 1; margin-bottom: 16px; }
+  footer .wordmark svg { display: block; }
+  footer .wordmark text {
+    font-family: var(--display); font-weight: 500; font-style: normal;
+    fill: var(--charcoal);
   }
-  footer .wordmark .top {
-    display: block;
-    font-size: 13px; font-weight: 500;
-    font-variation-settings: 'opsz' 18;
-    letter-spacing: -0.1px;
-    margin-bottom: 3px;
-  }
-  footer .wordmark .bottom {
-    display: block;
-    font-size: 24px; font-weight: 400; font-style: italic;
-    font-variation-settings: 'opsz' 36;
-    letter-spacing: -0.6px;
-  }
-  footer .wordmark .period { color: var(--accent); font-style: normal; }
+  footer .wordmark .persimmon { fill: var(--accent); }
+  footer .wordmark .rule { stroke: var(--charcoal); fill: none; }
   footer .tagline { font-size: 14px; color: var(--muted); max-width: 280px; }
   footer h4 {
     font-size: 13px; font-weight: 600; color: var(--charcoal);
@@ -369,7 +344,13 @@
 <body>
 
 <nav class="top">
-  <div class="wordmark"><span class="top">Pathways to</span><span class="bottom">Family Success<span class="period">.</span></span></div>
+  <div class="wordmark">
+    <svg viewBox="0 0 700 280" width="220" xmlns="http://www.w3.org/2000/svg">
+      <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
+      <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
+      <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
+    </svg>
+  </div>
   <ul>
     <li><a href="#">About</a></li>
     <li><a href="#">Members</a></li>
@@ -583,7 +564,13 @@
 <footer>
   <div class="container">
     <div>
-      <div class="wordmark"><span class="top">Pathways to</span><span class="bottom">Family Success<span class="period">.</span></span></div>
+      <div class="wordmark">
+        <svg viewBox="0 0 700 280" width="240" xmlns="http://www.w3.org/2000/svg">
+          <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
+          <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
+          <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
+        </svg>
+      </div>
       <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
     </div>
     <div>

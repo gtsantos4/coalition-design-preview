@@ -6,7 +6,7 @@
 <title>Pathways to Family Success — Logo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
     --cream: #FAF1DF;
@@ -18,94 +18,38 @@
   body {
     background: var(--cream);
     color: var(--ink);
-    font-family: 'Newsreader', Georgia, serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 64px;
+    gap: 56px;
     padding: 80px 40px;
-  }
-
-  /* Primary lockup — large display version */
-  .logo {
-    display: inline-block;
-    text-align: left;
-    line-height: 1;
-  }
-  .logo .top {
-    font-size: 56px;
-    font-weight: 500;
-    font-variation-settings: 'opsz' 60;
-    letter-spacing: -1.2px;
-    margin-bottom: 8px;
-    color: var(--ink);
-    display: block;
-  }
-  .logo .bottom {
-    font-size: 96px;
-    font-weight: 400;
-    font-style: italic;
-    font-variation-settings: 'opsz' 144;
-    letter-spacing: -2.4px;
-    color: var(--ink);
-    display: block;
-  }
-  .logo .period {
-    color: var(--persimmon);
-    font-style: normal;
-  }
-
-  /* Compact version (header/nav use) */
-  .logo-compact {
-    display: inline-block;
-    text-align: left;
-    line-height: 1;
-  }
-  .logo-compact .top {
-    font-size: 14px;
-    font-weight: 500;
-    font-variation-settings: 'opsz' 18;
-    letter-spacing: -0.2px;
-    margin-bottom: 3px;
-    color: var(--ink);
-    display: block;
-  }
-  .logo-compact .bottom {
-    font-size: 24px;
-    font-weight: 400;
-    font-style: italic;
-    font-variation-settings: 'opsz' 36;
-    letter-spacing: -0.6px;
-    color: var(--ink);
-    display: block;
-  }
-  .logo-compact .period {
-    color: var(--persimmon);
-    font-style: normal;
-  }
-
-  /* Label */
-  .label {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  .label {
     font-size: 11px;
     color: rgba(31, 27, 22, 0.5);
     text-transform: uppercase;
     letter-spacing: 0.16em;
     margin-bottom: 24px;
   }
-  .row {
-    display: flex; flex-direction: column; align-items: center;
-  }
-
-  /* Print-style monogram block */
+  .row { display: flex; flex-direction: column; align-items: center; }
   .block {
     border: 1px solid rgba(31,27,22,0.12);
     background: #FFFFFF;
     border-radius: 12px;
     padding: 64px 80px;
   }
+  .logo-svg { display: block; }
+  .logo-svg text {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500;
+    font-style: normal;
+    fill: var(--ink);
+  }
+  .logo-svg .persimmon { fill: var(--persimmon); }
+  .logo-svg .rule { stroke: var(--ink); fill: none; }
 </style>
 </head>
 <body>
@@ -113,20 +57,22 @@
 <div class="row">
   <div class="label">Primary lockup · display</div>
   <div class="block">
-    <div class="logo">
-      <span class="top">Pathways to</span>
-      <span class="bottom">Family Success<span class="period">.</span></span>
-    </div>
+    <svg class="logo-svg" viewBox="0 0 700 280" width="600" xmlns="http://www.w3.org/2000/svg">
+      <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
+      <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
+      <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
+    </svg>
   </div>
 </div>
 
 <div class="row">
-  <div class="label">Compact · for nav, footer, business card</div>
-  <div class="block" style="padding: 32px 40px;">
-    <div class="logo-compact">
-      <span class="top">Pathways to</span>
-      <span class="bottom">Family Success<span class="period">.</span></span>
-    </div>
+  <div class="label">Compact · for nav / footer use</div>
+  <div class="block" style="padding: 28px 36px;">
+    <svg class="logo-svg" viewBox="0 0 700 280" width="220" xmlns="http://www.w3.org/2000/svg">
+      <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
+      <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
+      <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
+    </svg>
   </div>
 </div>
 
