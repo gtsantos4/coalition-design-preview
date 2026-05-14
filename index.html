@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lovable Preview — Coalition sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Lovable palette — warm neutral, intentionally no saturated accent */
+    --cream: #FAF1DF;            /* page + card surface — warmer than pure Lovable */
+    --off-white: #fcfbf8;        /* button text on dark */
+    --charcoal: #1c1c1c;         /* primary ink */
+    --muted: #5f5f5d;            /* secondary text */
+    --hairline: #ECE3CE;         /* warm divider — tracks the new cream */
+    --accent: #DC6B3F;           /* persimmon — single color pop */
+    --accent-deep: #B95527;
+    --interactive-border: rgba(28, 28, 28, 0.4);
+    --hover-tint: rgba(28, 28, 28, 0.04);
+    --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    --inset-shadow:
+      rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
+      rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
+      rgba(0,0,0,0.05) 0px 1px 2px 0px;
+
+    --sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --display: 'Newsreader', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.50;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  /* Top nav */
+  nav.top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px; max-width: 1200px; margin: 0 auto;
+  }
+  nav.top .wordmark {
+    font-family: var(--display); font-size: 24px;
+    font-weight: 600; letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 24;
+    color: var(--charcoal);
+  }
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
+  nav.top a {
+    color: var(--charcoal); text-decoration: none;
+    font-size: 15px; font-weight: 400;
+  }
+  nav.top a:hover { text-decoration: underline; }
+  nav.top .nav-cta {
+    background: var(--charcoal); color: var(--off-white);
+    padding: 8px 16px; border-radius: 6px;
+    box-shadow: var(--inset-shadow); text-decoration: none;
+    font-size: 14px; font-weight: 400;
+  }
+  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+
+  /* Hero with soft multi-color gradient wash + image-left layout */
+  .hero-wrap {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 128px;
+  }
+  .hero-wrap::before {
+    content: '';
+    position: absolute; inset: -20% -10% auto -10%; height: 70%;
+    background:
+      radial-gradient(60% 50% at 15% 25%, rgba(255, 198, 174, 0.35), transparent 70%),
+      radial-gradient(50% 50% at 85% 30%, rgba(232, 196, 218, 0.30), transparent 70%),
+      radial-gradient(40% 40% at 65% 65%, rgba(196, 212, 232, 0.25), transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-image {
+    aspect-ratio: 4 / 5;
+    border-radius: 12px;
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    position: relative;
+    background: var(--cream);
+  }
+  .hero-image img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; }
+    .hero-image { aspect-ratio: 16 / 10; }
+  }
+  .eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--cream); border: 1px solid var(--hairline);
+    padding: 6px 14px; border-radius: 9999px;
+    font-size: 13px; color: var(--charcoal);
+    margin-bottom: 32px;
+  }
+  .eyebrow-pill .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 9999px; }
+  h1 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 60px; line-height: 1.08; letter-spacing: -1.0px;
+    margin: 0 0 28px; color: var(--charcoal);
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .lede {
+    font-size: 18px; line-height: 1.38; font-weight: 400;
+    max-width: 600px; color: var(--muted); margin: 0 0 40px;
+  }
+  .cta-row { display: flex; gap: 12px; align-items: center; }
+  .btn-dark {
+    background: var(--charcoal); color: var(--off-white);
+    padding: 12px 20px; border-radius: 6px; border: none;
+    font-family: var(--sans); font-size: 15px; font-weight: 400;
+    cursor: pointer; text-decoration: none;
+    box-shadow: var(--inset-shadow);
+    transition: opacity .12s ease;
+  }
+  .btn-dark:hover { opacity: 0.85; }
+  .btn-ghost {
+    background: transparent; color: var(--charcoal);
+    padding: 12px 20px; border-radius: 6px;
+    border: 1px solid var(--interactive-border);
+    font-family: var(--sans); font-size: 15px; font-weight: 400;
+    cursor: pointer; text-decoration: none;
+    transition: background .12s ease;
+  }
+  .btn-ghost:hover { background: var(--hover-tint); }
+
+  /* Stats — horizontal, no card, just generous spacing */
+  .stats {
+    padding: 56px 0 144px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 0;
+  }
+  .stat { padding: 64px 0; }
+  .stat .num {
+    font-family: var(--display); font-size: 56px; line-height: 1.0;
+    font-weight: 500; letter-spacing: -1.0px;
+    font-variation-settings: 'opsz' 72;
+    color: var(--charcoal); margin-bottom: 12px;
+  }
+  .stat.pop .num { color: var(--accent); font-style: italic; }
+  .stat .label { font-size: 14px; color: var(--muted); font-weight: 400; }
+
+  /* About section */
+  section.about { padding: 144px 0 128px; }
+  .section-label {
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 24px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; width: 16px; height: 1px; background: var(--muted);
+  }
+  h2 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 60;
+    font-size: 50px; line-height: 1.12; letter-spacing: -0.8px;
+    margin: 0 0 56px; max-width: 860px; color: var(--charcoal);
+  }
+  h2 em { font-style: italic; font-weight: 500; color: var(--accent); }
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+  }
+  .two-col p {
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    max-width: 520px; color: rgba(28, 28, 28, 0.82); margin: 0;
+  }
+  .two-col p + p { margin-top: 18px; }
+
+  /* Pull quote — sans, weight 600, compressed letter-spacing */
+  .pullquote {
+    padding: 128px 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    text-align: center;
+  }
+  .pullquote q {
+    font-family: var(--display); font-weight: 400;
+    font-variation-settings: 'opsz' 60;
+    font-size: 40px; line-height: 1.28; letter-spacing: -0.5px;
+    display: block; margin: 0 auto 32px; max-width: 880px;
+    color: var(--charcoal); font-style: italic;
+    quotes: '\201C' '\201D';
+  }
+  .pullquote q::before {
+    color: var(--accent);
+    font-size: 1.3em;
+    line-height: 0;
+    vertical-align: -0.1em;
+    margin-right: 0.08em;
+  }
+  .pullquote cite {
+    font-size: 14px; color: var(--muted); font-style: normal;
+  }
+
+  /* Members — gallery cards with image placeholders */
+  .members { padding: 128px 0 144px; }
+  .member-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
+  }
+  .member-card {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .member-card:hover {
+    border-color: var(--interactive-border);
+    transform: translateY(-2px);
+  }
+  .member-img {
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--hairline);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(28,28,28,0.35);
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .member-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  .member-img.tone-1 {
+    background:
+      radial-gradient(80% 80% at 30% 40%, rgba(255, 198, 174, 0.55), transparent 70%),
+      radial-gradient(60% 60% at 70% 60%, rgba(255, 224, 184, 0.45), transparent 70%),
+      var(--cream);
+  }
+  .member-img.tone-2 {
+    background:
+      radial-gradient(80% 80% at 70% 40%, rgba(232, 196, 218, 0.50), transparent 70%),
+      radial-gradient(60% 60% at 30% 70%, rgba(255, 198, 174, 0.40), transparent 70%),
+      var(--cream);
+  }
+  .member-img.tone-3 {
+    background:
+      radial-gradient(80% 80% at 50% 30%, rgba(196, 212, 232, 0.45), transparent 70%),
+      radial-gradient(60% 60% at 30% 70%, rgba(218, 232, 196, 0.40), transparent 70%),
+      var(--cream);
+  }
+  .member-img.tone-4 {
+    background:
+      radial-gradient(80% 80% at 40% 50%, rgba(255, 224, 184, 0.55), transparent 70%),
+      radial-gradient(60% 60% at 80% 30%, rgba(255, 198, 174, 0.35), transparent 70%),
+      var(--cream);
+  }
+  .member-body { padding: 28px 28px 32px; }
+  .member-card .org {
+    font-size: 12px; color: var(--accent); margin-bottom: 12px;
+    font-weight: 600; letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .member-card h3 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+    font-size: 24px; line-height: 1.25; letter-spacing: -0.3px;
+    margin: 0 0 12px; color: var(--charcoal);
+  }
+  .member-card p {
+    font-family: var(--sans); font-size: 15px; line-height: 1.55;
+    color: var(--muted); margin: 0 0 20px;
+  }
+  .member-card .read-more {
+    color: var(--charcoal); text-decoration: underline;
+    font-size: 14px;
+  }
+
+  /* Footer with warm gradient bottom */
+  footer {
+    background: var(--cream);
+    border-top: 1px solid var(--hairline);
+    padding: 64px 0 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  footer::before {
+    content: '';
+    position: absolute; inset: auto -10% -40% -10%; height: 80%;
+    background:
+      radial-gradient(50% 50% at 50% 50%, rgba(255, 198, 174, 0.30), transparent 70%),
+      radial-gradient(40% 40% at 80% 60%, rgba(255, 224, 184, 0.25), transparent 70%);
+    filter: blur(30px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  footer .container {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+  }
+  footer .wordmark {
+    font-family: var(--display); font-size: 24px;
+    font-weight: 600; letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 24;
+    color: var(--charcoal); margin-bottom: 12px;
+  }
+  footer .tagline { font-size: 14px; color: var(--muted); max-width: 280px; }
+  footer h4 {
+    font-size: 13px; font-weight: 600; color: var(--charcoal);
+    margin: 0 0 16px;
+  }
+  footer ul { list-style: none; margin: 0; padding: 0; }
+  footer ul li { margin-bottom: 10px; }
+  footer ul a {
+    color: var(--muted); text-decoration: none; font-size: 14px;
+  }
+  footer ul a:hover { color: var(--charcoal); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wordmark">Coalition</div>
+  <ul>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Members</a></li>
+    <li><a href="#">Reports</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#" class="nav-cta">Get involved</a></li>
+  </ul>
+</nav>
+
+<div class="hero-wrap">
+  <div class="container hero">
+    <!--
+      HERO IMAGE PROMPT (4:5 portrait):
+      A Black mother and her 6-year-old child sit at a small kitchen table in a modest
+      apartment, working on homework together. The child writes in a school notebook with
+      a pencil. The mother leans in beside the child, watching, with one hand resting on
+      the back of the child's chair. The kitchen behind them is small: a sink with a few
+      dishes drying, a refrigerator covered in school art and reminders, an overhead bulb
+      on. The mother wears a t-shirt; the child is in everyday clothes. Time: weekday
+      late afternoon. Lighting is interior warm bulb mixed with cool daylight from a
+      single window. Composition: medium portrait shot from across the table, eye-level;
+      the child in profile focused on writing, the mother turned slightly toward the
+      child — both faces partly visible. Background visible and in focus: real apartment
+      context — cluttered counter, a calendar, a small plant. Color tones come from the
+      setting itself: warm wood table, cream walls, peach in the mother's shirt, ambient
+      warmth from the overhead bulb. No filter. No shallow depth of field. No background
+      blur. Aspect ratio 4:5 portrait. Style: photojournalism in the tradition of Mary
+      Ellen Mark and LaToya Ruby Frazier. Avoid: editorial portraiture, stock smiles,
+      glances at the camera, magic-hour lighting, blurred backgrounds, picturesque
+      poverty aesthetic, branded clothing, aspirational lifestyle look.
+    -->
+    <div class="hero-image">
+      <img src="images/hero.png" alt="A young child smiles brightly while peering out from under a peach-colored hood." />
+    </div>
+    <div class="hero-text">
+      <div class="eyebrow-pill">
+        <span class="dot"></span>
+        <span>Charlottesville · Est. 2026</span>
+      </div>
+      <h1>Four organizations, <em>one shared promise</em> to Charlottesville's children and families.</h1>
+      <p class="lede">A mutual aid partnership uniting four community organizations to deliver coordinated support, shared resources, and measurable outcomes for the families we serve.</p>
+      <div class="cta-row">
+        <a href="#" class="btn-dark">Read the 2025 report</a>
+        <a href="#" class="btn-ghost">Meet the coalition</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <section class="stats">
+    <div class="stat"><div class="num">4</div><div class="label">Member Organizations</div></div>
+    <div class="stat"><div class="num">2,847</div><div class="label">Families Served</div></div>
+    <div class="stat"><div class="num">$1.2M</div><div class="label">Shared Funding</div></div>
+    <div class="stat pop"><div class="num">96%</div><div class="label">Program Retention</div></div>
+  </section>
+
+  <section class="about">
+    <div class="section-label">About the coalition</div>
+    <h2>Built on a single principle: families deserve <em>coordinated care</em>, not fragmented services.</h2>
+    <div class="two-col">
+      <div>
+        <p>For decades, Charlottesville's nonprofit ecosystem has been rich but uncoordinated. A family in need might touch four separate organizations, repeating their story to each, and still fall through the cracks between them.</p>
+        <p>This coalition exists to change that. By formalizing how United Way, Ready Kids, Starr Hill Pathways, and City of Promise share resources, intake, and outcomes, we ensure that every family encounters one community — not four agencies.</p>
+      </div>
+      <div>
+        <p>Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime — from early childhood through college access and beyond.</p>
+        <p>This report documents our first year of formal partnership: what we built, what we learned, where the friction was, and where we're going next.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="pullquote">
+    <q>We stopped asking families to navigate our systems. We started building systems that navigate around them.</q>
+    <cite>From the 2025 Letter to the Community</cite>
+  </div>
+
+  <section class="members">
+    <div class="section-label">Coalition members</div>
+    <h2>Four organizations. One continuum of care.</h2>
+    <div class="member-grid">
+      <div class="member-card">
+        <!--
+          UNITED WAY IMAGE PROMPT (16:9 landscape):
+          A community meeting in the fellowship hall of a small Charlottesville church.
+          Eight people sit on folding metal chairs arranged in a loose semicircle facing
+          each other. One Black woman in her 40s is speaking, gesturing with her right
+          hand mid-sentence. Six others lean forward listening; one is taking notes on a
+          clipboard. The group is mixed ages and races — predominantly Black community
+          members, with white and Latino community members also present. A folding table
+          to the side holds a coffee thermos, paper cups, and a stack of flyers. The walls
+          are painted off-white; a community bulletin board hangs on the back wall; an
+          upright piano sits in the corner. Lighting: overhead fluorescent tubes mixed
+          with afternoon daylight from a side window on the right. Worn carpet, mismatched
+          chairs. Composition: medium-wide shot from the back-left of the room, eye-level,
+          capturing the woman speaking on the right of frame and several listeners
+          across. Mood: real civic work, unhurried conversation. Color tones come from
+          the setting: cream walls, warm wood floor, beige folding chairs, persimmon in
+          one listener's sweater. Aspect ratio 16:9 landscape. Style: photojournalism in
+          the tradition of Eli Reed and LaToya Ruby Frazier. Avoid: corporate boardroom,
+          mahogany conference table, warm cinematic lighting, posed group smiles toward
+          camera.
+        -->
+        <div class="member-img tone-1"><img src="images/united-way.png" alt="A caregiver reads to a small group of children in matching green tank tops at a United Way summer program." /></div>
+        <div class="member-body">
+          <div class="org">Member · 01</div>
+          <h3>United Way of Greater Charlottesville</h3>
+          <p>Convening, fundraising, and community-wide initiatives spanning health, education, and financial stability.</p>
+          <a href="#" class="read-more">Learn more</a>
+        </div>
+      </div>
+      <div class="member-card">
+        <!--
+          READYKIDS IMAGE PROMPT (16:9 landscape):
+          A ReadyKids family support worker — a Black woman in her 30s — sits on the floor
+          of a small apartment living room with a 5-year-old Black child and the child's
+          Black mother. The child kneels on the floor stacking wooden blocks. The mother
+          sits cross-legged nearby with her right hand resting on the child's back. The
+          worker leans forward, listening to the mother, holding a clipboard loosely in
+          her lap. The living room is small and lived-in: a worn fabric couch behind them,
+          a piece of school art taped to the wall, a basket of toys partly tipped over on
+          the floor, a turned-off television on a low table, a baby gate visible in a
+          doorway to the right. Afternoon daylight comes from a single window on the
+          left; an overhead bulb is also on. The mother wears leggings and a faded
+          t-shirt. The worker wears a mustard-colored sweater and jeans, no uniform.
+          Composition: medium shot at floor-level, eye-level with the seated adults; the
+          child's profile in the foreground-left, the mother and worker visible in
+          three-quarter framing on the right. Mood: trust, the quiet of a home visit.
+          Color tones come from the setting: cream walls, warm wood floor, the worker's
+          mustard sweater, persimmon in a folded throw blanket. Aspect ratio 16:9
+          landscape. Style: photojournalism in the tradition of Mary Ellen Mark and
+          Dawoud Bey. Avoid: stock daycare imagery, bright primary colors, branded
+          plastic toys, dream lighting, picture-book aesthetic, savior framing.
+        -->
+        <div class="member-img tone-2"><img src="images/readykids.png" alt="A young child engaged in play with a hula hoop and a giant stuffed giraffe at a ReadyKids community event." /></div>
+        <div class="member-body">
+          <div class="org">Member · 02</div>
+          <h3>ReadyKids</h3>
+          <p>Early childhood, family education, and trauma-informed mental health services for children birth through twelve.</p>
+          <a href="#" class="read-more">Learn more</a>
+        </div>
+      </div>
+      <div class="member-card">
+        <!--
+          STARR HILL PATHWAYS IMAGE PROMPT (16:9 landscape):
+          A Black high school student (a 16-year-old boy) and an adult mentor (a Black
+          woman in her 40s) sit side by side at a wooden table in the Jefferson-Madison
+          public library, both looking at a laptop screen between them. The student is
+          working on a college application essay; the mentor reads along, pointing at
+          something on the screen with her right index finger. Open textbooks and a spiral
+          notebook are spread on the table. A backpack rests on the floor next to the
+          student's chair. Behind them: library bookshelves, another patron working at a
+          separate table in the background, a hanging library sign partly in frame.
+          Lighting: cool fluorescent overhead mixed with daylight from large library
+          windows on the right. The student wears a hoodie and jeans; the mentor wears a
+          casual sweater and reading glasses. Composition: medium-wide three-quarter shot
+          from across the table, eye-level; both faces partly visible in profile, the
+          laptop screen turned slightly so it's visible but not the focal point. Mood:
+          focused work, mutual respect — not "inspirational." Color tones come from the
+          setting: warm wood table, cream walls, the mentor's mustard cardigan, the
+          student's persimmon hoodie cuff. Aspect ratio 16:9 landscape. Style:
+          photojournalism in the tradition of Dawoud Bey and New York Times Magazine
+          education documentary work. Avoid: maker-space aesthetic, warm cinematic
+          workshop lighting, raised-hands classroom celebrations, fake aha moments, posed
+          glances at camera.
+        -->
+        <div class="member-img tone-3"><img src="images/starr-hill.jpg" alt="A Starr Hill Pathways mentor moves through a classroom of diverse middle-school scholars working at their desks." /></div>
+        <div class="member-body">
+          <div class="org">Member · 03</div>
+          <h3>Starr Hill Pathways</h3>
+          <p>Long-term STEAM mentorship and college-access programming for middle and high school students.</p>
+          <a href="#" class="read-more">Learn more</a>
+        </div>
+      </div>
+      <div class="member-card">
+        <!--
+          CITY OF PROMISE IMAGE PROMPT (16:9 landscape):
+          Two Black children — siblings, an 8-year-old girl and a 10-year-old boy — walk
+          home from school down a residential street in the 10th and Page neighborhood of
+          Charlottesville. Both wear backpacks and everyday clothes; the boy is a couple
+          of steps ahead, the girl just behind, talking to him. The street is lined with
+          two-story brick duplex houses with small front yards and concrete steps to the
+          sidewalk. A few parked cars line the curb. One house has a screen door propped
+          open; another has a child's bike on the porch. Old sycamore trees line the
+          sidewalk. Time: weekday afternoon, around 3:30pm — overcast daylight, not magic
+          hour. Composition: medium-wide shot from the sidewalk ahead of the children
+          looking back at them, eye-level; the children in the mid-ground, neighborhood
+          architecture visible in foreground and background. Layered depth: a tree branch
+          in upper frame, the children center, more houses receding into the background.
+          Color tones come from the setting itself: warm brick reds and browns, the
+          girl's persimmon backpack, cream sidewalks, gray-blue overcast sky. Mood:
+          rooted, alive — community as ongoing daily life. Aspect ratio 16:9 landscape.
+          Style: photojournalism in the tradition of Dawoud Bey, LaToya Ruby Frazier, and
+          Carrie Mae Weems. Avoid: drone shots, golden-hour beauty filtering, sentimental
+          nostalgia, sweeping establishing shots, romanticization of the neighborhood.
+        -->
+        <div class="member-img tone-4"><img src="images/city-of-promise.jpg" alt="A young child at a City of Promise community event grins behind a paper cup of shaved ice, sunlit lawn behind him." /></div>
+        <div class="member-body">
+          <div class="org">Member · 04</div>
+          <h3>City of Promise</h3>
+          <p>Cradle-to-career neighborhood support rooted in the 10th and Page community, with a focus on educational outcomes.</p>
+          <a href="#" class="read-more">Learn more</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="wordmark">Coalition</div>
+      <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
+    </div>
+    <div>
+      <h4>About</h4>
+      <ul>
+        <li><a href="#">Our story</a></li>
+        <li><a href="#">Members</a></li>
+        <li><a href="#">Approach</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reports</h4>
+      <ul>
+        <li><a href="#">2025 annual</a></li>
+        <li><a href="#">Outcomes</a></li>
+        <li><a href="#">Archive</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Volunteer</a></li>
+        <li><a href="#">Give</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
