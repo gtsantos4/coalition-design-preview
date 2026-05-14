@@ -48,11 +48,26 @@
     padding: 24px 40px; max-width: 1200px; margin: 0 auto;
   }
   nav.top .wordmark {
-    font-family: var(--display); font-size: 24px;
-    font-weight: 600; letter-spacing: -0.01em;
-    font-variation-settings: 'opsz' 24;
+    font-family: var(--display);
     color: var(--charcoal);
+    line-height: 1;
+    display: inline-block;
+    text-align: left;
   }
+  nav.top .wordmark .top {
+    display: block;
+    font-size: 13px; font-weight: 500;
+    font-variation-settings: 'opsz' 18;
+    letter-spacing: -0.1px;
+    margin-bottom: 2px;
+  }
+  nav.top .wordmark .bottom {
+    display: block;
+    font-size: 22px; font-weight: 400; font-style: italic;
+    font-variation-settings: 'opsz' 36;
+    letter-spacing: -0.5px;
+  }
+  nav.top .wordmark .period { color: var(--accent); font-style: normal; }
   nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
   nav.top a {
     color: var(--charcoal); text-decoration: none;
@@ -319,11 +334,25 @@
     display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
   }
   footer .wordmark {
-    font-family: var(--display); font-size: 24px;
-    font-weight: 600; letter-spacing: -0.01em;
-    font-variation-settings: 'opsz' 24;
-    color: var(--charcoal); margin-bottom: 12px;
+    font-family: var(--display);
+    color: var(--charcoal);
+    line-height: 1; display: inline-block; text-align: left;
+    margin-bottom: 12px;
   }
+  footer .wordmark .top {
+    display: block;
+    font-size: 13px; font-weight: 500;
+    font-variation-settings: 'opsz' 18;
+    letter-spacing: -0.1px;
+    margin-bottom: 3px;
+  }
+  footer .wordmark .bottom {
+    display: block;
+    font-size: 24px; font-weight: 400; font-style: italic;
+    font-variation-settings: 'opsz' 36;
+    letter-spacing: -0.6px;
+  }
+  footer .wordmark .period { color: var(--accent); font-style: normal; }
   footer .tagline { font-size: 14px; color: var(--muted); max-width: 280px; }
   footer h4 {
     font-size: 13px; font-weight: 600; color: var(--charcoal);
@@ -340,7 +369,7 @@
 <body>
 
 <nav class="top">
-  <div class="wordmark">Coalition</div>
+  <div class="wordmark"><span class="top">Pathways to</span><span class="bottom">Family Success<span class="period">.</span></span></div>
   <ul>
     <li><a href="#">About</a></li>
     <li><a href="#">Members</a></li>
@@ -554,7 +583,7 @@
 <footer>
   <div class="container">
     <div>
-      <div class="wordmark">Coalition</div>
+      <div class="wordmark"><span class="top">Pathways to</span><span class="bottom">Family Success<span class="period">.</span></span></div>
       <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
     </div>
     <div>
