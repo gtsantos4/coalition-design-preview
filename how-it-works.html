@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width,initial-scale=1" >
+<title>How it works — Pathways to Family Success</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" >
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" >
+<style>
+  :root {
+    --cream: #FAF1DF;
+    --off-white: #fcfbf8;
+    --charcoal: #1c1c1c;
+    --muted: #5f5f5d;
+    --hairline: #ECE3CE;
+    --accent: #DC6B3F;
+    --accent-deep: #B95527;
+    --interactive-border: rgba(28, 28, 28, 0.4);
+    --hover-tint: rgba(28, 28, 28, 0.04);
+    --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    --inset-shadow:
+      rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
+      rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
+      rgba(0,0,0,0.05) 0px 1px 2px 0px;
+
+    --sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --display: 'Newsreader', Georgia, serif;
+
+    --fg-2: rgba(28, 28, 28, 0.82);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.50;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 820px;
+    background:
+      radial-gradient(60% 40% at 15% 30%, rgba(255, 198, 174, 0.35), transparent 70%),
+      radial-gradient(50% 40% at 85% 35%, rgba(232, 196, 218, 0.30), transparent 70%),
+      radial-gradient(40% 30% at 65% 65%, rgba(196, 212, 232, 0.25), transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  /* Top nav */
+  nav.top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px; max-width: 1200px; margin: 0 auto;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+  }
+  nav.top .wordmark { display: inline-block; line-height: 1; }
+  nav.top .wordmark img { display: block; width: 200px; height: auto; }
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
+  nav.top a {
+    color: var(--charcoal); text-decoration: none;
+    font-size: 15px; font-weight: 400;
+  }
+  nav.top a:hover { text-decoration: underline; }
+  nav.top a.is-active { text-decoration: underline; text-underline-offset: 4px; }
+  nav.top .nav-cta {
+    background: var(--charcoal); color: var(--off-white);
+    padding: 8px 16px; border-radius: 6px;
+    box-shadow: var(--inset-shadow); text-decoration: none;
+    font-size: 14px; font-weight: 400;
+  }
+  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+
+  /* Page header */
+  .container.content-top { position: relative; z-index: 1; padding-top: 0; }
+  .page-header {
+    padding: 24px 0 16px;
+    max-width: 940px;
+  }
+  .eyebrow {
+    font-family: var(--sans); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 64px; line-height: 1.04; letter-spacing: -1.2px;
+    margin: 0 0 22px; color: var(--charcoal);
+    max-width: 900px;
+  }
+  h1 em {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .page-header .lede {
+    font-size: 18px; line-height: 1.55;
+    color: var(--fg-2); max-width: 720px;
+    margin: 0;
+  }
+
+  /* Mono-styled small labels (no actual mono font — Plus Jakarta uppercase + tracking) */
+  .ms {
+    font-family: var(--sans); font-weight: 500;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ms.tight { font-size: 10px; letter-spacing: 0.18em; }
+  .ms.accent { color: var(--accent); }
+
+  /* Family lineup card */
+  .lineup {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    margin-top: 32px;
+    margin-bottom: 56px;
+    padding: 24px 32px 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .lineup-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 140px;
+    width: 100%;
+  }
+  .figure-btn {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    text-align: center;
+  }
+  .figure-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 8px;
+    border-radius: 6px;
+  }
+  .figure-silhouette {
+    background-color: var(--charcoal);
+    opacity: 0.78;
+    -webkit-mask-size: contain;
+            mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: bottom center;
+            mask-position: bottom center;
+    transition: background-color 180ms ease, opacity 180ms ease;
+  }
+  .figure-btn[data-selected="true"] .figure-silhouette {
+    background-color: var(--accent);
+    opacity: 1;
+  }
+  .figure-btn:hover .figure-silhouette {
+    opacity: 1;
+  }
+  .figure-meta {
+    margin-top: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    min-width: 90px;
+  }
+  .figure-name {
+    font-family: var(--display); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.2px;
+    color: var(--charcoal);
+    transition: color 180ms;
+  }
+  .figure-btn[data-selected="true"] .figure-name { color: var(--accent); }
+  .figure-sub { color: var(--muted); }
+
+  @media (max-width: 768px) {
+    .lineup { padding: 28px 16px 24px; }
+    .lineup-row { gap: 24px; }
+  }
+
+  /* Detail panel */
+  .detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px; flex-wrap: wrap;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .detail-eyebrow { margin-bottom: 10px; }
+  .detail-name {
+    font-family: var(--display); font-size: 52px; font-weight: 500;
+    letter-spacing: -0.9px; line-height: 1.05; margin: 0;
+    color: var(--charcoal);
+  }
+  .detail-name em {
+    color: var(--accent); font-style: normal; font-weight: 500;
+  }
+  .detail-role {
+    font-size: 15px; color: var(--muted); margin-top: 8px;
+  }
+  .detail-stats { display: flex; gap: 32px; align-items: baseline; }
+  .stat-block { display: flex; flex-direction: column; align-items: flex-end; }
+  .stat-num {
+    font-family: var(--display); font-size: 38px; font-weight: 500;
+    letter-spacing: -0.5px; line-height: 1;
+    color: var(--charcoal);
+  }
+  .stat-label { margin-top: 6px; }
+
+  /* Service grid */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding-top: 28px;
+  }
+  @media (max-width: 980px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .service-grid { grid-template-columns: 1fr; } }
+
+  .service-card {
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 20px 22px;
+    background: var(--cream);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .service-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .cadence-pill {
+    border: 1px solid var(--hairline);
+    border-radius: 9999px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    color: rgba(28, 28, 28, 0.82);
+  }
+  .service-title {
+    font-family: var(--display); font-size: 22px; font-weight: 500;
+    letter-spacing: -0.3px; line-height: 1.2; margin: 0;
+    color: var(--charcoal);
+  }
+  .service-org {
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .service-org .lead {
+    font-size: 12px; color: var(--muted);
+  }
+  .service-summary {
+    font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0;
+  }
+
+  /* Detail panel bottom spacing */
+  #detail { padding-bottom: 144px; }
+
+  @media (max-width: 768px) {
+    h1 { font-size: 40px; letter-spacing: -0.6px; }
+    .detail-name { font-size: 36px; letter-spacing: -0.5px; }
+    .stat-num { font-size: 28px; }
+  }
+
+  /* Footer */
+  footer {
+    background: var(--charcoal); color: var(--cream);
+    padding: 80px 0;
+    position: relative; z-index: 1;
+  }
+  footer .container {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px; align-items: start;
+  }
+  footer .wordmark { display: inline-block; line-height: 1; margin-bottom: 16px; }
+  footer .wordmark img { display: block; width: 240px; height: auto; }
+  footer .tagline { font-size: 14px; line-height: 1.55; color: rgba(250, 241, 223, 0.7); max-width: 360px; }
+  footer h4 {
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin: 0 0 16px; color: var(--cream);
+  }
+  footer ul { list-style: none; margin: 0; padding: 0; }
+  footer li { margin-bottom: 10px; }
+  footer ul a {
+    color: rgba(250, 241, 223, 0.7); text-decoration: none;
+    font-size: 14px;
+  }
+  footer ul a:hover { color: var(--cream); text-decoration: underline; }
+  @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
+</style>
+<link rel="stylesheet" href="assets/edit.css" >
+</head>
+<body data-edit-page="how-it-works.html">
+
+<nav class="top">
+  <div class="wordmark">
+    <a href="index.html"><img src="wordmark.png" alt="Pathways to Family Success." ></a>
+  </div>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="members.html">Members</a></li>
+    <li><a href="how-it-works.html" class="is-active">How It Works</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="container content-top">
+
+  <div class="page-header">
+    <h1 data-field="f-1">How one family <em>actually uses</em> the coalition.</h1>
+    <p class="lede" data-field="f-2">A single parent with three children — ages 14, 8, and 2 — receives roughly twenty distinct services from four organizations. Select a family member below to see what they personally rely on, who delivers it, and how often it shows up in their week.</p>
+  </div>
+
+  <section class="lineup" aria-label="Family lineup">
+    <div class="lineup-row" id="lineup-row"></div>
+  </section>
+
+  <section id="detail" aria-live="polite"></section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="wordmark">
+        <a href="index.html"><img src="wordmark-dark.png" alt="Pathways to Family Success." ></a>
+      </div>
+      <div class="tagline">A coordinated afterschool model for Charlottesville's children and families.</div>
+    </div>
+    <div>
+      <h4>About</h4>
+      <ul>
+        <li><a href="about.html">Our story</a></li>
+        <li><a href="members.html">Members</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>How It Works</h4>
+      <ul>
+        <li><a href="how-it-works.html">A family's journey</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="contact.html">Get in touch</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---------- Data ----------
+  const FAMILY = [
+    { id: 'mom',     name: 'Mom',     age: 32, role: 'Single parent',        scale: 1.0, aspect: 0.844, mask: 'images/masks/person-mask-mom.png?v=3' },
+    { id: 'teen',    name: 'Teen',    age: 14, role: 'High school freshman', scale: 1.2, aspect: 0.840, mask: 'images/masks/person-mask-teen.png?v=3' },
+    { id: 'child',   name: 'Child',   age:  8, role: 'Grade 3',              scale: 1.2, aspect: 0.754, mask: 'images/masks/person-mask-child.png?v=3' },
+    { id: 'toddler', name: 'Toddler', age:  2, role: 'Pre-K age',            scale: 1.2, aspect: 0.606, mask: 'images/masks/person-mask-toddler.png?v=3' },
+  ];
+
+  const ORGS = {
+    uw:  { id: 'uw',  name: 'United Way',          short: 'UW',  blurb: 'Convening · funding · 211' },
+    rk:  { id: 'rk',  name: 'ReadyKids',           short: 'RK',  blurb: 'Early childhood · family ed · mental health' },
+    shp: { id: 'shp', name: 'Starr Hill Pathways', short: 'SHP', blurb: 'STEAM mentorship · college access' },
+    cop: { id: 'cop', name: 'City of Promise',     short: 'CoP', blurb: 'Cradle-to-career neighborhood support' },
+  };
+
+  const TYPE_LABEL = {
+    navigation:        'Navigation',
+    education:         'Parent education',
+    mentorship:        'Mentorship',
+    counseling:        'Mental health',
+    academic:          'Academic',
+    enrichment:        'Enrichment',
+    'early-childhood': 'Early childhood',
+    coaching:          'Family coaching',
+  };
+
+  const SERVICE_DETAIL = {
+    mom: [
+      { id:'m1', org:'uw',  title:'211 Family Resource Line', type:'navigation', cadence:'As needed',
+        lead:'United Way 211 specialist',
+        summary:'Single phone number for finding utility assistance, food access, childcare subsidies, and emergency housing. Routes Mom to the right local agency without her having to know which one to call.' },
+      { id:'m2', org:'rk',  title:'Triple P Parenting Program', type:'education', cadence:'Weekly · 8-week series',
+        lead:'ReadyKids family educator',
+        summary:'Structured parenting workshop covering toddler behavior, sibling dynamics, and managing stress as a solo parent. Cohort meets weekly with childcare provided on-site.' },
+      { id:'m3', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly',
+        lead:'Home visitor (paired with Toddler since birth)',
+        summary:'Same home visitor since the 2-year-old was born. Visits cover developmental milestones, attachment, and connecting Mom to community resources. The relationship is the linchpin — most other services were referred through this one.' },
+      { id:'m4', org:'cop', title:'Family Success Coach', type:'coaching', cadence:'Monthly · 1:1',
+        lead:'City of Promise family advocate',
+        summary:'A long-term coach who knows the whole family. Helps Mom set 6-month goals (housing, GED, employment), track progress, and unblock paperwork — IDs, benefits recertifications, school enrollment forms.' },
+      { id:'m5', org:'cop', title:'Neighborhood community meetings', type:'enrichment', cadence:'Monthly',
+        lead:'City of Promise convenes',
+        summary:"10th & Page resident meetings — informal but consistent. Mom shows up and stays connected to other parents in the neighborhood; this is where most of the family heard about the after-school program." },
+    ],
+
+    teen: [
+      { id:'t1', org:'shp', title:'STEAM mentorship pairing', type:'mentorship', cadence:'Weekly · school year',
+        lead:'Starr Hill mentor (UVA undergrad, 3rd year with Teen)',
+        summary:'Same mentor since 6th grade. Meets 1:1 weekly during the school year — homework, college conversations, and a project-based STEAM curriculum. The continuity is the program: a relationship, not a series of activities.' },
+      { id:'t2', org:'shp', title:'Summer STEAM Institute', type:'academic', cadence:'4 weeks · July',
+        lead:'Starr Hill program staff',
+        summary:'Four-week intensive on UVA grounds — engineering, biology, and creative tech tracks. Teen attends with cohort that has grown up together in the program. Stipend covers transportation and lunch.' },
+      { id:'t3', org:'shp', title:'College access counseling', type:'academic', cadence:'Monthly + spring intensives',
+        lead:'Starr Hill college counselor',
+        summary:'SAT prep, campus visits to UVA / PVCC / Norfolk State, financial-aid workshops. This year: shortlist building and PSAT debrief.' },
+      { id:'t4', org:'cop', title:'After-school academic support', type:'academic', cadence:'2× / week',
+        lead:'City of Promise tutor (volunteer)',
+        summary:'Specifically targeted at Algebra I and English 9 — the courses most likely to derail freshman year. Tutor coordinates with school counselor on grades.' },
+      { id:'t5', org:'cop', title:'Paid summer youth internship', type:'enrichment', cadence:'6 weeks · summer',
+        lead:'City of Promise + community partner employer',
+        summary:'$15/hr placement at a local business. First real paycheck. Soft-skills curriculum on Fridays. Funded through the United Way youth-employment pool.' },
+      { id:'t6', org:'rk',  title:'Adolescent counseling', type:'counseling', cadence:'Bi-weekly',
+        lead:'ReadyKids licensed clinician',
+        summary:"Trauma-informed therapy sessions following a difficult middle-school year. Sliding-scale fee covered. Mom is informed but not part of the sessions — explicitly Teen's space." },
+    ],
+
+    child: [
+      { id:'c1', org:'rk',  title:'School-based mental health', type:'counseling', cadence:'Weekly · in-school',
+        lead:'ReadyKids clinician embedded at Burnley-Moran',
+        summary:'30-minute sessions during the school day — no transportation barrier, no missed instruction. Teacher and counselor coordinate. Focused on emotional regulation and peer conflict.' },
+      { id:'c2', org:'rk',  title:'Social-skills group', type:'counseling', cadence:'Weekly · 12-week cohort',
+        lead:'ReadyKids group facilitator',
+        summary:'Small group (6 kids) practicing emotional regulation through structured activities. Child has been in two cohorts; visible progress on classroom behavior reports.' },
+      { id:'c3', org:'cop', title:'After-school program', type:'enrichment', cadence:'Daily · M–F · 3–6pm',
+        lead:'City of Promise site staff',
+        summary:"Bridges the gap between school dismissal and Mom's shift ending. Homework hour, structured snack, then activities (art, sports, music rotation). Two field trips per semester." },
+      { id:'c4', org:'cop', title:'Reading intervention', type:'academic', cadence:'2× / week · pull-out tutoring',
+        lead:'Trained literacy tutor',
+        summary:'Targeted reading support — Child was identified as reading slightly below grade level at end of Grade 2. Tutor uses the same curriculum the school uses, so the two systems align instead of conflict.' },
+    ],
+
+    toddler: [
+      { id:'d1', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly · since birth',
+        lead:'Same home visitor across the family',
+        summary:"Most important relationship in the family's coalition map. Two years of weekly visits. Developmental check-ins, parent-child play coaching, and the trusted person who refers them to everything else." },
+      { id:'d2', org:'rk',  title:'Early intervention screening', type:'early-childhood', cadence:'Quarterly',
+        lead:'ReadyKids developmental specialist',
+        summary:'Ages & Stages screenings to flag developmental concerns early. Last screening: on track across all domains. Next: 30-month check-in.' },
+      { id:'d3', org:'rk',  title:'Parent-child dyad therapy', type:'counseling', cadence:'Bi-weekly',
+        lead:'ReadyKids infant-mental-health clinician',
+        summary:'Mom and Toddler attend together. Focus on attachment and co-regulation. Direct continuation of the home-visiting relationship.' },
+      { id:'d4', org:'cop', title:'Pre-K Promise enrollment', type:'early-childhood', cadence:'One-time process · this spring',
+        lead:'City of Promise enrollment coach',
+        summary:'Walks Mom through Pre-K registration, application paperwork, and the scholarship interview. Without this, Toddler would likely miss the priority window.' },
+      { id:'d5', org:'cop', title:'Family Saturdays', type:'enrichment', cadence:'Monthly',
+        lead:'City of Promise + community partners',
+        summary:"Free family events — park days, library visits, museum mornings. Designed so the whole family can attend together, including Teen who otherwise wouldn't." },
+    ],
+  };
+
+  // ---------- Helpers ----------
+  function heightForAge(age) {
+    const min = 80, max = 220, ageMin = 2, ageMax = 32;
+    const t = Math.max(0, Math.min(1, (age - ageMin) / (ageMax - ageMin)));
+    return min + t * (max - min);
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ---------- Render: lineup ----------
+  function renderLineup(selId) {
+    const ordered = [...FAMILY].sort((a, b) => a.age - b.age);
+    const row = document.getElementById('lineup-row');
+    row.innerHTML = ordered.map(p => {
+      const h = heightForAge(p.age) * (p.scale ?? 1) * 0.7875;
+      const w = h * (p.aspect ?? 0.62);
+      return `
+        <button type="button" class="figure-btn" data-id="${p.id}" data-selected="${p.id === selId}" aria-pressed="${p.id === selId}">
+          <div class="figure-silhouette" style="
+            width: ${w}px; height: ${h}px;
+            -webkit-mask-image: url('${p.mask}');
+                    mask-image: url('${p.mask}');"></div>
+          <div class="figure-meta">
+            <div class="figure-name">${esc(p.name)}</div>
+            <div class="ms tight figure-sub">${esc(p.role)}</div>
+          </div>
+        </button>`;
+    }).join('');
+    row.querySelectorAll('.figure-btn').forEach(btn => {
+      btn.addEventListener('click', () => select(btn.dataset.id));
+    });
+  }
+
+  // ---------- Render: detail ----------
+  function renderDetail(selId) {
+    const person = FAMILY.find(p => p.id === selId);
+    const services = SERVICE_DETAIL[selId] || [];
+    const orgs = [...new Set(services.map(s => s.org))];
+
+    const cards = services.map(s => {
+      const org = ORGS[s.org];
+      return `
+        <article class="service-card">
+          <header class="service-head">
+            <span class="ms tight">${esc(TYPE_LABEL[s.type] || s.type)}</span>
+            <span class="ms tight cadence-pill">${esc(s.cadence)}</span>
+          </header>
+          <h3 class="service-title">${esc(s.title)}</h3>
+          <div class="service-org">
+            <span class="ms tight accent">${esc(org.short)} · ${esc(org.name)}</span>
+            <span class="lead">Delivered by: ${esc(s.lead)}</span>
+          </div>
+          <p class="service-summary">${esc(s.summary)}</p>
+        </article>`;
+    }).join('');
+
+    document.getElementById('detail').innerHTML = `
+      <div class="detail-head">
+        <div>
+          <div class="ms detail-eyebrow">What the system provides for</div>
+          <h2 class="detail-name">${esc(person.name)}<em>, age ${person.age}</em></h2>
+          <div class="detail-role">${esc(person.role)}</div>
+        </div>
+        <div class="detail-stats">
+          <div class="stat-block">
+            <span class="stat-num">${services.length}</span>
+            <span class="ms tight stat-label">Active services</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num">${orgs.length}</span>
+            <span class="ms tight stat-label">Orgs involved</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-grid">${cards}</div>
+    `;
+  }
+
+  // ---------- Selection ----------
+  function select(id) {
+    document.querySelectorAll('.figure-btn').forEach(btn => {
+      const sel = btn.dataset.id === id;
+      btn.dataset.selected = sel;
+      btn.setAttribute('aria-pressed', sel);
+    });
+    renderDetail(id);
+  }
+
+  // ---------- Init ----------
+  const INITIAL = 'teen';
+  renderLineup(INITIAL);
+  renderDetail(INITIAL);
+</script>
+
+
+<!-- Inline-edit toolbar -->
+<div id="edit-bar">
+  <button id="edit-toggle" type="button">Edit mode</button>
+  <span id="edit-status" class="edit-status">viewing</span>
+  <button id="edit-revert" type="button" class="ghost" style="display:none;">Discard</button>
+</div>
+<script src="assets/edit.js" defer></script>
+
+</body>
+</html>

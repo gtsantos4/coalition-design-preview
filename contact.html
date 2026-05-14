@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width,initial-scale=1" >
+<title>Contact — Pathways to Family Success</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" >
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" >
+<style>
+  :root {
+    /* Lovable palette — warm neutral, intentionally no saturated accent */
+    --cream: #FAF1DF;            /* page + card surface — warmer than pure Lovable */
+    --off-white: #fcfbf8;        /* button text on dark */
+    --charcoal: #1c1c1c;         /* primary ink */
+    --muted: #5f5f5d;            /* secondary text */
+    --hairline: #ECE3CE;         /* warm divider — tracks the new cream */
+    --accent: #DC6B3F;           /* persimmon — single color pop */
+    --accent-deep: #B95527;
+    --interactive-border: rgba(28, 28, 28, 0.4);
+    --hover-tint: rgba(28, 28, 28, 0.04);
+    --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    --inset-shadow:
+      rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
+      rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
+      rgba(0,0,0,0.05) 0px 1px 2px 0px;
+
+    --sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --display: 'Newsreader', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.50;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 820px;
+    background:
+      radial-gradient(60% 40% at 15% 30%, rgba(255, 198, 174, 0.35), transparent 70%),
+      radial-gradient(50% 40% at 85% 35%, rgba(232, 196, 218, 0.30), transparent 70%),
+      radial-gradient(40% 30% at 65% 65%, rgba(196, 212, 232, 0.25), transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  /* Top nav */
+  nav.top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px; max-width: 1200px; margin: 0 auto;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+  }
+  nav.top .wordmark { display: inline-block; line-height: 1; }
+  nav.top .wordmark img { display: block; width: 200px; height: auto; }
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
+  nav.top a {
+    color: var(--charcoal); text-decoration: none;
+    font-size: 15px; font-weight: 400;
+  }
+  nav.top a:hover { text-decoration: underline; }
+  nav.top .nav-cta {
+    background: var(--charcoal); color: var(--off-white);
+    padding: 8px 16px; border-radius: 6px;
+    box-shadow: var(--inset-shadow); text-decoration: none;
+    font-size: 14px; font-weight: 400;
+  }
+  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+  /* Current-page state on Contact: kept as button styling for consistency
+     with index.html nav, but visually muted (no inset shadow, lower contrast)
+     so users sense they're already here. */
+  nav.top .nav-cta[aria-current="page"] {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1px solid var(--interactive-border);
+    box-shadow: none;
+  }
+  nav.top .nav-cta[aria-current="page"]:hover {
+    background: var(--hover-tint);
+  }
+
+  /* Hero */
+  /* Editorial inner-page: no hero. Content opens with the first section. */
+  .container.content-top { position: relative; z-index: 1; padding-top: 14px; }
+  @media (max-width: 900px) {
+    .container.content-top { padding-top: 8px; }
+  }
+  .eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--cream); border: 1px solid var(--hairline);
+    padding: 6px 14px; border-radius: 9999px;
+    font-size: 13px; color: var(--charcoal);
+    margin-bottom: 32px;
+  }
+  .eyebrow-pill .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 9999px; }
+  h1 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 60px; line-height: 1.08; letter-spacing: -1.0px;
+    margin: 0 0 28px; color: var(--charcoal);
+  }
+  h1 em {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .lede {
+    font-size: 18px; line-height: 1.55; font-weight: 400;
+    max-width: 640px; color: var(--muted); margin: 0;
+  }
+
+  /* Section heading shared */
+  .section-label {
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 24px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; width: 16px; height: 1px; background: var(--muted);
+  }
+  h2 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 60;
+    font-size: 44px; line-height: 1.12; letter-spacing: -0.7px;
+    margin: 0 0 40px; max-width: 760px; color: var(--charcoal);
+  }
+  h2 em { font-style: normal; font-weight: 500; color: var(--accent); }
+
+  /* Form + sidebar layout */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 80px;
+    align-items: start;
+    padding: 56px 0 128px;
+  }
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 56px; }
+  }
+
+  /* Form */
+  form.contact-form {
+    display: grid;
+    gap: 24px;
+  }
+  .field {
+    display: flex; flex-direction: column;
+  }
+  .field label {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--charcoal);
+    line-height: 1.5;
+    width: 100%;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+  }
+  .field textarea {
+    min-height: 160px;
+    resize: vertical;
+  }
+  .field select {
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--charcoal) 50%),
+      linear-gradient(135deg, var(--charcoal) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 13px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: rgba(28,28,28,0.38);
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: rgba(31,27,22,0.4);
+    box-shadow: var(--focus-shadow);
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 600px) {
+    .field-row { grid-template-columns: 1fr; }
+  }
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .btn-dark {
+    background: var(--charcoal); color: var(--off-white);
+    padding: 12px 20px; border-radius: 6px; border: none;
+    font-family: var(--sans); font-size: 15px; font-weight: 400;
+    cursor: pointer; text-decoration: none;
+    box-shadow: var(--inset-shadow);
+    transition: opacity .12s ease;
+  }
+  .btn-dark:hover { opacity: 0.85; }
+  .form-note {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Sidebar — direct coalition contact */
+  .direct {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 32px;
+  }
+  .direct h3 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+    font-size: 24px; line-height: 1.25; letter-spacing: -0.3px;
+    margin: 0 0 24px; color: var(--charcoal);
+  }
+  .direct dl {
+    margin: 0;
+    display: grid;
+    gap: 20px;
+  }
+  .direct dt {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .direct dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--charcoal);
+  }
+  .direct dd a {
+    color: var(--charcoal);
+    text-decoration: underline;
+  }
+  .direct dd a:hover { color: var(--accent-deep); }
+  .placeholder-flag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--accent);
+    margin-left: 6px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+
+  /* Partner directory */
+  section.partners {
+    padding: 0 0 128px;
+  }
+  .partner-list {
+    border-top: 1px solid var(--hairline);
+  }
+  .partner-row {
+    display: grid;
+    grid-template-columns: 56px 1.4fr 1.2fr 0.9fr;
+    gap: 32px;
+    align-items: center;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  @media (max-width: 900px) {
+    .partner-row {
+      grid-template-columns: 56px 1fr;
+      gap: 20px 24px;
+    }
+    .partner-row .partner-role,
+    .partner-row .partner-contact {
+      grid-column: 2 / -1;
+    }
+  }
+  .partner-thumb {
+    width: 56px; height: 56px;
+    border-radius: 9999px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    background: var(--cream);
+  }
+  .partner-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+    filter: saturate(0.85) sepia(0.12) contrast(0.95);
+  }
+  .partner-name {
+    font-family: var(--display);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+    font-size: 22px;
+    line-height: 1.22;
+    letter-spacing: -0.3px;
+    color: var(--charcoal);
+    margin: 0 0 4px;
+  }
+  .partner-role {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .partner-contact {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+  .partner-contact a {
+    color: var(--charcoal);
+    text-decoration: underline;
+  }
+  .partner-contact a:hover { color: var(--accent-deep); }
+  .partner-contact .muted {
+    color: var(--muted);
+  }
+  .partner-website {
+    text-align: right;
+    font-size: 14px;
+  }
+  @media (max-width: 900px) {
+    .partner-website { text-align: left; grid-column: 2 / -1; }
+  }
+  .partner-website a {
+    color: var(--charcoal);
+    text-decoration: underline;
+  }
+  .partner-website a:hover { color: var(--accent-deep); }
+
+  /* Ways to engage */
+  section.engage {
+    padding: 0 0 144px;
+  }
+  .engage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .engage-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .engage-grid { grid-template-columns: 1fr; } }
+  .engage-card {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .engage-card:hover {
+    border-color: var(--interactive-border);
+    transform: translateY(-2px);
+  }
+  .engage-card .label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .engage-card h3 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+    font-size: 22px;
+    line-height: 1.22;
+    letter-spacing: -0.3px;
+    margin: 0 0 12px;
+    color: var(--charcoal);
+  }
+  .engage-card p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .engage-card a {
+    color: var(--charcoal);
+    text-decoration: underline;
+    font-size: 14px;
+  }
+  .engage-card a:hover { color: var(--accent-deep); }
+
+  /* Footer with warm gradient bottom */
+  footer {
+    background: var(--charcoal); color: var(--cream);
+    padding: 80px 0;
+    position: relative; z-index: 1;
+  }
+  footer .container {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px; align-items: start;
+  }
+  footer .wordmark { display: inline-block; line-height: 1; margin-bottom: 16px; }
+  footer .wordmark img { display: block; width: 240px; height: auto; }
+  footer .tagline { font-size: 14px; line-height: 1.55; color: rgba(250, 241, 223, 0.7); max-width: 360px; }
+  footer h4 {
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin: 0 0 16px; color: var(--cream);
+  }
+  footer ul { list-style: none; margin: 0; padding: 0; }
+  footer li { margin-bottom: 10px; }
+  footer ul a {
+    color: rgba(250, 241, 223, 0.7); text-decoration: none;
+    font-size: 14px;
+  }
+  footer ul a:hover { color: var(--cream); text-decoration: underline; }
+  @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* Mobile headline scaling */
+  @media (max-width: 900px) {
+    h1 { font-size: 48px; letter-spacing: -0.8px; }
+    h2 { font-size: 36px; letter-spacing: -0.5px; }
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 36px; letter-spacing: -0.5px; }
+    h2 { font-size: 30px; letter-spacing: -0.4px; }
+  }
+</style>
+<link rel="stylesheet" href="assets/edit.css" >
+</head>
+<body data-edit-page="contact.html">
+
+<nav class="top">
+  <div class="wordmark">
+    <a href="index.html"><img src="wordmark.png" alt="Pathways to Family Success." ></a>
+  </div>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="members.html">Members</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="contact.html" class="nav-cta" aria-current="page">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="container content-top">
+
+  <section class="contact-grid">
+    <form class="contact-form" action="#" method="post" novalidate>
+      <div class="field-row">
+        <div class="field">
+          <label for="name" data-field="f-1">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" >
+        </div>
+        <div class="field">
+          <label for="email" data-field="f-2">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" >
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="subject" data-field="f-3">Subject</label>
+        <select id="subject" name="subject">
+          <option value="general" data-field="f-4">General inquiry</option>
+          <option value="partnership" data-field="f-5">Partnership interest</option>
+          <option value="services" data-field="f-6">Family seeking services</option>
+          <option value="media" data-field="f-7">Media</option>
+          <option value="other" data-field="f-8">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="organization" data-field="f-9">Organization <span style="font-weight:400; color: var(--muted);" data-field="f-1">(optional)</span></label>
+        <input id="organization" name="organization" type="text" autocomplete="organization" >
+      </div>
+
+      <div class="field">
+        <label for="message" data-field="f-10">Message</label>
+        <textarea id="message" name="message" rows="6"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-dark" data-field="f-11">Send message</button>
+        <span class="form-note" data-field="f-12">We aim to respond within two business days.</span>
+      </div>
+    </form>
+
+    <aside class="direct">
+      <h3 data-field="f-13">Coalition contact</h3>
+      <dl>
+        <div>
+          <dt data-field="f-14">Email</dt>
+          <dd>
+            <a href="mailto:info@pathwaystofamilysuccess.org" data-field="f-15">info@pathwaystofamilysuccess.org</a>
+            <span class="placeholder-flag" data-field="f-16">placeholder</span>
+          </dd>
+        </div>
+        <div>
+          <dt data-field="f-17">Mail</dt>
+          <dd data-field="f-18">
+            Pathways to Family Success<br>
+            c/o United Way of Greater Charlottesville<br>
+            200 Garrett Street, Suite I<br>
+            Charlottesville, VA 22902
+          </dd>
+        </div>
+        <div>
+          <dt data-field="f-19">Coalition hours</dt>
+          <dd data-field="f-20">Monday – Friday, 9am – 5pm ET</dd>
+        </div>
+        <div>
+          <dt data-field="f-21">Families seeking services</dt>
+          <dd data-field="f-22">If you need support today, contact a partner directly. Each organization is listed below with its public phone and email.</dd>
+        </div>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="partners" id="partners">
+    <div class="section-label" data-field="f-23">Partner directory</div>
+    <h2 data-field="f-24">Five organizations. Each one reachable on its own.</h2>
+
+    <div class="partner-list">
+
+      <div class="partner-row">
+        <div class="partner-thumb">
+          <img src="images/city-of-promise.jpg" alt="" >
+        </div>
+        <div>
+          <p class="partner-name" data-field="f-25">City of Promise</p>
+          <p class="partner-role" data-field="f-26">Program coordination, staffing, tutoring architecture, and family engagement.</p>
+        </div>
+        <div class="partner-contact">
+          <div><a href="tel:+14342959525" data-field="f-27">434.295.9525</a></div>
+          <div><a href="mailto:info@cityofpromise.org" data-field="f-28">info@cityofpromise.org</a></div>
+          <div class="muted" data-field="f-29">708 Page St, Charlottesville, VA 22903</div>
+        </div>
+        <div class="partner-website">
+          <a href="https://www.cityofpromise.org/" target="_blank" rel="noopener" data-field="f-30">cityofpromise.org &rarr;</a>
+        </div>
+      </div>
+
+      <div class="partner-row">
+        <div class="partner-thumb">
+          <img src="images/readykids.png" alt="" >
+        </div>
+        <div>
+          <p class="partner-name" data-field="f-31">ReadyKids</p>
+          <p class="partner-role" data-field="f-32">Behavioral health and family well-being services for children and caregivers.</p>
+        </div>
+        <div class="partner-contact">
+          <div><a href="tel:+14342964118" data-field="f-33">434.296.4118</a></div>
+          <div><a href="mailto:info@readykidscville.org" data-field="f-34">info@readykidscville.org</a></div>
+          <div class="muted" data-field="f-35">1000 East High Street, Charlottesville, VA 22902</div>
+        </div>
+        <div class="partner-website">
+          <a href="https://readykidscville.org/" target="_blank" rel="noopener" data-field="f-36">readykidscville.org &rarr;</a>
+        </div>
+      </div>
+
+      <div class="partner-row">
+        <div class="partner-thumb">
+          <img src="images/network2work.jpg" alt="" >
+        </div>
+        <div>
+          <p class="partner-name" data-field="f-37">Network2Work @ PVCC</p>
+          <p class="partner-role" data-field="f-38">Parent workforce and economic mobility pathways — credentialing and employer matching.</p>
+        </div>
+        <div class="partner-contact">
+          <div class="muted" data-field="f-39">Contact through Piedmont Virginia Community College.</div>
+        </div>
+        <div class="partner-website">
+          <a href="https://www.pvcc.edu/community-business/network2work" target="_blank" rel="noopener" data-field="f-40">pvcc.edu/network2work &rarr;</a>
+        </div>
+      </div>
+
+      <div class="partner-row">
+        <div class="partner-thumb">
+          <img src="images/united-way.png" alt="" >
+        </div>
+        <div>
+          <p class="partner-name" data-field="f-41">United Way of Greater Charlottesville</p>
+          <p class="partner-role" data-field="f-42">Data infrastructure, fiscal backbone, and childcare connections for the coalition.</p>
+        </div>
+        <div class="partner-contact">
+          <div><a href="tel:+14349721701" data-field="f-43">434.972.1701</a></div>
+          <div><a href="mailto:UnitedWayCville@UnitedWayCville.org" data-field="f-44">UnitedWayCville@UnitedWayCville.org</a></div>
+          <div class="muted" data-field="f-45">200 Garrett Street, Suite I, Charlottesville, VA 22902</div>
+        </div>
+        <div class="partner-website">
+          <a href="https://unitedwaycville.org/" target="_blank" rel="noopener" data-field="f-46">unitedwaycville.org &rarr;</a>
+        </div>
+      </div>
+
+      <div class="partner-row">
+        <div class="partner-thumb">
+          <img src="images/starr-hill.jpg" alt="" >
+        </div>
+        <div>
+          <p class="partner-name" data-field="f-47">Virginia Center for Community Partnerships</p>
+          <p class="partner-role" data-field="f-48">Evaluation and continuous improvement for the pilot. Houses the Virginia Center for Community Partnerships program.</p>
+        </div>
+        <div class="partner-contact">
+          <div><a href="tel:+14349242414" data-field="f-49">434.924.2414</a></div>
+          <div><a href="mailto:partnerships@virginia.edu" data-field="f-50">partnerships@virginia.edu</a></div>
+          <div class="muted" data-field="f-51">201 W. Main Street, Charlottesville, VA 22902</div>
+        </div>
+        <div class="partner-website">
+          <a href="https://communitypartnerships.virginia.edu/" target="_blank" rel="noopener" data-field="f-52">communitypartnerships.virginia.edu &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="engage">
+    <div class="section-label" data-field="f-53">Ways to engage</div>
+    <h2 data-field="f-54">Different ways to be part of the work.</h2>
+    <div class="engage-grid">
+      <div class="engage-card">
+        <div class="label" data-field="f-55">Volunteer</div>
+        <h3 data-field="f-56">Tutor or mentor</h3>
+        <p data-field="f-57">Most direct-service volunteering runs through City of Promise and Virginia Center for Community Partnerships.</p>
+        <a href="https://www.cityofpromise.org/" target="_blank" rel="noopener" data-field="f-58">Start with City of Promise &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="label" data-field="f-59">Partner</div>
+        <h3 data-field="f-60">Bring an organization in</h3>
+        <p data-field="f-61">Schools, employers, and community groups can join the coordinated model.</p>
+        <a href="mailto:info@pathwaystofamilysuccess.org?subject=Partnership%20interest" data-field="f-62">Email the coalition &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="label" data-field="f-63">Give</div>
+        <h3 data-field="f-64">Fund the pilot</h3>
+        <p data-field="f-65">United Way serves as the coalition's fiscal backbone for the Trailblazer pilot.</p>
+        <a href="https://unitedwaycville.org/" target="_blank" rel="noopener" data-field="f-66">Give through United Way &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="label" data-field="f-67">Get help</div>
+        <h3 data-field="f-68">For families</h3>
+        <p data-field="f-69">Contact a partner directly. ReadyKids handles family well-being and behavioral health intake.</p>
+        <a href="https://readykidscville.org/" target="_blank" rel="noopener" data-field="f-70">Visit ReadyKids &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="wordmark">
+        <a href="index.html"><img src="wordmark-dark.png" alt="Pathways to Family Success." ></a>
+      </div>
+      <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
+    </div>
+    <div>
+      <h4>About</h4>
+      <ul>
+        <li><a href="about.html">Our story</a></li>
+        <li><a href="members.html">Members</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>How It Works</h4>
+      <ul>
+        <li><a href="how-it-works.html">A family's journey</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="contact.html">Get in touch</a></li>
+        <li><a href="contact.html#partners">Partner directory</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Inline-edit toolbar -->
+<div id="edit-bar">
+  <button id="edit-toggle" type="button">Edit mode</button>
+  <span id="edit-status" class="edit-status">viewing</span>
+  <button id="edit-revert" type="button" class="ghost" style="display:none;">Discard</button>
+</div>
+<script src="assets/edit.js" defer></script>
+
+</body>
+</html>

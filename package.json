@@ -1,0 +1,11 @@
+{
+  "name": "coalition-design-preview",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "auto-mark": "node auto-mark.js"
+  },
+  "devDependencies": {
+    "node-html-parser": "^6.1.13"
+  }
+}

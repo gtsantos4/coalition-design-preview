@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width,initial-scale=1" >
 <title>Lovable Preview — Coalition sample</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" >
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" >
 <style>
   :root {
     /* Lovable palette — warm neutral, intentionally no saturated accent */
@@ -39,6 +39,20 @@
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 820px;
+    background:
+      radial-gradient(60% 40% at 15% 30%, rgba(255, 198, 174, 0.35), transparent 70%),
+      radial-gradient(50% 40% at 85% 35%, rgba(232, 196, 218, 0.30), transparent 70%),
+      radial-gradient(40% 30% at 65% 65%, rgba(196, 212, 232, 0.25), transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
   }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
 
@@ -46,15 +60,12 @@
   nav.top {
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 40px; max-width: 1200px; margin: 0 auto;
+    background: transparent;
+    position: relative;
+    z-index: 2;
   }
   nav.top .wordmark { display: inline-block; line-height: 1; }
-  nav.top .wordmark svg { display: block; }
-  nav.top .wordmark text {
-    font-family: var(--display); font-weight: 500; font-style: normal;
-    fill: var(--charcoal);
-  }
-  nav.top .wordmark .persimmon { fill: var(--accent); }
-  nav.top .wordmark .rule { stroke: var(--charcoal); fill: none; }
+  nav.top .wordmark img { display: block; width: 200px; height: auto; }
   nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
   nav.top a {
     color: var(--charcoal); text-decoration: none;
@@ -69,22 +80,10 @@
   }
   nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
 
-  /* Hero with soft multi-color gradient wash + image-left layout */
+  /* Hero — gradient now lives on body::before so it flows under the nav too */
   .hero-wrap {
     position: relative;
-    overflow: hidden;
     padding: 96px 0 128px;
-  }
-  .hero-wrap::before {
-    content: '';
-    position: absolute; inset: -20% -10% auto -10%; height: 70%;
-    background:
-      radial-gradient(60% 50% at 15% 25%, rgba(255, 198, 174, 0.35), transparent 70%),
-      radial-gradient(50% 50% at 85% 30%, rgba(232, 196, 218, 0.30), transparent 70%),
-      radial-gradient(40% 40% at 65% 65%, rgba(196, 212, 232, 0.25), transparent 70%);
-    filter: blur(40px);
-    z-index: 0;
-    pointer-events: none;
   }
   .hero {
     position: relative; z-index: 1;
@@ -105,6 +104,7 @@
     width: 100%; height: 100%;
     object-fit: cover; object-position: center;
     display: block;
+    filter: saturate(0.85) sepia(0.12) contrast(0.95);
   }
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 40px; }
@@ -125,7 +125,7 @@
     margin: 0 0 28px; color: var(--charcoal);
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
     font-weight: 500;
     color: var(--accent);
   }
@@ -155,24 +155,26 @@
 
   /* Stats — horizontal, no card, just generous spacing */
   .stats {
-    padding: 56px 0 144px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
-    margin-bottom: 0;
   }
-  .stat { padding: 64px 0; }
+  .stat { padding: 72px 0; }
   .stat .num {
     font-family: var(--display); font-size: 56px; line-height: 1.0;
     font-weight: 500; letter-spacing: -1.0px;
     font-variation-settings: 'opsz' 72;
     color: var(--charcoal); margin-bottom: 12px;
   }
-  .stat.pop .num { color: var(--accent); font-style: italic; }
+  .stat.pop .num { color: var(--accent); }
   .stat .label { font-size: 14px; color: var(--muted); font-weight: 400; }
 
   /* About section */
   section.about { padding: 144px 0 128px; }
+  .about-cta-row { margin-top: 56px; }
   .section-label {
     font-size: 14px; color: var(--muted);
     margin-bottom: 24px;
@@ -187,7 +189,7 @@
     font-size: 50px; line-height: 1.12; letter-spacing: -0.8px;
     margin: 0 0 56px; max-width: 860px; color: var(--charcoal);
   }
-  h2 em { font-style: italic; font-weight: 500; color: var(--accent); }
+  h2 em { font-style: normal; font-weight: 500; color: var(--accent); }
   .two-col {
     display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
   }
@@ -214,6 +216,7 @@
   }
   .pullquote q::before {
     color: var(--accent);
+    font-style: normal;
     font-size: 1.3em;
     line-height: 0;
     vertical-align: -0.1em;
@@ -226,7 +229,47 @@
   /* Members — gallery cards with image placeholders */
   .members { padding: 128px 0 144px; }
   .member-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  /* City of Promise — Member · 01 — shown first via CSS order; DOM unchanged */
+  .member-grid > .member-card:nth-child(4) { order: -1; }
+  @media (max-width: 900px) { .member-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .member-grid { grid-template-columns: 1fr; } }
+
+  /* Placeholder card — signals an open, growing coalition */
+  .member-card--placeholder {
+    background: transparent;
+    border: 1px dashed rgba(31, 27, 22, 0.22);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    transition: border-color .15s ease;
+  }
+  .member-card--placeholder:hover {
+    border-color: rgba(31, 27, 22, 0.45);
+    transform: none;
+  }
+  .placeholder-text {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 36;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+    color: var(--muted);
+    margin: 0;
+    text-align: center;
+  }
+  .placeholder-text em {
+    font-style: italic;
+    color: var(--charcoal);
+    display: block;
+  }
+  .placeholder-text .period {
+    color: var(--accent);
+    font-style: normal;
   }
   .member-card {
     background: var(--cream);
@@ -252,6 +295,7 @@
     width: 100%; height: 100%;
     object-fit: cover; object-position: center;
     display: block;
+    filter: saturate(0.85) sepia(0.12) contrast(0.95);
   }
   .member-img.tone-1 {
     background:
@@ -300,63 +344,45 @@
 
   /* Footer with warm gradient bottom */
   footer {
-    background: var(--cream);
-    border-top: 1px solid var(--hairline);
-    padding: 64px 0 48px;
-    position: relative;
-    overflow: hidden;
-  }
-  footer::before {
-    content: '';
-    position: absolute; inset: auto -10% -40% -10%; height: 80%;
-    background:
-      radial-gradient(50% 50% at 50% 50%, rgba(255, 198, 174, 0.30), transparent 70%),
-      radial-gradient(40% 40% at 80% 60%, rgba(255, 224, 184, 0.25), transparent 70%);
-    filter: blur(30px);
-    z-index: 0;
-    pointer-events: none;
+    background: var(--charcoal); color: var(--cream);
+    padding: 80px 0;
+    position: relative; z-index: 1;
   }
   footer .container {
-    position: relative; z-index: 1;
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px; align-items: start;
   }
   footer .wordmark { display: inline-block; line-height: 1; margin-bottom: 16px; }
-  footer .wordmark svg { display: block; }
-  footer .wordmark text {
-    font-family: var(--display); font-weight: 500; font-style: normal;
-    fill: var(--charcoal);
-  }
-  footer .wordmark .persimmon { fill: var(--accent); }
-  footer .wordmark .rule { stroke: var(--charcoal); fill: none; }
-  footer .tagline { font-size: 14px; color: var(--muted); max-width: 280px; }
+  footer .wordmark img { display: block; width: 240px; height: auto; }
+  footer .tagline { font-size: 14px; line-height: 1.55; color: rgba(250, 241, 223, 0.7); max-width: 360px; }
   footer h4 {
-    font-size: 13px; font-weight: 600; color: var(--charcoal);
-    margin: 0 0 16px;
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin: 0 0 16px; color: var(--cream);
   }
   footer ul { list-style: none; margin: 0; padding: 0; }
-  footer ul li { margin-bottom: 10px; }
+  footer li { margin-bottom: 10px; }
   footer ul a {
-    color: var(--muted); text-decoration: none; font-size: 14px;
+    color: rgba(250, 241, 223, 0.7); text-decoration: none;
+    font-size: 14px;
   }
-  footer ul a:hover { color: var(--charcoal); text-decoration: underline; }
+  footer ul a:hover { color: var(--cream); text-decoration: underline; }
+  @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
 </style>
+<link rel="stylesheet" href="assets/edit.css" >
 </head>
-<body>
+<body data-edit-page="index.html">
 
 <nav class="top">
   <div class="wordmark">
-    <svg viewBox="0 0 700 280" width="220" xmlns="http://www.w3.org/2000/svg">
-      <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
-      <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
-      <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
-    </svg>
+    <img src="wordmark.png" alt="Pathways to Family Success." >
   </div>
   <ul>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Members</a></li>
-    <li><a href="#">Reports</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#" class="nav-cta">Get involved</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="members.html">Members</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
   </ul>
 </nav>
 
@@ -383,18 +409,18 @@
       poverty aesthetic, branded clothing, aspirational lifestyle look.
     -->
     <div class="hero-image">
-      <img src="images/hero.png" alt="A young child smiles brightly while peering out from under a peach-colored hood." />
+      <img src="images/hero.png" alt="A young child smiles brightly while peering out from under a peach-colored hood." >
     </div>
     <div class="hero-text">
       <div class="eyebrow-pill">
         <span class="dot"></span>
-        <span>Charlottesville · Est. 2026</span>
+        <span data-field="f-1">Charlottesville · Est. 2026</span>
       </div>
-      <h1>Four organizations, <em>one shared promise</em> to Charlottesville's children and families.</h1>
-      <p class="lede">A mutual aid partnership uniting four community organizations to deliver coordinated support, shared resources, and measurable outcomes for the families we serve.</p>
+      <h1 data-field="f-2">Five organizations, <em data-field="f-1">one shared promise</em> to Charlottesville's children and families.</h1>
+      <p class="lede" data-field="f-3">A mutual aid partnership uniting five community organizations to deliver coordinated support, shared resources, and measurable outcomes for the families we serve.</p>
       <div class="cta-row">
-        <a href="#" class="btn-dark">Read the 2025 report</a>
-        <a href="#" class="btn-ghost">Meet the coalition</a>
+        <a href="how-it-works.html" class="btn-dark" data-field="f-4">See how it works</a>
+        <a href="members.html" class="btn-ghost" data-field="f-5">Meet the partners</a>
       </div>
     </div>
   </div>
@@ -403,35 +429,38 @@
 <div class="container">
 
   <section class="stats">
-    <div class="stat"><div class="num">4</div><div class="label">Member Organizations</div></div>
-    <div class="stat"><div class="num">2,847</div><div class="label">Families Served</div></div>
-    <div class="stat"><div class="num">$1.2M</div><div class="label">Shared Funding</div></div>
-    <div class="stat pop"><div class="num">96%</div><div class="label">Program Retention</div></div>
+    <div class="stat"><div class="num" data-field="f-6">5</div><div class="label" data-field="f-7">Member Organizations</div></div>
+    <div class="stat"><div class="num" data-field="f-8">50</div><div class="label" data-field="f-9">K–5 Students in Pilot</div></div>
+    <div class="stat"><div class="num" data-field="f-10">1</div><div class="label" data-field="f-11">Pilot School · Trailblazer</div></div>
+    <div class="stat pop"><div class="num" data-field="f-12">$500K</div><div class="label" data-field="f-13">Pilot Investment</div></div>
   </section>
 
-  <section class="about">
-    <div class="section-label">About the coalition</div>
-    <h2>Built on a single principle: families deserve <em>coordinated care</em>, not fragmented services.</h2>
+  <section class="about" id="about">
+    <div class="section-label" data-field="f-14">About the coalition</div>
+    <h2 data-field="f-15">Built on a single principle: families deserve <em data-field="f-2">coordinated care</em>, not fragmented services.</h2>
     <div class="two-col">
       <div>
-        <p>For decades, Charlottesville's nonprofit ecosystem has been rich but uncoordinated. A family in need might touch four separate organizations, repeating their story to each, and still fall through the cracks between them.</p>
-        <p>This coalition exists to change that. By formalizing how United Way, Ready Kids, Starr Hill Pathways, and City of Promise share resources, intake, and outcomes, we ensure that every family encounters one community — not four agencies.</p>
+        <p data-field="f-16">For decades, Charlottesville's nonprofit ecosystem has been rich but uncoordinated. A family in need might touch five separate organizations, repeating their story to each, and still fall through the cracks between them.</p>
+        <p data-field="f-17">This coalition exists to change that. By formalizing how United Way, ReadyKids, Virginia Center for Community Partnerships, City of Promise, and Network2Work share resources, intake, and outcomes, we ensure that every family encounters one community — not five agencies.</p>
       </div>
       <div>
-        <p>Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime — from early childhood through college access and beyond.</p>
-        <p>This report documents our first year of formal partnership: what we built, what we learned, where the friction was, and where we're going next.</p>
+        <p data-field="f-18">Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime — from early childhood through college access and beyond.</p>
+        <p data-field="f-19">This report documents our first year of formal partnership: what we built, what we learned, where the friction was, and where we're going next.</p>
       </div>
+    </div>
+    <div class="about-cta-row">
+      <a href="about.html" class="btn-dark" data-field="f-20">Read more about the coalition</a>
     </div>
   </section>
 
   <div class="pullquote">
-    <q>We stopped asking families to navigate our systems. We started building systems that navigate around them.</q>
-    <cite>From the 2025 Letter to the Community</cite>
+    <q data-field="f-21">We stopped asking families to navigate our systems. We started building systems that navigate around them.</q>
+    <cite data-field="f-22">From the 2025 Letter to the Community</cite>
   </div>
 
-  <section class="members">
-    <div class="section-label">Coalition members</div>
-    <h2>Four organizations. One continuum of care.</h2>
+  <section class="members" id="members">
+    <div class="section-label" data-field="f-23">Coalition members</div>
+    <h2 data-field="f-24">Five organizations. One continuum of care.</h2>
     <div class="member-grid">
       <div class="member-card">
         <!--
@@ -455,12 +484,12 @@
           mahogany conference table, warm cinematic lighting, posed group smiles toward
           camera.
         -->
-        <div class="member-img tone-1"><img src="images/united-way.png" alt="A caregiver reads to a small group of children in matching green tank tops at a United Way summer program." /></div>
+        <div class="member-img tone-1"><img src="images/united-way.png" alt="A caregiver reads to a small group of children in matching green tank tops at a United Way summer program." ></div>
         <div class="member-body">
-          <div class="org">Member · 01</div>
-          <h3>United Way of Greater Charlottesville</h3>
-          <p>Convening, fundraising, and community-wide initiatives spanning health, education, and financial stability.</p>
-          <a href="#" class="read-more">Learn more</a>
+          <div class="org" data-field="f-25">Member · 02</div>
+          <h3 data-field="f-26">United Way of Greater Charlottesville</h3>
+          <p data-field="f-27">Convening, fundraising, and community-wide initiatives spanning health, education, and financial stability.</p>
+          <a href="#" class="read-more" data-field="f-28">Learn more</a>
         </div>
       </div>
       <div class="member-card">
@@ -486,12 +515,12 @@
           Dawoud Bey. Avoid: stock daycare imagery, bright primary colors, branded
           plastic toys, dream lighting, picture-book aesthetic, savior framing.
         -->
-        <div class="member-img tone-2"><img src="images/readykids.png" alt="A young child engaged in play with a hula hoop and a giant stuffed giraffe at a ReadyKids community event." /></div>
+        <div class="member-img tone-2"><img src="images/readykids.png" alt="A young child engaged in play with a hula hoop and a giant stuffed giraffe at a ReadyKids community event." ></div>
         <div class="member-body">
-          <div class="org">Member · 02</div>
-          <h3>ReadyKids</h3>
-          <p>Early childhood, family education, and trauma-informed mental health services for children birth through twelve.</p>
-          <a href="#" class="read-more">Learn more</a>
+          <div class="org" data-field="f-29">Member · 03</div>
+          <h3 data-field="f-30">ReadyKids</h3>
+          <p data-field="f-31">Early childhood, family education, and trauma-informed mental health services for children birth through twelve.</p>
+          <a href="#" class="read-more" data-field="f-32">Learn more</a>
         </div>
       </div>
       <div class="member-card">
@@ -518,12 +547,12 @@
           workshop lighting, raised-hands classroom celebrations, fake aha moments, posed
           glances at camera.
         -->
-        <div class="member-img tone-3"><img src="images/starr-hill.jpg" alt="A Starr Hill Pathways mentor moves through a classroom of diverse middle-school scholars working at their desks." /></div>
+        <div class="member-img tone-3"><img src="images/starr-hill.jpg" alt="Virginia Center for Community Partnerships scholars in aprons prepare food together in a kitchen during a hands-on program session." ></div>
         <div class="member-body">
-          <div class="org">Member · 03</div>
-          <h3>Starr Hill Pathways</h3>
-          <p>Long-term STEAM mentorship and college-access programming for middle and high school students.</p>
-          <a href="#" class="read-more">Learn more</a>
+          <div class="org" data-field="f-33">Member · 04</div>
+          <h3 data-field="f-34">Virginia Center for Community Partnerships</h3>
+          <p data-field="f-35">Long-term STEAM mentorship and college-access programming for middle and high school students.</p>
+          <a href="#" class="read-more" data-field="f-36">Learn more</a>
         </div>
       </div>
       <div class="member-card">
@@ -548,13 +577,42 @@
           Carrie Mae Weems. Avoid: drone shots, golden-hour beauty filtering, sentimental
           nostalgia, sweeping establishing shots, romanticization of the neighborhood.
         -->
-        <div class="member-img tone-4"><img src="images/city-of-promise.jpg" alt="A young child at a City of Promise community event grins behind a paper cup of shaved ice, sunlit lawn behind him." /></div>
+        <div class="member-img tone-4"><img src="images/city-of-promise.jpg" alt="A young child at a City of Promise community event grins behind a paper cup of shaved ice, sunlit lawn behind him." ></div>
         <div class="member-body">
-          <div class="org">Member · 04</div>
-          <h3>City of Promise</h3>
-          <p>Cradle-to-career neighborhood support rooted in the 10th and Page community, with a focus on educational outcomes.</p>
-          <a href="#" class="read-more">Learn more</a>
+          <div class="org" data-field="f-37">Member · 01</div>
+          <h3 data-field="f-38">City of Promise</h3>
+          <p data-field="f-39">Cradle-to-career neighborhood support rooted in the 10th and Page community, with a focus on educational outcomes.</p>
+          <a href="#" class="read-more" data-field="f-40">Learn more</a>
         </div>
+      </div>
+      <!-- 5th member card: Network2Work -->
+      <div class="member-card">
+        <!--
+          NETWORK2WORK IMAGE PROMPT (16:9 landscape):
+          Candid photojournalistic image of Network2Work participants in a real workforce-
+          training environment — a community college lab, a classroom with an instructor,
+          or a credentialing-ceremony moment. Adult learners (mixed ages and backgrounds,
+          reflecting low-income Charlottesville residents the program serves) engaged in
+          hands-on training: fiber-optic cabling, HVAC, healthcare credentialing, or
+          similar trade work. Lighting: real classroom or workshop lighting (fluorescent
+          or warm overhead bulbs) — not cinematic, not staged. Composition: medium-wide,
+          eye-level, working materials visible. Mood: focused adult learning, dignity of
+          the work. Aspect ratio 16:9 landscape. Avoid: corporate training photo cliches,
+          posed group with diplomas at camera, sterile boardroom.
+        -->
+        <div class="member-img tone-5"><img src="images/network2work.jpg" alt="Two Network2Work participants in safety gear consult blueprints on a metal fabrication shop floor, welding sparks visible behind them." ></div>
+        <div class="member-body">
+          <div class="org" data-field="f-41">Member · 05</div>
+          <h3 data-field="f-42">Network2Work @ PVCC</h3>
+          <p data-field="f-43">Workforce development for low-income job-seekers — credentialing, employer matching, and the wrap-around supports families need for stable employment.</p>
+          <a href="#" class="read-more" data-field="f-44">Learn more</a>
+        </div>
+      </div>
+      <!-- Placeholder: signals an open, growing coalition -->
+      <div class="member-card member-card--placeholder">
+        <p class="placeholder-text" data-field="f-45">
+          More members<em data-field="f-3">to come<span class="period" data-field="f-1">.</span></em>
+        </p>
       </div>
     </div>
   </section>
@@ -565,40 +623,40 @@
   <div class="container">
     <div>
       <div class="wordmark">
-        <svg viewBox="0 0 700 280" width="240" xmlns="http://www.w3.org/2000/svg">
-          <line class="rule" x1="50" y1="14" x2="650" y2="14" stroke-width="1" vector-effect="non-scaling-stroke" />
-          <text x="50" y="92" font-size="52" textLength="600" lengthAdjust="spacing">Pathways to</text>
-          <text x="50" y="240" font-size="116" textLength="600" lengthAdjust="spacing">Family Success<tspan class="persimmon">.</tspan></text>
-        </svg>
+        <img src="wordmark-dark.png" alt="Pathways to Family Success." >
       </div>
       <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
     </div>
     <div>
       <h4>About</h4>
       <ul>
-        <li><a href="#">Our story</a></li>
-        <li><a href="#">Members</a></li>
-        <li><a href="#">Approach</a></li>
+        <li><a href="about.html">Our story</a></li>
+        <li><a href="members.html">Members</a></li>
       </ul>
     </div>
     <div>
-      <h4>Reports</h4>
+      <h4>How It Works</h4>
       <ul>
-        <li><a href="#">2025 annual</a></li>
-        <li><a href="#">Outcomes</a></li>
-        <li><a href="#">Archive</a></li>
+        <li><a href="how-it-works.html">A family's journey</a></li>
       </ul>
     </div>
     <div>
-      <h4>Get in touch</h4>
+      <h4>Contact</h4>
       <ul>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Volunteer</a></li>
-        <li><a href="#">Give</a></li>
+        <li><a href="contact.html">Get in touch</a></li>
       </ul>
     </div>
   </div>
 </footer>
+
+
+<!-- Inline-edit toolbar -->
+<div id="edit-bar">
+  <button id="edit-toggle" type="button">Edit mode</button>
+  <span id="edit-status" class="edit-status">viewing</span>
+  <button id="edit-revert" type="button" class="ghost" style="display:none;">Discard</button>
+</div>
+<script src="assets/edit.js" defer></script>
 
 </body>
 </html>

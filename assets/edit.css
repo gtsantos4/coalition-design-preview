@@ -1,0 +1,86 @@
+/* PFS inline-edit toolbar + edit-mode states. Matched to the design system:
+   charcoal pill on cream + persimmon edit-mode outlines. */
+
+#edit-bar {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: #1F1B16;
+  color: #FAF1DF;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 6px 20px rgba(31, 27, 22, 0.25);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 13px;
+  z-index: 9999;
+}
+
+#edit-bar button {
+  background: transparent;
+  color: #FAF1DF;
+  border: 1px solid rgba(250, 241, 223, 0.3);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease;
+}
+
+#edit-bar button:hover {
+  background: rgba(250, 241, 223, 0.1);
+  border-color: rgba(250, 241, 223, 0.6);
+}
+
+#edit-bar button.ghost {
+  border-color: rgba(250, 241, 223, 0.15);
+  color: rgba(250, 241, 223, 0.7);
+}
+
+#edit-bar .edit-status {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(250, 241, 223, 0.5);
+  min-width: 56px;
+  text-align: center;
+}
+
+#edit-bar .edit-status.saving { color: #FAF1DF; }
+#edit-bar .edit-status.dirty  { color: #DC6B3F; }
+#edit-bar .edit-status.saved  { color: #FAF1DF; }
+#edit-bar .edit-status.err    { color: #FF7E66; }
+
+/* Editable element states, only active when body.edit-mode is on */
+body.edit-mode [data-field] {
+  cursor: text;
+  outline: 1px dashed rgba(220, 107, 63, 0.45);
+  outline-offset: 4px;
+  border-radius: 3px;
+  transition: outline-color .12s ease, background-color .12s ease;
+}
+
+body.edit-mode [data-field]:hover {
+  outline-color: #DC6B3F;
+  background: rgba(220, 107, 63, 0.05);
+}
+
+body.edit-mode [data-field]:focus {
+  outline: 2px solid #DC6B3F;
+  outline-offset: 4px;
+  background: rgba(220, 107, 63, 0.08);
+}
+
+[data-field].just-saved {
+  animation: just-saved-flash 1.2s ease-out;
+}
+
+@keyframes just-saved-flash {
+  0%   { background: rgba(220, 107, 63, 0.25); }
+  100% { background: transparent; }
+}

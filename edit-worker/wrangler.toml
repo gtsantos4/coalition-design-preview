@@ -1,0 +1,11 @@
+name = "pfs-edit-worker"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+GITHUB_REPO = "gtsantos4/coalition-design-preview"
+ALLOWED_ORIGIN = "https://gtsantos4.github.io"
+
+# Secrets are set via `npx wrangler secret put NAME` — do NOT commit them.
+# Required:
+#   GITHUB_TOKEN    fine-grained PAT, Contents r/w on the PFS repo

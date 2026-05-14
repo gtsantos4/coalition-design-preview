@@ -1,0 +1,4 @@
+node_modules/
+edit-worker/node_modules/
+edit-worker/.wrangler/
+.DS_Store
