@@ -227,12 +227,12 @@
   /* Service grid */
   .service-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     padding-top: 28px;
   }
-  @media (max-width: 980px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) { .service-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 980px) { .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .service-grid { grid-template-columns: minmax(0, 1fr); } }
 
   .service-card {
     border: 1px solid var(--hairline);
@@ -240,9 +240,11 @@
     padding: 20px 22px;
     background: var(--cream);
     display: flex; flex-direction: column; gap: 12px;
+    min-width: 0;
   }
   .service-head {
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px 12px; flex-wrap: wrap;
   }
   .cadence-pill {
     border: 1px solid var(--hairline);
@@ -395,6 +397,7 @@
     <span></span><span></span><span></span>
   </button>
   <ul id="nav-menu">
+    <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="members.html">Members</a></li>
     <li><a href="how-it-works.html" class="is-active">How It Works</a></li>
@@ -406,7 +409,7 @@
 
   <div class="page-header">
     <div class="section-label" data-field="f-1">How one family actually uses the coalition</div>
-    <h1 data-field="f-2">A family receives roughly twenty distinct services. <em>Select a family member</em> below.</h1>
+    <h1 data-field="f-2">A family receives roughly thirty distinct services. <em>Select a family member</em> below.</h1>
   </div>
 
   <section class="lineup" aria-label="Family lineup">
@@ -457,10 +460,11 @@
   ];
 
   const ORGS = {
-    uw:  { id: 'uw',  name: 'United Way',          short: 'UW',  blurb: 'Convening · funding · 211' },
-    rk:  { id: 'rk',  name: 'ReadyKids',           short: 'RK',  blurb: 'Early childhood · family ed · mental health' },
-    shp: { id: 'shp', name: 'Starr Hill Pathways', short: 'SHP', blurb: 'STEAM mentorship · college access' },
-    cop: { id: 'cop', name: 'City of Promise',     short: 'CoP', blurb: 'Cradle-to-career neighborhood support' },
+    uw:   { id: 'uw',   name: 'United Way of Greater Charlottesville',     short: 'UW',   blurb: 'Financial stability · school readiness · community navigation' },
+    rk:   { id: 'rk',   name: 'ReadyKids',                                   short: 'RK',   blurb: 'Early childhood · counseling · family well-being' },
+    vccp: { id: 'vccp', name: 'Virginia Center for Community Partnerships', short: 'VCCP', blurb: 'Mentorship · college and career · STEAM' },
+    cop:  { id: 'cop',  name: 'City of Promise',                             short: 'CoP',  blurb: 'Community school model · family coaching · neighborhood' },
+    n2w:  { id: 'n2w',  name: 'Network2Work @ PVCC',                         short: 'N2W',  blurb: 'Workforce · employer matching · wraparound supports' },
   };
 
   const TYPE_LABEL = {
@@ -472,79 +476,107 @@
     enrichment:        'Enrichment',
     'early-childhood': 'Early childhood',
     coaching:          'Family coaching',
+    workforce:         'Workforce',
+    financial:         'Financial coaching',
+    transportation:    'Transportation',
+    'basic-needs':     'Basic needs',
   };
 
   const SERVICE_DETAIL = {
     mom: [
-      { id:'m1', org:'uw',  title:'211 Family Resource Line', type:'navigation', cadence:'As needed',
-        lead:'United Way 211 specialist',
-        summary:'Single phone number for finding utility assistance, food access, childcare subsidies, and emergency housing. Routes Mom to the right local agency without her having to know which one to call.' },
-      { id:'m2', org:'rk',  title:'Triple P Parenting Program', type:'education', cadence:'Weekly · 8-week series',
-        lead:'ReadyKids family educator',
-        summary:'Structured parenting workshop covering toddler behavior, sibling dynamics, and managing stress as a solo parent. Cohort meets weekly with childcare provided on-site.' },
-      { id:'m3', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly',
-        lead:'Home visitor (paired with Toddler since birth)',
-        summary:'Same home visitor since the 2-year-old was born. Visits cover developmental milestones, attachment, and connecting Mom to community resources. The relationship is the linchpin — most other services were referred through this one.' },
-      { id:'m4', org:'cop', title:'Family Success Coach', type:'coaching', cadence:'Monthly · 1:1',
-        lead:'City of Promise family advocate',
-        summary:'A long-term coach who knows the whole family. Helps Mom set 6-month goals (housing, GED, employment), track progress, and unblock paperwork — IDs, benefits recertifications, school enrollment forms.' },
-      { id:'m5', org:'cop', title:'Neighborhood community meetings', type:'enrichment', cadence:'Monthly',
-        lead:'City of Promise convenes',
-        summary:"10th & Page resident meetings — informal but consistent. Mom shows up and stays connected to other parents in the neighborhood; this is where most of the family heard about the after-school program." },
+      { id:'m1', org:'cop', title:'Family Empowerment Coach', type:'coaching', cadence:'Ongoing · long-term relationship',
+        lead:'City of Promise Family Empowerment Coach',
+        summary:'A long-term coach who walks alongside the family — sets goals, tracks progress, helps with school enrollment, paperwork, and the connections to other partners. The single relationship that knows the whole picture.' },
+      { id:'m2', org:'cop', title:'Dreambuilders', type:'financial', cadence:'Full school year · 36–38 weeks',
+        lead:'City of Promise Director of Parent Engagement',
+        summary:'A year-long adult empowerment program with a $5,000 stipend — financial planning, employment, education, and homeownership. 78% of participants increase self-sufficiency and complete their goals. A tiered second year is available with a $2,000 stipend.' },
+      { id:'m3', org:'uw',  title:'Family Investment Program', type:'financial', cadence:'Monthly 1:1 · multi-year',
+        lead:'United Way financial coach',
+        summary:'High-touch financial coaching — savings plans, debt paydown, credit repair, matched emergency savings, and downpayment assistance. Of 15 families enrolled last year, 7 reached homeownership.' },
+      { id:'m4', org:'uw',  title:'Pathways Community Resource Hotline', type:'navigation', cadence:'As needed',
+        lead:'United Way Pathways navigator',
+        summary:'One phone number for utility assistance, food access, childcare subsidies, and emergency housing. Routes Mom to the right local agency without her having to know which one to call.' },
+      { id:'m5', org:'n2w', title:'Career navigator + employer match', type:'workforce', cadence:'Weekly check-ins · until placed',
+        lead:'Network2Work career and life coach',
+        summary:"A dedicated navigator helps Mom move from a part-time gig to a full-time role through the N2Work platform — every position pays at least $12.50/hr and doesn't require a degree. Nearly 70% of program job-seekers land a job." },
+      { id:'m6', org:'uw',  title:'Driving Lives Forward', type:'transportation', cadence:'One-time purchase · credit-building loan',
+        lead:'United Way + Virginia National Bank + Carter Myers Automotive',
+        summary:'Helps Mom buy a reliable used car (typically ~$12K, often a 2016 compact SUV) with loan-readiness coaching and insurance setup. Without a car, the new full-time job is logistically impossible.' },
+      { id:'m7', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly · since Toddler was born',
+        lead:'ReadyKids Family Support Worker',
+        summary:'Same Family Support Worker each week — developmental milestones, parenting coaching, and the connections that pulled the family into the rest of the coalition. Offered in English, Spanish, Dari, or Pashto.' },
     ],
 
     teen: [
-      { id:'t1', org:'shp', title:'STEAM mentorship pairing', type:'mentorship', cadence:'Weekly · school year',
-        lead:'Starr Hill mentor (UVA undergrad, 3rd year with Teen)',
-        summary:'Same mentor since 6th grade. Meets 1:1 weekly during the school year — homework, college conversations, and a project-based STEAM curriculum. The continuity is the program: a relationship, not a series of activities.' },
-      { id:'t2', org:'shp', title:'Summer STEAM Institute', type:'academic', cadence:'4 weeks · July',
-        lead:'Starr Hill program staff',
-        summary:'Four-week intensive on UVA grounds — engineering, biology, and creative tech tracks. Teen attends with cohort that has grown up together in the program. Stipend covers transportation and lunch.' },
-      { id:'t3', org:'shp', title:'College access counseling', type:'academic', cadence:'Monthly + spring intensives',
-        lead:'Starr Hill college counselor',
-        summary:'SAT prep, campus visits to UVA / PVCC / Norfolk State, financial-aid workshops. This year: shortlist building and PSAT debrief.' },
-      { id:'t4', org:'cop', title:'After-school academic support', type:'academic', cadence:'2× / week',
-        lead:'City of Promise tutor (volunteer)',
-        summary:'Specifically targeted at Algebra I and English 9 — the courses most likely to derail freshman year. Tutor coordinates with school counselor on grades.' },
-      { id:'t5', org:'cop', title:'Paid summer youth internship', type:'enrichment', cadence:'6 weeks · summer',
-        lead:'City of Promise + community partner employer',
-        summary:'$15/hr placement at a local business. First real paycheck. Soft-skills curriculum on Fridays. Funded through the United Way youth-employment pool.' },
-      { id:'t6', org:'rk',  title:'Adolescent counseling', type:'counseling', cadence:'Bi-weekly',
+      { id:'t1', org:'vccp', title:'Starr Hill Pathways mentoring', type:'mentorship', cadence:'Weekly · in-school · school year',
+        lead:'Starr Hill Pathways mentor (UVA student or community partner)',
+        summary:'Small-group, in-school mentoring focused on self-efficacy and growth mindset. Same mentor across multiple years — the continuity is the program. Free, with transportation and meals provided.' },
+      { id:'t2', org:'vccp', title:'Summer career pathways program', type:'enrichment', cadence:'Multi-week · summer · on UVA grounds',
+        lead:'Starr Hill staff + UVA and PVCC pathway partners',
+        summary:'Scholars explore 17 career pathways through summer programming on UVA grounds, capped by a student project expo. 9th-graders use the summer to prepare for paid 10th-grade internships.' },
+      { id:'t3', org:'vccp', title:'Academic tutoring', type:'academic', cadence:'In-school day + evening virtual',
+        lead:'UVA student tutors',
+        summary:"Free tutoring during the school day in person, and virtual tutoring in the evenings. Available in scholars' first languages when needed." },
+      { id:'t4', org:'vccp', title:'College access + SAT prep', type:'academic', cadence:'Ongoing · spring intensives',
+        lead:'Starr Hill Pathways college counselor',
+        summary:'SAT prep, college planning, financial-aid workshops, and one-on-one counseling. Builds toward a shortlist and serious post-secondary planning by senior year.' },
+      { id:'t5', org:'vccp', title:'Paid summer internship', type:'enrichment', cadence:'Summer · between 10th and 11th grade',
+        lead:'Starr Hill Pathways + local employer partner',
+        summary:'A real paid placement at a local business — often the first paycheck. Builds career exposure, professional networks, and a tangible reason for the academic work.' },
+      { id:'t6', org:'cop',  title:'Tour of the Town', type:'enrichment', cadence:'Field trips throughout the year',
+        lead:'City of Promise Community School Coordinator',
+        summary:'Career-exposure field trips to local employers and institutions — UVA Surgery, the Fontaine Fire Department, Kiwanis Club, Willow Tree, Getting Word. Designed for kids to see what their lives could look like.' },
+      { id:'t7', org:'rk',   title:'Inside Out trauma counseling', type:'counseling', cadence:'Weekly · long-term',
         lead:'ReadyKids licensed clinician',
-        summary:"Trauma-informed therapy sessions following a difficult middle-school year. Sliding-scale fee covered. Mom is informed but not part of the sessions — explicitly Teen's space." },
+        summary:"Trauma-focused therapy that families can stay in for as long as they need it — no artificial endpoint. Mom is informed; the space is explicitly Teen's." },
     ],
 
     child: [
-      { id:'c1', org:'rk',  title:'School-based mental health', type:'counseling', cadence:'Weekly · in-school',
-        lead:'ReadyKids clinician embedded at Burnley-Moran',
-        summary:'30-minute sessions during the school day — no transportation barrier, no missed instruction. Teacher and counselor coordinate. Focused on emotional regulation and peer conflict.' },
-      { id:'c2', org:'rk',  title:'Social-skills group', type:'counseling', cadence:'Weekly · 12-week cohort',
-        lead:'ReadyKids group facilitator',
-        summary:'Small group (6 kids) practicing emotional regulation through structured activities. Child has been in two cohorts; visible progress on classroom behavior reports.' },
-      { id:'c3', org:'cop', title:'After-school program', type:'enrichment', cadence:'Daily · M–F · 3–6pm',
-        lead:'City of Promise site staff',
-        summary:"Bridges the gap between school dismissal and Mom's shift ending. Homework hour, structured snack, then activities (art, sports, music rotation). Two field trips per semester." },
-      { id:'c4', org:'cop', title:'Reading intervention', type:'academic', cadence:'2× / week · pull-out tutoring',
-        lead:'Trained literacy tutor',
-        summary:'Targeted reading support — Child was identified as reading slightly below grade level at end of Grade 2. Tutor uses the same curriculum the school uses, so the two systems align instead of conflict.' },
+      { id:'c1', org:'cop', title:'Afterschool literacy tutoring', type:'academic', cadence:'After school · at Trailblazer',
+        lead:'City of Promise + Virginia Literacy Partnerships tutor',
+        summary:'In-school literacy tutoring at Trailblazer Elementary — small groups or 1:1, focused on fluency and comprehension. Snacks provided from the on-site pantry.' },
+      { id:'c2', org:'cop', title:'Westhaven Walks', type:'transportation', cadence:'Every school day since fall 2024',
+        lead:'City of Promise community school staff',
+        summary:'A staffed walking bus to and from Trailblazer for kids in the Westhaven neighborhood, after CCS created "Family Responsibility Zones" that cut their bus access. 104 days last school year were rain, snow, or below freezing.' },
+      { id:'c3', org:'cop', title:'On-site food pantry', type:'basic-needs', cadence:'Daily access · holiday bags during breaks',
+        lead:'City of Promise + Emergency Food Network',
+        summary:'A dry and refrigerated food pantry inside Trailblazer Elementary. 40 students access it daily; 30 holiday bags went home over winter break. Coordinated with CCS so students never have to leave the building.' },
+      { id:'c4', org:'cop', title:'Summer tutoring + YMCA', type:'academic', cadence:'Summer · weekday mornings',
+        lead:'Trailblazer + UVA staff',
+        summary:'A summer literacy program that staves off the "summer slide" — otherwise 10+ unstructured weeks. Participation also unlocks YMCA enrollment, easing the childcare burden on working parents.' },
+      { id:'c5', org:'cop', title:'Community School Coordinator', type:'coaching', cadence:'Embedded in school · daily presence',
+        lead:'City of Promise Community School Coordinator',
+        summary:'A trusted adult embedded inside Trailblazer who knows the child, the teachers, and the family — the bridge between school routines and home life. CoP staff are embedded in 6 of 10 Charlottesville City Schools.' },
+      { id:'c6', org:'rk',  title:'School-based counseling', type:'counseling', cadence:'Weekly · in-school',
+        lead:'ReadyKids clinician',
+        summary:'Counseling sessions during the school day — no transportation barrier, no missed instruction. Teacher and clinician coordinate on emotional regulation and peer conflict.' },
+      { id:'c7', org:'uw',  title:'Santa Fund for Schoolkids', type:'basic-needs', cadence:'Annual · back-to-school',
+        lead:'United Way + The Daily Press + NewsRadio WINA',
+        summary:'A campaign running since 1896 that covers clothing, shoes, glasses, and backpacks for kids whose families would otherwise have to choose between supplies and rent. Raised ~$260,000 last year.' },
     ],
 
     toddler: [
       { id:'d1', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly · since birth',
-        lead:'Same home visitor across the family',
-        summary:"Most important relationship in the family's coalition map. Two years of weekly visits. Developmental check-ins, parent-child play coaching, and the trusted person who refers them to everything else." },
-      { id:'d2', org:'rk',  title:'Early intervention screening', type:'early-childhood', cadence:'Quarterly',
-        lead:'ReadyKids developmental specialist',
-        summary:'Ages & Stages screenings to flag developmental concerns early. Last screening: on track across all domains. Next: 30-month check-in.' },
-      { id:'d3', org:'rk',  title:'Parent-child dyad therapy', type:'counseling', cadence:'Bi-weekly',
-        lead:'ReadyKids infant-mental-health clinician',
-        summary:'Mom and Toddler attend together. Focus on attachment and co-regulation. Direct continuation of the home-visiting relationship.' },
-      { id:'d4', org:'cop', title:'Pre-K Promise enrollment', type:'early-childhood', cadence:'One-time process · this spring',
-        lead:'City of Promise enrollment coach',
-        summary:'Walks Mom through Pre-K registration, application paperwork, and the scholarship interview. Without this, Toddler would likely miss the priority window.' },
-      { id:'d5', org:'cop', title:'Family Saturdays', type:'enrichment', cadence:'Monthly',
-        lead:'City of Promise + community partners',
-        summary:"Free family events — park days, library visits, museum mornings. Designed so the whole family can attend together, including Teen who otherwise wouldn't." },
+        lead:'Same ReadyKids Family Support Worker',
+        summary:"The same Family Support Worker since Toddler was born — two years of weekly visits. Developmental check-ins, parent-child play coaching, and the trusted person who refers the family to everything else." },
+      { id:'d2', org:'rk',  title:'ReadySteps playgroups', type:'early-childhood', cadence:'Weekly · in-neighborhood',
+        lead:'ReadyKids early-learning facilitator',
+        summary:'Weekly early-learning playgroups held in neighborhoods across Charlottesville and Albemarle. Parents stay during sessions, building peer support alongside school-readiness skills.' },
+      { id:'d3', org:'uw',  title:'Go2Grow childcare matching', type:'navigation', cadence:'As needed',
+        lead:'United Way / Ready Region Blue Ridge',
+        summary:"United Way's childcare-search platform — Mom can find and apply to high-quality childcare without making twenty phone calls. 3,637 applications flowed through it last year." },
+      { id:'d4', org:'uw',  title:'Early Learner Scholarship', type:'early-childhood', cadence:'Annual · renewable',
+        lead:'United Way of Greater Charlottesville',
+        summary:'A childcare scholarship that closes the gap between what childcare costs (full-day infant care averages $20,000/year — more than in-state UVA tuition) and what Mom can pay. 569 scholarships went out last year.' },
+      { id:'d5', org:'uw',  title:'Head Start full-day care', type:'early-childhood', cadence:'Mon–Fri · full day',
+        lead:'United Way (regional operator) + Ready Region partner center',
+        summary:"Full-day Head Start care will cover Mom's working hours once Toddler turns three. United Way took on the regional Head Start operator role in 2025 across five counties." },
+      { id:'d6', org:'cop', title:'Nurturing Neighborhood volunteers', type:'coaching', cadence:'Ongoing · 4–5 volunteers per family',
+        lead:'City of Promise volunteer coordinator',
+        summary:"A volunteer initiative that builds an \"extended family\" around participating households — 4–5 volunteers each contribute non-monetary support: rides, meals, mentoring, weekend outings. Piloted with two families starting early 2025." },
+      { id:'d7', org:'rk',  title:'Kidchella Block Party', type:'enrichment', cadence:'Annual · summer',
+        lead:'ReadyKids + community partners',
+        summary:"A free annual block party that draws 700+ community members. For Toddler, it's a first experience of community gathering; for Mom, it's a low-stakes way to meet other parents in the coalition." },
     ],
   };
 
