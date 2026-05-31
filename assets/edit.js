@@ -19,6 +19,23 @@
   const revertBtn = document.getElementById("edit-revert");
   if (!bar || !toggleBtn || !statusEl) return;
 
+  // ---- Password gate ----
+  // Prompts once per browser session on initial load. Without the correct
+  // password the edit toolbar is hidden and the page behaves as read-only.
+  // NOTE: this is a client-side gate only — the password lives in this file
+  // and the worker has no server-side check, so it deters casual access but
+  // is not real security.
+  const EDIT_PASSWORD = "708123";
+  const SESSION_KEY = "pfs-edit-unlocked";
+  if (sessionStorage.getItem(SESSION_KEY) !== "1") {
+    const entered = window.prompt("Enter the password to edit this page:");
+    if (entered !== EDIT_PASSWORD) {
+      bar.style.display = "none";
+      return;
+    }
+    sessionStorage.setItem(SESSION_KEY, "1");
+  }
+
   const originals = new Map();
   const pending = new Map();
   let savingCount = 0;
