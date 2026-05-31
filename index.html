@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" >
 <meta name="viewport" content="width=device-width,initial-scale=1" >
-<title>Lovable Preview — Coalition sample</title>
+<title>Lovable Preview · Coalition sample</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" >
@@ -54,12 +54,12 @@
     z-index: 0;
     pointer-events: none;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .container { width: 100%; padding: 0 200px; }
 
   /* Top nav */
   nav.top {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 40px; max-width: 1200px; margin: 0 auto;
+    padding: 24px 80px;
     background: transparent;
     position: relative;
     z-index: 2;
@@ -132,7 +132,7 @@
   }
   .lede {
     font-size: 18px; line-height: 1.38; font-weight: 400;
-    max-width: 600px; color: var(--muted); margin: 0 0 40px;
+    max-width: none; color: var(--muted); margin: 0 0 40px;
   }
   .cta-row { display: flex; gap: 12px; align-items: center; }
   .btn-dark {
@@ -237,40 +237,46 @@
   @media (max-width: 900px) { .member-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .member-grid { grid-template-columns: 1fr; } }
 
-  /* Placeholder card — signals an open, growing coalition */
+  /* Placeholder card — mirrors the member-card layout so it reads as an open
+     slot rather than an empty box. Dashed outline keeps the "invitation" feel. */
   .member-card--placeholder {
     background: transparent;
-    border: 1px dashed rgba(31, 27, 22, 0.22);
-    border-radius: 12px;
+    border: 1px dashed rgba(31, 27, 22, 0.28);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    transition: border-color .15s ease;
+    flex-direction: column;
   }
   .member-card--placeholder:hover {
-    border-color: rgba(31, 27, 22, 0.45);
-    transform: none;
+    border-color: var(--accent);
+    transform: translateY(-2px);
   }
-  .placeholder-text {
-    font-family: var(--display);
-    font-size: 28px;
-    font-weight: 500;
-    font-variation-settings: 'opsz' 36;
-    letter-spacing: -0.4px;
-    line-height: 1.2;
-    color: var(--muted);
-    margin: 0;
-    text-align: center;
+  /* stands in for the member-img region, same 16:9 footprint */
+  .placeholder-img {
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px dashed rgba(31, 27, 22, 0.2);
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(70% 70% at 50% 45%, rgba(255, 198, 174, 0.35), transparent 70%),
+      transparent;
   }
-  .placeholder-text em {
-    font-style: italic;
-    color: var(--charcoal);
-    display: block;
+  .placeholder-img .mark {
+    position: relative;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
   }
-  .placeholder-text .period {
+  /* CSS-drawn plus, perfectly centered in the circle */
+  .placeholder-img .mark::before,
+  .placeholder-img .mark::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+  }
+  .placeholder-img .mark::before { width: 16px; height: 1.5px; }
+  .placeholder-img .mark::after { width: 1.5px; height: 16px; }
+  .member-card--placeholder .read-more {
     color: var(--accent);
-    font-style: normal;
   }
   .member-card {
     background: var(--cream);
@@ -508,7 +514,7 @@
         <span data-field="f-1">Charlottesville · Est. 2026</span>
       </div>
       <h1 data-field="f-2">Five organizations, <em data-field="f-1">one shared promise</em> to Charlottesville's children and families.</h1>
-      <p class="lede" data-field="f-3">A mutual aid partnership uniting five community organizations to deliver coordinated support, shared resources, and measurable outcomes for the families we serve.</p>
+      <p class="lede" data-field="f-3">A mutual aid coalition of five Charlottesville organizations sharing intake, referrals, and outcomes, so under-resourced families encounter one coordinated effort, not five separate agencies.</p>
       <div class="cta-row">
         <a href="how-it-works.html" class="btn-dark" data-field="f-4">See how it works</a>
         <a href="members.html" class="btn-ghost" data-field="f-5">Meet the partners</a>
@@ -531,12 +537,13 @@
     <h2 data-field="f-15">Built on a single principle: families deserve <em data-field="f-2">coordinated care</em>, not fragmented services.</h2>
     <div class="two-col">
       <div>
-        <p data-field="f-16">For decades, Charlottesville's nonprofit ecosystem has been rich but uncoordinated. A family in need might touch five separate organizations, repeating their story to each, and still fall through the cracks between them.</p>
-        <p data-field="f-17">This coalition exists to change that. By formalizing how United Way, ReadyKids, Virginia Center for Community Partnerships, City of Promise, and Network2Work share intake, referrals, and outcomes, we ensure families tell their story once, every referral is followed through, and each family encounters one community — not five agencies.</p>
+        <p data-field="f-16">Roughly one in four working families across our region can't afford the basics, and most are working full-time. For decades, Charlottesville's nonprofit ecosystem has been rich but uncoordinated. A family in need might touch five separate organizations, repeating their story to each, and still fall through the cracks between them.</p>
+        <p data-field="f-17">This coalition exists to change that. United Way, ReadyKids, Virginia Center for Community Partnerships, City of Promise, and Network2Work formalize how they share intake, referrals, and outcomes.</p>
       </div>
       <div>
-        <p data-field="f-18">Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime — from early childhood through college access and beyond.</p>
-        <p data-field="f-19">This report documents our first year of formal partnership: what we built, what we learned, where the friction was, and where we're going next.</p>
+        <p data-field="f-47">Families tell their story once. Every referral is followed through. Each family encounters one community, not five agencies.</p>
+        <p data-field="f-18">Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime, from early childhood through college access and beyond.</p>
+        <p data-field="f-19">These pages lay out what we're building, who's involved, how it works, and where we're going next.</p>
       </div>
     </div>
     <div class="about-cta-row">
@@ -545,13 +552,13 @@
   </section>
 
   <div class="pullquote">
-    <q data-field="f-21">We stopped asking families to navigate our systems. We started building systems that navigate around them.</q>
+    <q data-field="f-21">We stopped asking families to repeat their story to five separate agencies. We started running the five as one.</q>
     <cite data-field="f-22">From the 2025 Letter to the Community</cite>
   </div>
 
   <section class="members" id="members">
     <div class="section-label" data-field="f-23">Coalition members</div>
-    <h2 data-field="f-24">Five organizations. One continuum of care.</h2>
+    <h2 data-field="f-24">Five organizations. One constellation of care.</h2>
     <div class="member-grid">
       <div class="member-card">
         <!--
@@ -695,16 +702,23 @@
         <div class="member-body">
           <div class="org" data-field="f-41">Member · 05</div>
           <h3 data-field="f-42">Network2Work @ PVCC</h3>
-          <p data-field="f-43">Workforce development for low-income job-seekers — credentialing, employer matching, and the wrap-around supports families need for stable employment.</p>
+          <p data-field="f-43">Workforce development for low-income job-seekers: credentialing, employer matching, and the wraparound supports families need for stable employment.</p>
           <a href="#" class="read-more" data-field="f-44">Learn more</a>
         </div>
       </div>
       <!-- Placeholder: signals an open, growing coalition -->
       <div class="member-card member-card--placeholder">
-        <p class="placeholder-text" data-field="f-45">
-          More members<em data-field="f-3">to come<span class="period" data-field="f-1">.</span></em>
-        </p>
+        <div class="placeholder-img"><span class="mark"></span></div>
+        <div class="member-body">
+          <div class="org" data-field="f-45">Open · Coalition</div>
+          <h3 data-field="f-3">More members to come</h3>
+          <p data-field="f-1">The coalition is still growing. We're building partnerships across early childhood, education, and workforce support.</p>
+          <a href="contact.html" class="read-more" data-field="f-48">Learn more</a>
+        </div>
       </div>
+    </div>
+    <div class="about-cta-row">
+      <a href="members.html" class="btn-dark" data-field="f-46">Read more about the partners</a>
     </div>
   </section>
 
@@ -716,7 +730,7 @@
       <div class="wordmark">
         <img src="logo-lockup-dark.png" alt="Pathways to Family Success." >
       </div>
-      <div class="tagline">A mutual aid partnership serving Charlottesville's children and families.</div>
+      <div class="tagline">A mutual aid coalition for Charlottesville's under-resourced children and families.</div>
     </div>
     <div>
       <h4>About</h4>
