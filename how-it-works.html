@@ -191,9 +191,7 @@
   /* Detail panel */
   .detail-head {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 32px; flex-wrap: wrap;
+    flex-direction: column;
     padding-bottom: 22px;
     border-bottom: 1px solid var(--hairline);
   }
@@ -213,10 +211,11 @@
     color: var(--accent); font-style: normal; font-weight: 500;
   }
   .detail-role {
-    font-size: 15px; color: var(--muted); margin-top: 8px;
+    font-size: 16px; color: var(--muted); margin: 14px 0 0;
+    line-height: 1.7; max-width: none;
   }
-  .detail-stats { display: flex; gap: 32px; align-items: baseline; }
-  .stat-block { display: flex; flex-direction: column; align-items: flex-end; }
+  .detail-stats { display: flex; gap: 48px; align-items: baseline; margin-top: 26px; }
+  .stat-block { display: flex; flex-direction: column; align-items: flex-start; }
   .stat-num {
     font-family: var(--display); font-size: 38px; font-weight: 500;
     letter-spacing: -0.5px; line-height: 1;
@@ -224,14 +223,21 @@
   }
   .stat-label { margin-top: 6px; }
 
+  /* Service layout: cards + category sidebar */
+  .service-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    gap: 40px;
+    padding-top: 28px;
+    align-items: start;
+  }
+
   /* Service grid */
   .service-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-    padding-top: 28px;
   }
-  @media (max-width: 980px) { .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .service-grid { grid-template-columns: minmax(0, 1fr); } }
 
   .service-card {
@@ -241,6 +247,43 @@
     background: var(--cream);
     display: flex; flex-direction: column; gap: 12px;
     min-width: 0;
+    transition: opacity 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  /* Highlight matching cards when a category is selected (others stay normal) */
+  .service-layout.is-filtering .service-card[data-match="true"] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), var(--focus-shadow);
+  }
+
+  /* Category sidebar menu */
+  .cat-menu { position: sticky; top: 24px; }
+  .cat-menu-title { margin-bottom: 14px; }
+  .cat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .cat-item {
+    all: unset;
+    box-sizing: border-box;
+    display: block; width: 100%;
+    cursor: pointer;
+    font-size: 14px; line-height: 1.35; color: var(--fg-2);
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+  .cat-item:hover { background: var(--hover-tint); }
+  .cat-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cat-item[aria-pressed="true"] {
+    color: var(--accent); font-weight: 500;
+    border-color: var(--accent);
+    background: rgba(220, 107, 63, 0.06);
+  }
+
+  @media (max-width: 860px) {
+    .service-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .cat-menu { position: static; order: -1; }
+    .cat-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .cat-item { width: auto; }
   }
   .service-head {
     display: flex; justify-content: space-between; align-items: center;
@@ -453,10 +496,14 @@
 <script>
   // ---------- Data ----------
   const FAMILY = [
-    { id: 'mom',     name: 'Mom',     age: 32, role: 'Single parent',        scale: 1.0, aspect: 0.844, mask: 'images/masks/person-mask-mom.png?v=3' },
-    { id: 'teen',    name: 'Teen',    age: 14, role: 'High school freshman', scale: 1.2, aspect: 0.840, mask: 'images/masks/person-mask-teen.png?v=3' },
-    { id: 'child',   name: 'Child',   age:  8, role: 'Grade 3',              scale: 1.2, aspect: 0.754, mask: 'images/masks/person-mask-child.png?v=3' },
-    { id: 'toddler', name: 'Toddler', age:  2, role: 'Pre-K age',            scale: 1.2, aspect: 0.606, mask: 'images/masks/person-mask-toddler.png?v=3' },
+    { id: 'mom',     name: 'Keisha', age: 32, role: 'Single parent',        scale: 1.0, aspect: 0.844, mask: 'images/masks/person-mask-mom.png?v=3',
+      bio: "Keisha is a single mom raising three kids — Isaiah, Jada, and Malik — on her own. She works full time across two jobs to keep the lights on, which means long days and a schedule that rarely lines up with school pickups, doctor's appointments, or daycare hours. She doesn't have a car, so every errand, every appointment, every drop-off is built around bus routes and what she can manage on foot. The coalition's job is to close those gaps so she isn't carrying it alone." },
+    { id: 'teen',    name: 'Isaiah', age: 14, role: 'High school freshman', scale: 1.2, aspect: 0.840, mask: 'images/masks/person-mask-teen.png?v=3',
+      bio: "Isaiah just started his freshman year at Charlottesville High. He's sharp and curious but still finding his footing in a bigger building with new expectations. He plays pickup basketball after school, has started teaching himself a few guitar chords, and lights up when an adult actually asks what he thinks. Some days carry more weight than a 14-year-old should have to hold — and the right people are there for those days too." },
+    { id: 'child',   name: 'Jada',   age:  8, role: 'Grade 3',              scale: 1.2, aspect: 0.754, mask: 'images/masks/person-mask-child.png?v=3',
+      bio: "Jada is in third grade at Trailblazer Elementary. She loves reading out loud, draws horses in the margins of everything, and is the first to help a classmate who's stuck. Reading clicked a little late for her, so the afterschool tutoring matters — and so does knowing there's a snack waiting and a familiar adult who notices when her day has been hard." },
+    { id: 'toddler', name: 'Malik',  age:  2, role: 'Pre-K age',            scale: 1.2, aspect: 0.606, mask: 'images/masks/person-mask-toddler.png?v=3',
+      bio: "Malik is two and into everything — stacking blocks, naming every truck that drives by, and testing every 'no.' He's hitting his milestones and growing fast, with the same home visitor who has known him since the week he was born. The next step is a full-day classroom where he can play, learn, and be cared for while his mom works." },
   ];
 
   const ORGS = {
@@ -467,111 +514,135 @@
     n2w:  { id: 'n2w',  name: 'Network2Work @ PVCC',                         short: 'N2W',  blurb: 'Workforce · employer matching · wraparound supports' },
   };
 
-  const TYPE_LABEL = {
-    navigation:        'Navigation',
-    education:         'Parent education',
-    mentorship:        'Mentorship',
-    counseling:        'Mental health',
-    academic:          'Academic',
-    enrichment:        'Enrichment',
-    'early-childhood': 'Early childhood',
-    coaching:          'Family coaching',
-    workforce:         'Workforce',
-    financial:         'Financial coaching',
-    transportation:    'Transportation',
-    'basic-needs':     'Basic needs',
+  // ---------- Constellation of Care ----------
+  // The canonical 13 life-domains. The sidebar menu is drawn from these.
+  const CONSTELLATION_LABEL = {
+    healthcare:     'Healthcare',
+    childcare:      'Childcare',
+    workforce:      'Workforce',
+    housing:        'Housing',
+    transport:      'Transportation',
+    safety:         'Community Safety',
+    'continuing-ed':'Continuing Ed.',
+    tech:           'Tech Access',
+    mentoring:      'Mentoring',
+    capital:        'Access to Capital',
+    extras:         'Extracurriculars',
+    food:           'Food Security',
+    finlit:         'Financial Literacy',
+  };
+  // Display order for the menu (only domains a person actually has are shown).
+  const CONSTELLATION_ORDER = [
+    'healthcare','childcare','workforce','housing','transport','safety',
+    'continuing-ed','tech','mentoring','capital','extras','food','finlit',
+  ];
+  // Each service maps to one or more constellation domains.
+  const SERVICE_CATS = {
+    // Keisha
+    m1:['mentoring'], m2:['finlit'], m3:['finlit','capital'],
+    m4:['food','housing','childcare'], m5:['workforce'],
+    m6:['transport','capital'], m7:['childcare'],
+    // Isaiah
+    t1:['mentoring'], t2:['workforce'], t3:['mentoring'], t4:['continuing-ed'],
+    t5:['workforce'], t6:['extras','workforce'], t7:['healthcare'],
+    // Jada
+    c1:['mentoring'], c2:['transport'], c3:['food'], c4:['extras','mentoring'],
+    c5:['mentoring'], c6:['healthcare'], c7:['healthcare'],
+    // Malik
+    d1:['childcare'], d2:['childcare'], d3:['childcare'],
+    d4:['childcare','capital'], d5:['childcare'], d6:['safety','mentoring'],
   };
 
   const SERVICE_DETAIL = {
     mom: [
-      { id:'m1', org:'cop', title:'Family Empowerment Coach', type:'coaching', cadence:'Ongoing · long-term relationship',
+      { id:'m1', org:'cop', title:'Family Empowerment Coach', type:'coaching', cadence:'Ongoing',
         lead:'City of Promise Family Empowerment Coach',
         summary:'A long-term coach who walks alongside the family. Sets goals, tracks progress, helps with school enrollment, paperwork, and the connections to other partners. The single relationship that knows the whole picture.' },
-      { id:'m2', org:'cop', title:'Dreambuilders', type:'financial', cadence:'Full school year · 36–38 weeks',
+      { id:'m2', org:'cop', title:'Dreambuilders', type:'financial', cadence:'School year',
         lead:'City of Promise Director of Parent Engagement',
         summary:'A year-long wraparound program that coaches parents toward self-sufficiency, with a $5,000 stipend. Covers financial planning, employment, education, and homeownership. 78% of participants increase self-sufficiency and complete their goals. A tiered second year is available with a $2,000 stipend.' },
-      { id:'m3', org:'uw',  title:'Family Investment Program', type:'financial', cadence:'Monthly 1:1 · multi-year',
+      { id:'m3', org:'uw',  title:'Family Investment Program', type:'financial', cadence:'Monthly · 1:1',
         lead:'United Way financial coach',
         summary:'High-touch financial coaching: savings plans, debt paydown, credit repair, matched emergency savings, and downpayment assistance. Of 15 families enrolled last year, 7 reached homeownership.' },
       { id:'m4', org:'uw',  title:'Pathways Community Resource Hotline', type:'navigation', cadence:'As needed',
         lead:'United Way Pathways navigator',
-        summary:'One phone number for utility assistance, food access, childcare subsidies, and emergency housing. Routes Mom to the right local agency without her having to know which one to call.' },
-      { id:'m5', org:'n2w', title:'Career navigator + employer match', type:'workforce', cadence:'Weekly check-ins · until placed',
+        summary:'One phone number for utility assistance, food access, childcare subsidies, and emergency housing. Routes Keisha to the right local agency without her having to know which one to call.' },
+      { id:'m5', org:'n2w', title:'Career navigator + employer match', type:'workforce', cadence:'Weekly check-ins',
         lead:'Network2Work career and life coach',
-        summary:"A dedicated navigator helps Mom move from a part-time gig to a full-time role through the N2Work platform. Every position pays at least $12.50/hr and doesn't require a degree. Nearly 70% of program job-seekers land a job." },
-      { id:'m6', org:'uw',  title:'Driving Lives Forward', type:'transportation', cadence:'One-time purchase · credit-building loan',
+        summary:"A dedicated navigator helps Keisha move from a part-time gig to a full-time role through the N2Work platform. Every position pays at least $12.50/hr and doesn't require a degree. Nearly 70% of program job-seekers land a job." },
+      { id:'m6', org:'uw',  title:'Driving Lives Forward', type:'transportation', cadence:'One-time',
         lead:'United Way + Virginia National Bank + Carter Myers Automotive',
-        summary:'Helps Mom buy a reliable used car (typically ~$12K, often a 2016 compact SUV) with loan-readiness coaching and insurance setup. Without a car, the new full-time job is logistically impossible.' },
-      { id:'m7', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly · since Toddler was born',
+        summary:'Helps Keisha buy a reliable used car (typically ~$12K, often a 2016 compact SUV) with loan-readiness coaching and insurance setup. Without a car, the new full-time job is logistically impossible.' },
+      { id:'m7', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly',
         lead:'ReadyKids Family Support Worker',
         summary:'Same Family Support Worker each week. Developmental milestones, parenting coaching, and the connections that pulled the family into the rest of the coalition. Offered in English, Spanish, Dari, or Pashto.' },
     ],
 
     teen: [
-      { id:'t1', org:'vccp', title:'Starr Hill Pathways mentoring', type:'mentorship', cadence:'Weekly · in-school · school year',
+      { id:'t1', org:'vccp', title:'Starr Hill Pathways mentoring', type:'mentorship', cadence:'Weekly · in-school',
         lead:'Starr Hill Pathways mentor (UVA student or community partner)',
         summary:'Small-group, in-school mentoring focused on self-efficacy and growth mindset. Same mentor across multiple years. The continuity is the program. Free, with transportation and meals provided.' },
-      { id:'t2', org:'vccp', title:'Summer career pathways program', type:'enrichment', cadence:'Multi-week · summer · on UVA grounds',
+      { id:'t2', org:'vccp', title:'Summer career pathways program', type:'enrichment', cadence:'Summer intensive',
         lead:'Starr Hill staff + UVA and PVCC pathway partners',
         summary:'Scholars explore 17 career pathways through summer programming on UVA grounds, capped by a student project expo. 9th-graders use the summer to prepare for paid 10th-grade internships.' },
-      { id:'t3', org:'vccp', title:'Academic tutoring', type:'academic', cadence:'In-school day + evening virtual',
+      { id:'t3', org:'vccp', title:'Academic tutoring', type:'academic', cadence:'Daytime + evening',
         lead:'UVA student tutors',
         summary:"Free tutoring during the school day in person, and virtual tutoring in the evenings. Available in scholars' first languages when needed." },
-      { id:'t4', org:'vccp', title:'College access + SAT prep', type:'academic', cadence:'Ongoing · spring intensives',
+      { id:'t4', org:'vccp', title:'College access + SAT prep', type:'academic', cadence:'Ongoing · spring',
         lead:'Starr Hill Pathways college counselor',
         summary:'SAT prep, college planning, financial-aid workshops, and one-on-one counseling. Builds toward a shortlist and serious post-secondary planning by senior year.' },
-      { id:'t5', org:'vccp', title:'Paid summer internship', type:'enrichment', cadence:'Summer · between 10th and 11th grade',
+      { id:'t5', org:'vccp', title:'Paid summer internship', type:'enrichment', cadence:'Summer',
         lead:'Starr Hill Pathways + local employer partner',
         summary:'A real paid placement at a local business, often the first paycheck. Builds career exposure, professional networks, and a tangible reason for the academic work.' },
-      { id:'t6', org:'cop',  title:'Tour of the Town', type:'enrichment', cadence:'Field trips throughout the year',
+      { id:'t6', org:'cop',  title:'Tour of the Town', type:'enrichment', cadence:'Year-round trips',
         lead:'City of Promise Community School Coordinator',
         summary:'Career-exposure field trips to local employers and institutions: UVA Surgery, the Fontaine Fire Department, Kiwanis Club, Willow Tree, Getting Word. Designed for kids to see what their lives could look like.' },
       { id:'t7', org:'rk',   title:'Inside Out trauma counseling', type:'counseling', cadence:'Weekly · long-term',
         lead:'ReadyKids licensed clinician',
-        summary:"Trauma-focused therapy that families can stay in for as long as they need it, with no artificial endpoint. Mom is informed; the space is explicitly Teen's." },
+        summary:"Trauma-focused therapy that families can stay in for as long as they need it, with no artificial endpoint. Keisha is informed; the space is explicitly Isaiah's." },
     ],
 
     child: [
-      { id:'c1', org:'cop', title:'Afterschool literacy tutoring', type:'academic', cadence:'After school · at Trailblazer',
+      { id:'c1', org:'cop', title:'Afterschool literacy tutoring', type:'academic', cadence:'After school',
         lead:'City of Promise + Virginia Literacy Partnerships tutor',
         summary:'In-school literacy tutoring at Trailblazer Elementary, in small groups or 1:1, focused on fluency and comprehension. Snacks provided from the on-site pantry.' },
-      { id:'c2', org:'cop', title:'Westhaven Walks', type:'transportation', cadence:'Every school day since fall 2024',
+      { id:'c2', org:'cop', title:'Westhaven Walks', type:'transportation', cadence:'Every school day',
         lead:'City of Promise community school staff',
         summary:'A staffed walking bus to and from Trailblazer for kids in the Westhaven neighborhood, after CCS created "Family Responsibility Zones" that cut their bus access. 104 days last school year were rain, snow, or below freezing.' },
-      { id:'c3', org:'cop', title:'On-site food pantry', type:'basic-needs', cadence:'Daily access · holiday bags during breaks',
+      { id:'c3', org:'cop', title:'On-site food pantry', type:'basic-needs', cadence:'Daily access',
         lead:'City of Promise + Emergency Food Network',
         summary:'A dry and refrigerated food pantry inside Trailblazer Elementary. 40 students access it daily; 30 holiday bags went home over winter break. Coordinated with CCS so students never have to leave the building.' },
-      { id:'c4', org:'cop', title:'Summer tutoring + YMCA', type:'academic', cadence:'Summer · weekday mornings',
+      { id:'c4', org:'cop', title:'Summer tutoring + YMCA', type:'academic', cadence:'Summer mornings',
         lead:'Trailblazer + UVA staff',
         summary:'A summer literacy program that staves off the "summer slide" of otherwise 10+ unstructured weeks. Participation also unlocks YMCA enrollment, easing the childcare burden on working parents.' },
-      { id:'c5', org:'cop', title:'Community School Coordinator', type:'coaching', cadence:'Embedded in school · daily presence',
+      { id:'c5', org:'cop', title:'Community School Coordinator', type:'coaching', cadence:'Daily · in-school',
         lead:'City of Promise Community School Coordinator',
-        summary:'A trusted adult embedded inside Trailblazer who knows the child, the teachers, and the family. The bridge between school routines and home life. CoP staff are embedded in 6 of 10 Charlottesville City Schools.' },
+        summary:'A trusted adult embedded inside Trailblazer who knows Jada, the teachers, and the family. The bridge between school routines and home life. CoP staff are embedded in 6 of 10 Charlottesville City Schools.' },
       { id:'c6', org:'rk',  title:'School-based counseling', type:'counseling', cadence:'Weekly · in-school',
         lead:'ReadyKids clinician',
         summary:'Counseling sessions during the school day, with no transportation barrier and no missed instruction. Teacher and clinician coordinate on emotional regulation and peer conflict.' },
-      { id:'c7', org:'uw',  title:'Santa Fund for Schoolkids', type:'basic-needs', cadence:'Annual · back-to-school',
+      { id:'c7', org:'uw',  title:'Santa Fund for Schoolkids', type:'basic-needs', cadence:'Annual',
         lead:'United Way + The Daily Press + NewsRadio WINA',
         summary:'A campaign running since 1896 that covers clothing, shoes, glasses, and backpacks for kids whose families would otherwise have to choose between supplies and rent. Raised ~$260,000 last year.' },
     ],
 
     toddler: [
-      { id:'d1', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly · since birth',
+      { id:'d1', org:'rk',  title:'Healthy Families home visiting', type:'early-childhood', cadence:'Weekly',
         lead:'Same ReadyKids Family Support Worker',
-        summary:"The same Family Support Worker since Toddler was born. Two years of weekly visits. Developmental check-ins, parent-child play coaching, and the trusted person who refers the family to everything else." },
-      { id:'d2', org:'rk',  title:'ReadySteps playgroups', type:'early-childhood', cadence:'Weekly · in-neighborhood',
+        summary:"The same Family Support Worker since Malik was born. Two years of weekly visits. Developmental check-ins, parent-child play coaching, and the trusted person who refers the family to everything else." },
+      { id:'d2', org:'rk',  title:'ReadySteps playgroups', type:'early-childhood', cadence:'Weekly · local',
         lead:'ReadyKids early-learning facilitator',
         summary:'Weekly early-learning playgroups held in neighborhoods across Charlottesville and Albemarle. Parents stay during sessions, building peer support alongside school-readiness skills.' },
       { id:'d3', org:'uw',  title:'Go2Grow childcare matching', type:'navigation', cadence:'As needed',
         lead:'United Way / Ready Region Blue Ridge',
-        summary:"United Way's childcare-search platform. Mom can find and apply to high-quality childcare without making twenty phone calls. 3,637 applications flowed through it last year." },
+        summary:"United Way's childcare-search platform. Keisha can find and apply to high-quality childcare without making twenty phone calls. 3,637 applications flowed through it last year." },
       { id:'d4', org:'uw',  title:'Early Learner Scholarship', type:'early-childhood', cadence:'Annual · renewable',
         lead:'United Way of Greater Charlottesville',
-        summary:'A childcare scholarship that closes the gap between what childcare costs (full-day infant care averages $20,000/year, more than in-state UVA tuition) and what Mom can pay. 569 scholarships went out last year.' },
+        summary:'A childcare scholarship that closes the gap between what childcare costs (full-day infant care averages $20,000/year, more than in-state UVA tuition) and what Keisha can pay. 569 scholarships went out last year.' },
       { id:'d5', org:'uw',  title:'Head Start full-day care', type:'early-childhood', cadence:'Mon–Fri · full day',
         lead:'United Way (regional operator) + Ready Region partner center',
-        summary:"Full-day Head Start care will cover Mom's working hours once Toddler turns three. United Way took on the regional Head Start operator role in 2025 across five counties." },
-      { id:'d6', org:'cop', title:'Nurturing Neighborhood volunteers', type:'coaching', cadence:'Ongoing · 4–5 volunteers per family',
+        summary:"Full-day Head Start care will cover Keisha's working hours once Malik turns three. United Way took on the regional Head Start operator role in 2025 across five counties." },
+      { id:'d6', org:'cop', title:'Nurturing Neighborhood volunteers', type:'coaching', cadence:'Ongoing',
         lead:'City of Promise volunteer coordinator',
         summary:"A volunteer initiative that builds an \"extended family\" around participating households. 4–5 volunteers each contribute non-monetary support: rides, meals, mentoring, weekend outings. Piloted with two families starting early 2025." },
     ],
@@ -592,7 +663,7 @@
 
   // ---------- Render: lineup ----------
   function renderLineup(selId) {
-    const ordered = [...FAMILY].sort((a, b) => a.age - b.age);
+    const ordered = [...FAMILY].sort((a, b) => b.age - a.age);
     const row = document.getElementById('lineup-row');
     row.innerHTML = ordered.map(p => {
       const h = heightForAge(p.age) * (p.scale ?? 1) * 0.7875;
@@ -605,7 +676,7 @@
                     mask-image: url('${p.mask}');"></div>
           <div class="figure-meta">
             <div class="figure-name">${esc(p.name)}</div>
-            <div class="ms tight figure-sub">${esc(p.role)}</div>
+            <div class="ms tight figure-sub">Age ${esc(p.age)}</div>
           </div>
         </button>`;
     }).join('');
@@ -618,45 +689,87 @@
   function renderDetail(selId) {
     const person = FAMILY.find(p => p.id === selId);
     const services = SERVICE_DETAIL[selId] || [];
-    const orgs = [...new Set(services.map(s => s.org))];
 
     const cards = services.map(s => {
       const org = ORGS[s.org];
+      const cats = SERVICE_CATS[s.id] || [];
       return `
-        <article class="service-card">
+        <article class="service-card" data-cats="${esc(cats.join(' '))}">
           <header class="service-head">
-            <span class="ms tight">${esc(TYPE_LABEL[s.type] || s.type)}</span>
             <span class="ms tight cadence-pill">${esc(s.cadence)}</span>
           </header>
           <h3 class="service-title">${esc(s.title)}</h3>
           <div class="service-org">
             <span class="ms tight accent">${esc(org.short)} · ${esc(org.name)}</span>
-            <span class="lead">Delivered by: ${esc(s.lead)}</span>
           </div>
           <p class="service-summary">${esc(s.summary)}</p>
         </article>`;
     }).join('');
 
+    // Constellation domains this person actually receives, in canonical order
+    const present = new Set();
+    services.forEach(s => (SERVICE_CATS[s.id] || []).forEach(c => present.add(c)));
+    const cats = CONSTELLATION_ORDER.filter(c => present.has(c));
+    const catItems = cats.map(c => `
+      <li>
+        <button type="button" class="cat-item" data-cat="${esc(c)}" aria-pressed="false">
+          ${esc(CONSTELLATION_LABEL[c] || c)}
+        </button>
+      </li>`).join('');
+
     document.getElementById('detail').innerHTML = `
       <div class="detail-head">
-        <div>
-          <div class="ms detail-eyebrow">What the system provides for</div>
-          <h2 class="detail-name">${esc(person.name)}<em>, age ${person.age}</em></h2>
-          <div class="detail-role">${esc(person.role)}</div>
-        </div>
-        <div class="detail-stats">
-          <div class="stat-block">
-            <span class="stat-num">${services.length}</span>
-            <span class="ms tight stat-label">Active services</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-num">${orgs.length}</span>
-            <span class="ms tight stat-label">Orgs involved</span>
-          </div>
-        </div>
+        <div class="ms detail-eyebrow">What the system provides for</div>
+        <h2 class="detail-name">${esc(person.name)}<em>, age ${person.age}</em></h2>
+        <p class="detail-role">${esc(person.bio)}</p>
       </div>
-      <div class="service-grid">${cards}</div>
+      <div class="service-layout">
+        <div class="service-grid">${cards}</div>
+        <aside class="cat-menu" aria-label="Care categories">
+          <div class="ms cat-menu-title">Constellation of care</div>
+          <ul class="cat-list">${catItems}</ul>
+        </aside>
+      </div>
     `;
+
+    wireCategoryMenu();
+  }
+
+  // Click a category to highlight its card(s); click again to clear.
+  function wireCategoryMenu() {
+    const layout = document.querySelector('.service-layout');
+    if (!layout) return;
+    const items = layout.querySelectorAll('.cat-item');
+    const cards = layout.querySelectorAll('.service-card');
+
+    function clear() {
+      layout.classList.remove('is-filtering');
+      items.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      cards.forEach(c => c.removeAttribute('data-match'));
+    }
+
+    items.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const active = btn.getAttribute('aria-pressed') === 'true';
+        clear();
+        if (active) return; // second click on the same category resets
+        btn.setAttribute('aria-pressed', 'true');
+        layout.classList.add('is-filtering');
+        const cat = btn.dataset.cat;
+        cards.forEach(c => {
+          const has = (c.dataset.cats || '').split(' ').includes(cat);
+          c.setAttribute('data-match', has ? 'true' : 'false');
+        });
+
+        // If the first highlighted card is off-screen, scroll it into view.
+        const firstMatch = layout.querySelector('.service-card[data-match="true"]');
+        if (firstMatch) {
+          const r = firstMatch.getBoundingClientRect();
+          const visible = r.top >= 16 && r.bottom <= window.innerHeight;
+          if (!visible) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
   }
 
   // ---------- Selection ----------
@@ -670,7 +783,7 @@
   }
 
   // ---------- Init ----------
-  const INITIAL = 'teen';
+  const INITIAL = 'mom';
   renderLineup(INITIAL);
   renderDetail(INITIAL);
 
