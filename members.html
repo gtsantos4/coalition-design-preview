@@ -6,19 +6,25 @@
 <title>Members · Pathways to Family Success</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" >
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" >
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" >
 <style>
   :root {
     --cream: #FAF1DF;
+    --paper: #FFFCF4;
     --off-white: #fcfbf8;
     --charcoal: #1c1c1c;
+    --ink-soft: rgba(28, 28, 28, 0.82);
     --muted: #5f5f5d;
     --hairline: #ECE3CE;
     --accent: #DC6B3F;
     --accent-deep: #B95527;
+    --accent-soft: rgba(220, 107, 63, 0.10);
+    --pine: #2E4036;
     --interactive-border: rgba(28, 28, 28, 0.4);
     --hover-tint: rgba(28, 28, 28, 0.04);
     --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    --radius: 14px;
+    --shadow-soft: 0 1px 2px rgba(28,28,28,0.04), 0 8px 28px rgba(28,28,28,0.06);
     --inset-shadow:
       rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
       rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
@@ -28,6 +34,7 @@
     --display: 'Newsreader', Georgia, serif;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { margin: 0; padding: 0; }
   body {
     background: var(--cream);
@@ -53,72 +60,107 @@
     z-index: 0;
     pointer-events: none;
   }
-  .container { width: 100%; padding: 0 200px; }
+  .container { width: 100%; padding: 0 200px; position: relative; z-index: 1; }
+  @media (max-width: 1280px) { .container { padding: 0 80px; } }
 
   /* Top nav */
   nav.top {
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 80px;
-    background: transparent;
-    position: relative;
-    z-index: 2;
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250, 241, 223, 0.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent; transition: border-color .25s ease, background .25s ease;
   }
+  nav.top.is-scrolled { border-bottom-color: var(--hairline); background: rgba(250, 241, 223, 0.93); }
   nav.top .wordmark { display: inline-block; line-height: 1; }
   nav.top .wordmark img { display: block; width: 180px; height: auto; }
-  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
-  nav.top a {
-    color: var(--charcoal); text-decoration: none;
-    font-size: 15px; font-weight: 400;
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; align-items: center; }
+  nav.top ul a {
+    font-size: 14.5px; font-weight: 500;
+    color: rgba(28, 28, 28, 0.78); text-decoration: none;
+    padding: 8px 14px; border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
   }
-  nav.top a:hover { text-decoration: underline; }
-  nav.top a.is-active { text-decoration: underline; text-underline-offset: 4px; }
+  nav.top ul a:hover { background: rgba(28, 28, 28, 0.06); color: var(--charcoal); }
+  nav.top a.is-active { background: rgba(28, 28, 28, 0.07); color: var(--charcoal); }
   nav.top .nav-cta {
     background: var(--charcoal); color: var(--off-white);
-    padding: 8px 16px; border-radius: 6px;
+    padding: 10px 18px; border-radius: 999px;
     box-shadow: var(--inset-shadow); text-decoration: none;
-    font-size: 14px; font-weight: 400;
+    font-size: 14px; font-weight: 600;
   }
-  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+  nav.top .nav-cta:hover { background: var(--accent-deep); color: var(--off-white); }
 
-  /* Inner-page pattern: no hero. First content section starts immediately. */
-  .container.content-top { position: relative; z-index: 1; padding-top: 0; display: flex; flex-direction: column; }
-  /* CoP (DOM #4) shown first via order — treat it as the visual first card */
-  .container.content-top > .member-detail:nth-of-type(4) { order: -1; padding-top: 32px; border-top: none; }
-  @media (max-width: 900px) {
-    .container.content-top > .member-detail:nth-of-type(4) { padding-top: 16px; }
+  /* ---------- Page intro ---------- */
+  .page-intro { padding: 72px 0 0; }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--accent-deep);
+    margin-bottom: 24px;
+  }
+  .kicker::before { content: ''; width: 22px; height: 1.5px; background: var(--accent); }
+  h1 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 52px; line-height: 1.08; letter-spacing: -0.8px;
+    margin: 0 0 24px; color: var(--charcoal);
+    max-width: 760px;
+  }
+  .page-intro .lede {
+    font-size: 18.5px; line-height: 1.6;
+    color: var(--muted); margin: 0 0 40px;
+    max-width: 620px;
   }
 
-  /* City of Promise — Member · 01 — shown first via CSS order; DOM unchanged */
-  .container.content-top > .member-detail:nth-of-type(4) { order: -1; }
-  .container.content-top { display: flex; flex-direction: column; }
-
-  /* Network2Work (DOM #5) — flip to image-right to maintain alternating visual rhythm:
-     right (CoP), left (UW), right (RK), left (VCCCP), right (N2W) */
-  .container.content-top > .member-detail:nth-of-type(5) {
-    grid-template-columns: 1.1fr 0.9fr;
+  /* Member quick-nav: jump pills */
+  .member-jump {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--hairline);
   }
-  .container.content-top > .member-detail:nth-of-type(5) .md-image { order: 2; }
+  .member-jump a {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 500;
+    color: var(--ink-soft); text-decoration: none;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 9px 16px;
+    transition: border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  .member-jump a .n {
+    font-family: var(--display); font-style: italic;
+    font-size: 13px; color: var(--accent);
+  }
+  .member-jump a:hover {
+    border-color: var(--accent);
+    color: var(--charcoal);
+    transform: translateY(-1px);
+  }
 
-  /* Member detail row — alternating image/text columns */
+  /* ---------- Member detail rows — alternating editorial spreads ---------- */
   .member-detail {
-    padding: 80px 0;
+    padding: 96px 0;
     border-top: 1px solid var(--hairline);
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
-    gap: 56px;
+    gap: 72px;
     align-items: center;
+    scroll-margin-top: 110px;
   }
-  .member-detail:nth-child(even) {
-    grid-template-columns: 1.1fr 0.9fr;
-  }
-  .member-detail:nth-child(even) .md-image { order: 2; }
+  .member-detail:first-of-type { border-top: none; }
+  .member-detail:nth-of-type(even) { grid-template-columns: 1.1fr 0.9fr; }
+  .member-detail:nth-of-type(even) .md-image { order: 2; }
 
   .md-image {
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
+    margin: 0;
+    aspect-ratio: 16 / 11;
+    border-radius: var(--radius);
     border: 1px solid var(--hairline);
     overflow: hidden;
-    margin: 0;
+    box-shadow: var(--shadow-soft);
   }
   .md-image img {
     width: 100%; height: 100%;
@@ -126,119 +168,102 @@
     display: block;
     filter: saturate(0.85) sepia(0.12) contrast(0.95);
   }
-  /* ReadyKids photo: child's face is in upper portion — shift focal point up so head shows */
+  /* ReadyKids photo: child's face is in upper portion — keep focal point up */
   .md-image img[src*="rk-members"] { object-position: center 25%; }
 
   .md-eyebrow {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--accent); font-weight: 600;
-    margin-bottom: 18px;
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-deep);
+    margin-bottom: 16px;
   }
   .md-name {
     font-family: var(--display); font-weight: 500;
     font-variation-settings: 'opsz' 48;
     font-size: 38px; line-height: 1.12; letter-spacing: -0.6px;
-    margin: 0 0 20px; color: var(--charcoal);
+    margin: 0 0 22px; color: var(--charcoal);
     max-width: 520px;
   }
+  /* "In PFS" role — highlighted callout so each member's job in the coalition scans instantly */
   .md-role {
-    font-size: 16px; line-height: 1.55;
-    margin: 0 0 20px; color: var(--charcoal);
+    font-size: 15.5px; line-height: 1.55;
+    margin: 0 0 24px; color: var(--charcoal);
     max-width: 480px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
   }
-  .md-role strong { color: var(--accent); font-weight: 600; }
+  .md-role strong { color: var(--accent-deep); font-weight: 700; }
   .md-blurb {
-    font-size: 16px; line-height: 1.65;
-    color: rgba(28, 28, 28, 0.82);
-    margin: 0 0 28px; max-width: 520px;
+    font-size: 16px; line-height: 1.7;
+    color: var(--ink-soft);
+    margin: 0 0 28px; max-width: 540px;
   }
   .visit-link {
-    color: var(--accent); text-decoration: underline; text-underline-offset: 3px;
-    font-size: 15px; font-weight: 500;
+    display: inline-block;
+    color: var(--accent-deep); text-decoration: none;
+    font-size: 15px; font-weight: 600;
+    border-bottom: 1.5px solid rgba(220, 107, 63, 0.35);
+    padding-bottom: 2px;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .visit-link:hover { color: var(--accent-deep); }
+  .visit-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-  @media (max-width: 900px) {
-    .member-detail,
-    .member-detail:nth-child(even) {
-      grid-template-columns: 1fr;
-      gap: 28px;
-      padding: 56px 0;
-    }
-    .member-detail:nth-child(even) .md-image { order: 0; }
-    .md-image { aspect-ratio: 16 / 10; }
-    .md-name { font-size: 30px; letter-spacing: -0.4px; }
-  }
-
-  /* Placeholder card matching the home page treatment */
-  .placeholder-row {
+  /* ---------- Closing CTA band ---------- */
+  .cta-band {
     margin-top: 32px;
-    padding: 48px 24px;
-    border: 1px dashed rgba(31, 27, 22, 0.22);
-    border-radius: 12px;
-    text-align: center;
+    background: var(--pine);
+    color: var(--off-white);
+    padding: 100px 0;
+    position: relative; overflow: hidden;
+    z-index: 1;
   }
-  .placeholder-text {
-    font-family: var(--display);
-    font-size: 28px; font-weight: 500;
-    font-variation-settings: 'opsz' 36;
-    letter-spacing: -0.4px; line-height: 1.2;
-    color: var(--muted); margin: 0;
+  .cta-band::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(45% 60% at 85% 20%, rgba(220, 107, 63, 0.22), transparent 70%),
+      radial-gradient(40% 50% at 10% 85%, rgba(250, 241, 223, 0.07), transparent 70%);
+    pointer-events: none;
   }
-  .placeholder-text em {
-    font-style: italic; color: var(--charcoal); display: block;
-  }
-  .placeholder-text .period { color: var(--accent); font-style: normal; }
-
-  /* Bottom CTA section */
-  .cta-section {
-    padding: 96px 0 160px;
-    margin-top: 64px;
-    border-top: 1px solid var(--hairline);
-  }
-  .section-label {
-    font-size: 14px; color: var(--muted);
-    margin-bottom: 24px;
+  .cta-band .container { position: relative; }
+  .cta-band .section-label {
     display: inline-flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: #F2A581;
+    margin-bottom: 24px;
   }
-  .section-label::before {
-    content: ''; width: 16px; height: 1px; background: var(--muted);
-  }
-  .cta-section h2 {
+  .cta-band .section-label::before { content: ''; width: 22px; height: 1.5px; background: #F2A581; }
+  .cta-band h2 {
     font-family: var(--display); font-weight: 500;
     font-variation-settings: 'opsz' 60;
-    font-size: 50px; line-height: 1.12; letter-spacing: -0.8px;
-    margin: 0 0 24px; max-width: 760px; color: var(--charcoal);
+    font-size: 44px; line-height: 1.12; letter-spacing: -0.7px;
+    margin: 0 0 20px; max-width: 760px; color: var(--off-white);
   }
-  .cta-section h2 em { color: var(--accent); font-style: normal; font-weight: 500; }
-  .cta-section .cta-lede {
-    font-size: 17px; line-height: 1.65; color: rgba(28, 28, 28, 0.82);
+  .cta-band h2 em { font-style: normal; font-weight: inherit; color: inherit; }
+  .cta-band .cta-lede {
+    color: rgba(252, 250, 244, 0.78);
+    font-size: 17px; line-height: 1.65;
     max-width: 560px; margin: 0 0 40px;
   }
-  .cta-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .btn-dark {
-    background: var(--charcoal); color: var(--off-white);
-    padding: 12px 20px; border-radius: 6px; border: none;
-    font-family: var(--sans); font-size: 15px; font-weight: 400;
+  .cta-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    padding: 13px 22px; border-radius: 999px; border: none;
     cursor: pointer; text-decoration: none;
-    box-shadow: var(--inset-shadow);
-    transition: opacity .12s ease;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
   }
-  .btn-dark:hover { opacity: 0.85; }
-  .btn-ghost {
-    background: transparent; color: var(--charcoal);
-    padding: 12px 20px; border-radius: 6px;
-    border: 1px solid var(--interactive-border);
-    font-family: var(--sans); font-size: 15px; font-weight: 400;
-    cursor: pointer; text-decoration: none;
-    transition: background .12s ease;
+  .btn .arrow { transition: transform .15s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+  .btn-light { background: var(--off-white); color: var(--pine); }
+  .btn-light:hover { background: var(--cream); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--off-white);
+    border: 1.5px solid rgba(252, 250, 244, 0.45);
   }
-  .btn-ghost:hover { background: var(--hover-tint); }
-  @media (max-width: 900px) {
-    .cta-section { padding: 64px 0 96px; }
-    .cta-section h2 { font-size: 36px; letter-spacing: -0.5px; }
-  }
+  .btn-outline:hover { border-color: var(--off-white); background: rgba(252,250,244,0.08); }
 
   /* Footer */
   footer {
@@ -265,11 +290,14 @@
     font-size: 14px;
   }
   footer ul a:hover { color: var(--cream); text-decoration: underline; }
-  @media (max-width: 900px) {
-    footer .container { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    footer .container { grid-template-columns: 1fr; gap: 40px; }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .member-jump a, .btn { transition: none; }
   }
 
   /* ---------- Hamburger nav (hidden on desktop) ---------- */
@@ -294,10 +322,28 @@
   nav.top.is-open .nav-toggle span:nth-child(2) { opacity: 0; }
   nav.top.is-open .nav-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
 
+  /* ---------- Tablet (≤900px) ---------- */
+  @media (max-width: 900px) {
+    .container { padding: 0 40px; }
+    .member-detail,
+    .member-detail:nth-of-type(even) {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 64px 0;
+    }
+    .member-detail:nth-of-type(even) .md-image { order: 0; }
+    .md-image { aspect-ratio: 16 / 10; }
+    .md-name { font-size: 30px; letter-spacing: -0.4px; }
+    .cta-band h2 { font-size: 36px; letter-spacing: -0.5px; }
+    footer .container { grid-template-columns: 1fr 1fr; }
+  }
+
   /* ---------- Mobile (≤760px) ---------- */
   @media (max-width: 760px) {
+    html, body { overflow-x: hidden; }
     .container { padding: 0 20px; }
-    nav.top { padding: 18px 20px; position: relative; }
+    img { max-width: 100%; height: auto; }
+    nav.top { padding: 18px 20px; }
     nav.top .wordmark img { width: 140px; }
     .nav-toggle { display: flex; }
     nav.top ul {
@@ -326,33 +372,20 @@
       background: var(--charcoal); color: var(--off-white);
       padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
     }
-    h1 { font-size: 36px; letter-spacing: -0.5px; line-height: 1.1; }
-    h2 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; margin-bottom: 28px; max-width: none; }
-    .lede { font-size: 16px; max-width: none; }
-    section.block, section.cta-section { padding: 64px 0 0; }
-    footer { padding: 56px 0; }
-    footer .container { gap: 32px; }
-
-    /* Member detail rows — force single-column, image first */
-    .member-detail,
-    .member-detail:nth-child(even),
-    .container.content-top > .member-detail:nth-of-type(5) {
-      grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 48px 0;
-    }
-    .member-detail:nth-child(even) .md-image,
-    .container.content-top > .member-detail:nth-of-type(5) .md-image {
-      order: 0;
-    }
-    .md-image { aspect-ratio: 16 / 10; }
+    .page-intro { padding-top: 44px; }
+    h1 { font-size: 32px; letter-spacing: -0.5px; line-height: 1.12; }
+    .page-intro .lede { font-size: 16px; margin-bottom: 28px; }
+    .member-jump { padding-bottom: 40px; gap: 8px; }
+    .member-jump a { font-size: 13px; padding: 8px 13px; }
+    .member-detail { padding: 48px 0; gap: 24px; scroll-margin-top: 90px; }
     .md-name { font-size: 28px; letter-spacing: -0.4px; max-width: none; }
     .md-role, .md-blurb { max-width: none; }
-    .placeholder-row { padding: 36px 20px; margin-top: 24px; }
-    .placeholder-text { font-size: 22px; }
-    .cta-section { padding: 56px 0 80px; margin-top: 32px; }
-    .cta-section h2 { font-size: 30px; letter-spacing: -0.4px; }
-    .cta-section .cta-lede { font-size: 16px; max-width: none; }
+    .cta-band { padding: 64px 0; }
+    .cta-band h2 { font-size: 30px; letter-spacing: -0.4px; }
+    .cta-band .cta-lede { font-size: 16px; max-width: none; }
+    .cta-row { flex-wrap: wrap; }
+    footer { padding: 56px 0; }
+    footer .container { grid-template-columns: 1fr; gap: 32px; }
   }
 </style>
 <link rel="stylesheet" href="assets/edit.css" >
@@ -375,56 +408,30 @@
   </ul>
 </nav>
 
-<div class="container content-top">
+<main>
 
-  <!-- Member 01: United Way -->
-  <section class="member-detail" id="united-way">
-    <figure class="md-image">
-      <img src="images/uw-members.jpg" alt="Children at an early learning center play together with wooden toys while a caregiver watches over them." >
-    </figure>
-    <div class="md-body">
-      <div class="md-eyebrow" data-field="f-1">Member · 02</div>
-      <h2 class="md-name" data-field="f-2">United Way of Greater Charlottesville</h2>
-      <p class="md-role" data-field="f-3"><strong data-field="f-32">In PFS:</strong> Data infrastructure, fiscal backbone, and childcare connections.</p>
-      <p class="md-blurb" data-field="f-4">United Way of Greater Charlottesville convenes and funds community-wide initiatives across health, education, and financial stability. They serve as the connector between donors, volunteers, and the local nonprofits doing direct service work. Within PFS, they hold the operational backbone: running the shared SmartSheets data infrastructure, serving as fiscal agent, and connecting families to childcare resources.</p>
-      <a href="https://unitedwaycville.org" target="_blank" rel="noopener" class="visit-link" data-field="f-5">Visit unitedwaycville.org →</a>
-    </div>
-  </section>
+<div class="container">
 
-  <!-- Member 02: ReadyKids -->
-  <section class="member-detail" id="readykids">
-    <figure class="md-image">
-      <img src="images/rk-members.jpg" alt="A young child hugs a large stuffed frog at a ReadyKids early childhood program." >
-    </figure>
-    <div class="md-body">
-      <div class="md-eyebrow" data-field="f-6">Member · 03</div>
-      <h2 class="md-name" data-field="f-7">ReadyKids</h2>
-      <p class="md-role" data-field="f-8"><strong data-field="f-33">In PFS:</strong> Behavioral health and family well-being services.</p>
-      <p class="md-blurb" data-field="f-9">ReadyKids provides early childhood education, parent support, and trauma-informed mental health services to Charlottesville children from birth through twelve. Their model centers caregivers as much as children, because family stability is what makes the work with kids stick. In PFS, they lead behavioral health and family well-being services for students and caregivers alike, with early childhood connections for younger siblings.</p>
-      <a href="https://readykidscville.org" target="_blank" rel="noopener" class="visit-link" data-field="f-10">Visit readykidscville.org →</a>
-    </div>
-  </section>
+  <!-- Page intro: title + jump pills so visitors can get to a specific member fast -->
+  <div class="page-intro">
+    <div class="kicker reveal">Coalition members</div>
+    <h1 class="reveal">The five organizations behind PFS.</h1>
+    <p class="lede reveal">Each member brings a specific role to the coalition. Together they cover the full continuum of support, from early childhood through stable employment.</p>
+    <nav class="member-jump reveal" aria-label="Jump to a member">
+      <a href="#city-of-promise"><span class="n">01</span> City of Promise</a>
+      <a href="#united-way"><span class="n">02</span> United Way</a>
+      <a href="#readykids"><span class="n">03</span> ReadyKids</a>
+      <a href="#vccp"><span class="n">04</span> UVA Center for Community Partnerships</a>
+      <a href="#network2work"><span class="n">05</span> Network2Work</a>
+    </nav>
+  </div>
 
-  <!-- Member 03: Virginia Center for Community Partnerships -->
-  <section class="member-detail" id="vccp">
-    <figure class="md-image">
-      <img src="images/vcccp-members.jpg" alt="A diverse group of middle-school students works together at a table on a hands-on Pathways program activity." >
-    </figure>
-    <div class="md-body">
-      <div class="md-eyebrow" data-field="f-11">Member · 04</div>
-      <h2 class="md-name" data-field="f-12">University of Virginia Center for Community Partnerships</h2>
-      <p class="md-role" data-field="f-13"><strong data-field="f-34">In PFS:</strong> Evaluation and continuous improvement.</p>
-      <p class="md-blurb" data-field="f-14">The Virginia Center for Community Partnerships connects the University of Virginia's research and service capacity with community-led work in Charlottesville. Their flagship youth program, Starr Hill Pathways, delivers long-term STEAM mentorship and college access for middle and high school students in Charlottesville City and Albemarle County. The program is fully free, with transportation and meals provided. In PFS, VCCP leads evaluation and continuous improvement, so the pilot is measured honestly and adapted based on what the data shows.</p>
-      <a href="https://communitypartnerships.virginia.edu" target="_blank" rel="noopener" class="visit-link" data-field="f-15">Visit communitypartnerships.virginia.edu →</a>
-    </div>
-  </section>
-
-  <!-- Member 04: City of Promise -->
+  <!-- Member 01: City of Promise -->
   <section class="member-detail" id="city-of-promise">
-    <figure class="md-image">
+    <figure class="md-image reveal">
       <img src="images/cop-members.jpg" alt="Five City of Promise scholars in matching “We Are The Promise” t-shirts stand arm-in-arm in a school hallway, laughing together." >
     </figure>
-    <div class="md-body">
+    <div class="md-body reveal">
       <div class="md-eyebrow" data-field="f-16">Member · 01</div>
       <h2 class="md-name" data-field="f-17">City of Promise</h2>
       <p class="md-role" data-field="f-18"><strong data-field="f-35">In PFS:</strong> Program coordination, staffing, tutoring architecture, and family engagement.</p>
@@ -433,12 +440,54 @@
     </div>
   </section>
 
+  <!-- Member 02: United Way -->
+  <section class="member-detail" id="united-way">
+    <figure class="md-image reveal">
+      <img src="images/uw-members.jpg" alt="Children at an early learning center play together with wooden toys while a caregiver watches over them." >
+    </figure>
+    <div class="md-body reveal">
+      <div class="md-eyebrow" data-field="f-1">Member · 02</div>
+      <h2 class="md-name" data-field="f-2">United Way of Greater Charlottesville</h2>
+      <p class="md-role" data-field="f-3"><strong data-field="f-32">In PFS:</strong> Data infrastructure, fiscal backbone, and childcare connections.</p>
+      <p class="md-blurb" data-field="f-4">United Way of Greater Charlottesville convenes and funds community-wide initiatives across health, education, and financial stability. They serve as the connector between donors, volunteers, and the local nonprofits doing direct service work. Within PFS, they hold the operational backbone: running the shared SmartSheets data infrastructure, serving as fiscal agent, and connecting families to childcare resources.</p>
+      <a href="https://unitedwaycville.org" target="_blank" rel="noopener" class="visit-link" data-field="f-5">Visit unitedwaycville.org →</a>
+    </div>
+  </section>
+
+  <!-- Member 03: ReadyKids -->
+  <section class="member-detail" id="readykids">
+    <figure class="md-image reveal">
+      <img src="images/rk-members.jpg" alt="A young child hugs a large stuffed frog at a ReadyKids early childhood program." >
+    </figure>
+    <div class="md-body reveal">
+      <div class="md-eyebrow" data-field="f-6">Member · 03</div>
+      <h2 class="md-name" data-field="f-7">ReadyKids</h2>
+      <p class="md-role" data-field="f-8"><strong data-field="f-33">In PFS:</strong> Behavioral health and family well-being services.</p>
+      <p class="md-blurb" data-field="f-9">ReadyKids provides early childhood education, parent support, and trauma-informed mental health services to Charlottesville children from birth through twelve. Their model centers caregivers as much as children, because family stability is what makes the work with kids stick. In PFS, they lead behavioral health and family well-being services for students and caregivers alike, with early childhood connections for younger siblings.</p>
+      <a href="https://readykidscville.org" target="_blank" rel="noopener" class="visit-link" data-field="f-10">Visit readykidscville.org →</a>
+    </div>
+  </section>
+
+  <!-- Member 04: Virginia Center for Community Partnerships -->
+  <section class="member-detail" id="vccp">
+    <figure class="md-image reveal">
+      <img src="images/vcccp-members.jpg" alt="A diverse group of middle-school students works together at a table on a hands-on Pathways program activity." >
+    </figure>
+    <div class="md-body reveal">
+      <div class="md-eyebrow" data-field="f-11">Member · 04</div>
+      <h2 class="md-name" data-field="f-12">University of Virginia Center for Community Partnerships</h2>
+      <p class="md-role" data-field="f-13"><strong data-field="f-34">In PFS:</strong> Evaluation and continuous improvement.</p>
+      <p class="md-blurb" data-field="f-14">The Virginia Center for Community Partnerships connects the University of Virginia's research and service capacity with community-led work in Charlottesville. Their flagship youth program, Starr Hill Pathways, delivers long-term STEAM mentorship and college access for middle and high school students in Charlottesville City and Albemarle County. The program is fully free, with transportation and meals provided. In PFS, VCCP leads evaluation and continuous improvement, so the pilot is measured honestly and adapted based on what the data shows.</p>
+      <a href="https://communitypartnerships.virginia.edu" target="_blank" rel="noopener" class="visit-link" data-field="f-15">Visit communitypartnerships.virginia.edu →</a>
+    </div>
+  </section>
+
   <!-- Member 05: Network2Work @ PVCC -->
   <section class="member-detail" id="network2work">
-    <figure class="md-image">
+    <figure class="md-image reveal">
       <img src="images/network2work-members.jpg" alt="A Network2Work participant at work in a real workforce-training setting." >
     </figure>
-    <div class="md-body">
+    <div class="md-body reveal">
       <div class="md-eyebrow" data-field="f-21">Member · 05</div>
       <h2 class="md-name" data-field="f-22">Network2Work @ PVCC</h2>
       <p class="md-role" data-field="f-23"><strong data-field="f-36">In PFS:</strong> Parent workforce and economic mobility pathways.</p>
@@ -447,18 +496,22 @@
     </div>
   </section>
 
-  <!-- Bottom CTA -->
-  <section class="cta-section">
-    <div class="section-label" data-field="f-27">Support the work</div>
-    <h2 data-field="f-28">Help fund <em data-field="f-37">the coalition</em>.</h2>
-    <p class="cta-lede" data-field="f-29">Five organizations, one shared effort &mdash; and your gift goes further for it. Donations run through United Way, the coalition's fiscal backbone, and directly fund the Trailblazer pilot.</p>
-    <div class="cta-row">
-      <a href="https://unitedwaycville.org/" target="_blank" rel="noopener" class="btn-dark" data-field="f-30">Donate through United Way</a>
-      <a href="about.html" class="btn-ghost" data-field="f-31">Read more about PFS</a>
-    </div>
-  </section>
-
 </div>
+
+<!-- Bottom CTA — pine band, same vocabulary as the about page -->
+<div class="cta-band">
+  <div class="container">
+    <div class="section-label reveal" data-field="f-27">Support the work</div>
+    <h2 class="reveal" data-field="f-28">Help fund <em data-field="f-37">the coalition</em>.</h2>
+    <p class="cta-lede reveal" data-field="f-29">Five organizations, one shared effort &mdash; and your gift goes further for it. Donations run through United Way, the coalition's fiscal backbone, and directly fund the Trailblazer pilot.</p>
+    <div class="cta-row reveal">
+      <a href="https://unitedwaycville.org/" target="_blank" rel="noopener" class="btn btn-light"><span data-field="f-30">Donate through United Way</span> <span class="arrow">→</span></a>
+      <a href="about.html" class="btn btn-outline" data-field="f-31">Read more about PFS</a>
+    </div>
+  </div>
+</div>
+
+</main>
 
 <footer>
   <div class="container">
@@ -515,6 +568,34 @@
       }
     });
   });
+
+  // Frosted header: add hairline once the page is scrolled.
+  (function () {
+    const nav = document.querySelector('nav.top');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Reveal on scroll
+  (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
+  })();
 </script>
 
 </body>

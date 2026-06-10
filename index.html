@@ -17,6 +17,9 @@
     --hairline: #ECE3CE;         /* warm divider — tracks the new cream */
     --accent: #DC6B3F;           /* persimmon — single color pop */
     --accent-deep: #B95527;
+    --paper: #FFFCF4;            /* slightly lifted surface for bands + cards */
+    --shadow-soft: 0 1px 2px rgba(28,28,28,0.04), 0 8px 28px rgba(28,28,28,0.06);
+    --shadow-lift: 0 2px 4px rgba(28,28,28,0.05), 0 18px 44px rgba(28,28,28,0.10);
     --interactive-border: rgba(28, 28, 28, 0.4);
     --hover-tint: rgba(28, 28, 28, 0.04);
     --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -60,26 +63,37 @@
   nav.top {
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 80px;
-    background: transparent;
-    position: relative;
-    z-index: 2;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(250, 241, 223, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  nav.top.is-scrolled {
+    border-bottom-color: var(--hairline);
+    background: rgba(250, 241, 223, 0.93);
   }
   nav.top .wordmark { display: inline-block; line-height: 1; }
   nav.top .wordmark img { display: block; width: 180px; height: auto; }
-  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
-  nav.top a {
-    color: var(--charcoal); text-decoration: none;
-    font-size: 15px; font-weight: 400;
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; align-items: center; }
+  nav.top ul a {
+    color: rgba(28,28,28,0.78); text-decoration: none;
+    font-size: 14.5px; font-weight: 500;
+    padding: 8px 14px; border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
   }
-  nav.top a:hover { text-decoration: underline; }
-  nav.top a.is-active { text-decoration: underline; text-underline-offset: 4px; }
+  nav.top ul a:hover { background: rgba(28,28,28,0.06); color: var(--charcoal); }
+  nav.top ul a.is-active { background: rgba(28,28,28,0.07); color: var(--charcoal); }
   nav.top .nav-cta {
     background: var(--charcoal); color: var(--off-white);
-    padding: 8px 16px; border-radius: 6px;
+    padding: 10px 18px; border-radius: 999px;
     box-shadow: var(--inset-shadow); text-decoration: none;
-    font-size: 14px; font-weight: 400;
+    font-size: 14px; font-weight: 600;
   }
-  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+  nav.top .nav-cta:hover { background: var(--accent-deep); color: var(--off-white); opacity: 1; text-decoration: none; }
 
   /* Hero — gradient now lives on body::before so it flows under the nav too */
   .hero-wrap {
@@ -89,7 +103,7 @@
   .hero {
     position: relative; z-index: 1;
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: 1.1fr 0.9fr;
     gap: 64px;
     align-items: center;
   }
@@ -110,6 +124,13 @@
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 40px; }
     .hero-image { aspect-ratio: 16 / 10; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat { padding: 36px 24px; }
+    .stat + .stat { border-left: none; }
+    .stat:nth-child(3) { border-left: none; }
+    .stat:nth-child(2) { border-left: 1px solid var(--hairline); }
+    .stat:nth-child(4) { border-left: 1px solid var(--hairline); }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--hairline); }
   }
   .eyebrow-pill {
     display: inline-flex; align-items: center; gap: 8px;
@@ -122,13 +143,13 @@
   h1 {
     font-family: var(--display); font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 60px; line-height: 1.08; letter-spacing: -1.0px;
+    font-size: 52px; line-height: 1.08; letter-spacing: -0.8px;
     margin: 0 0 28px; color: var(--charcoal);
   }
   h1 em {
     font-style: normal;
-    font-weight: 500;
-    color: var(--accent);
+    font-weight: inherit;
+    color: inherit;
   }
   .lede {
     font-size: 18px; line-height: 1.38; font-weight: 400;
@@ -137,7 +158,7 @@
   .cta-row { display: flex; gap: 12px; align-items: center; }
   .btn-dark {
     background: var(--charcoal); color: var(--off-white);
-    padding: 12px 20px; border-radius: 6px; border: none;
+    padding: 13px 22px; border-radius: 999px; border: none;
     font-family: var(--sans); font-size: 15px; font-weight: 400;
     cursor: pointer; text-decoration: none;
     box-shadow: var(--inset-shadow);
@@ -146,7 +167,7 @@
   .btn-dark:hover { opacity: 0.85; }
   .btn-ghost {
     background: transparent; color: var(--charcoal);
-    padding: 12px 20px; border-radius: 6px;
+    padding: 13px 22px; border-radius: 999px;
     border: 1px solid var(--interactive-border);
     font-family: var(--sans); font-size: 15px; font-weight: 400;
     cursor: pointer; text-decoration: none;
@@ -154,24 +175,74 @@
   }
   .btn-ghost:hover { background: var(--hover-tint); }
 
-  /* Stats — horizontal, no card, just generous spacing */
-  .stats {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+  /* Stats — full-bleed band */
+  .stats-band {
+    position: relative; z-index: 1;
+    background: var(--paper);
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
   }
-  .stat { padding: 72px 0; }
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    padding: 56px 32px;
+    text-align: center;
+  }
+  .stat + .stat { border-left: 1px solid var(--hairline); }
   .stat .num {
     font-family: var(--display); font-size: 56px; line-height: 1.0;
     font-weight: 500; letter-spacing: -1.0px;
     font-variation-settings: 'opsz' 72;
+    font-variant-numeric: tabular-nums;
     color: var(--charcoal); margin-bottom: 12px;
   }
   .stat.pop .num { color: var(--accent); }
   .stat .label { font-size: 14px; color: var(--muted); font-weight: 400; }
+
+  /* How it works — full-bleed band */
+  .how {
+    background: var(--paper);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 120px 0;
+  }
+  .how .section-label {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 24px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .how .section-label::before {
+    content: ''; width: 22px; height: 1.5px; background: var(--accent);
+  }
+  .how-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    margin-top: 40px;
+  }
+  .how-step {
+    position: relative;
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 36px 32px 32px;
+  }
+  .how-step .n {
+    font-family: var(--display); font-style: italic;
+    font-size: 17px; color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 999px;
+    border: 1.5px solid var(--accent);
+    margin-bottom: 22px;
+  }
+  .how-step h3 {
+    font-family: var(--display); font-weight: 500;
+    font-variation-settings: 'opsz' 24;
+    font-size: 23px; letter-spacing: -0.3px; line-height: 1.25;
+    margin: 0 0 10px; color: var(--charcoal);
+  }
+  .how-step p { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; }
+  @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
 
   /* About section */
   section.about { padding: 144px 0 128px; }
@@ -232,8 +303,6 @@
   .member-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   }
-  /* City of Promise — Member · 01 — shown first via CSS order; DOM unchanged */
-  .member-grid > .member-card:nth-child(4) { order: -1; }
   @media (max-width: 900px) { .member-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .member-grid { grid-template-columns: 1fr; } }
 
@@ -247,11 +316,12 @@
   }
   .member-card--placeholder:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: none;
   }
-  /* stands in for the member-img region, same 16:9 footprint */
+  /* stands in for the member-img region, same 16:10 footprint */
   .placeholder-img {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
     border-bottom: 1px dashed rgba(31, 27, 22, 0.2);
     display: flex; align-items: center; justify-content: center;
     background:
@@ -279,18 +349,21 @@
     color: var(--accent);
   }
   .member-card {
-    background: var(--cream);
+    background: var(--paper);
     border: 1px solid var(--hairline);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    transition: border-color .15s ease, transform .15s ease;
+    display: flex; flex-direction: column;
+    text-decoration: none; color: inherit;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .member-card:hover {
-    border-color: var(--interactive-border);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: rgba(28, 28, 28, 0.18);
   }
   .member-img {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
     border-bottom: 1px solid var(--hairline);
     position: relative;
     display: flex; align-items: center; justify-content: center;
@@ -303,7 +376,9 @@
     object-fit: cover; object-position: center;
     display: block;
     filter: saturate(0.85) sepia(0.12) contrast(0.95);
+    transition: transform .45s ease;
   }
+  .member-card:hover .member-img img { transform: scale(1.045); }
   .member-img.tone-1 {
     background:
       radial-gradient(80% 80% at 30% 40%, rgba(255, 198, 174, 0.55), transparent 70%),
@@ -328,10 +403,10 @@
       radial-gradient(60% 60% at 80% 30%, rgba(255, 198, 174, 0.35), transparent 70%),
       var(--cream);
   }
-  .member-body { padding: 28px 28px 32px; }
+  .member-body { padding: 26px 26px 28px; display: flex; flex-direction: column; flex: 1; }
   .member-card .org {
-    font-size: 12px; color: var(--accent); margin-bottom: 12px;
-    font-weight: 600; letter-spacing: 0.02em;
+    font-size: 11.5px; color: var(--accent-deep); margin-bottom: 12px;
+    font-weight: 700; letter-spacing: 0.12em;
     text-transform: uppercase;
   }
   .member-card h3 {
@@ -342,12 +417,15 @@
   }
   .member-card p {
     font-family: var(--sans); font-size: 15px; line-height: 1.55;
-    color: var(--muted); margin: 0 0 20px;
+    color: var(--muted); margin: 0 0 22px;
   }
   .member-card .read-more {
-    color: var(--charcoal); text-decoration: underline;
-    font-size: 14px;
+    margin-top: auto;
+    font-size: 14px; font-weight: 600; color: var(--charcoal);
+    display: inline-flex; align-items: center; gap: 8px;
   }
+  .member-card .read-more .arrow { transition: transform .15s ease; color: var(--accent); }
+  .member-card:hover .read-more .arrow { transform: translateX(4px); }
 
   /* Footer with warm gradient bottom */
   footer {
@@ -377,6 +455,22 @@
   @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
 
+  /* Respect reduced motion for ported transitions/animations */
+  @media (prefers-reduced-motion: reduce) {
+    .member-card,
+    .member-img img,
+    .member-card .read-more .arrow { transition: none; }
+    .member-card:hover { transform: none; }
+    .member-card:hover .member-img img { transform: none; }
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
   /* ---------- Hamburger nav (hidden on desktop) ---------- */
   .nav-toggle {
     display: none;
@@ -402,7 +496,7 @@
   /* ---------- Mobile (≤760px) ---------- */
   @media (max-width: 760px) {
     .container { padding: 0 20px; }
-    nav.top { padding: 18px 20px; position: relative; }
+    nav.top { padding: 18px 20px; position: sticky; }
     nav.top .wordmark img { width: 140px; }
     .nav-toggle { display: flex; }
     nav.top ul {
@@ -426,10 +520,10 @@
       display: block; padding: 10px 12px;
       font-size: 15px; border-radius: 6px;
     }
-    nav.top ul a:hover { background: var(--hover-tint); text-decoration: none; }
+    nav.top ul a:hover { background: var(--hover-tint); color: var(--charcoal); text-decoration: none; }
     nav.top .nav-cta {
       background: var(--charcoal); color: var(--off-white);
-      padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
+      padding: 10px 12px; border-radius: 6px; box-shadow: var(--inset-shadow); text-align: center;
     }
     h1 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; overflow-wrap: break-word; }
     h2 { font-size: 24px; letter-spacing: -0.4px; line-height: 1.2; margin-bottom: 28px; max-width: none; overflow-wrap: break-word; }
@@ -445,10 +539,13 @@
     .hero-image { aspect-ratio: 4 / 5; max-width: 320px; margin: 0 auto; }
     .hero-text { min-width: 0; }
     .cta-row { flex-wrap: wrap; gap: 12px; }
-    .stats { grid-template-columns: 1fr; gap: 0; max-width: none; }
-    .stat { padding: 32px 0; border-bottom: 1px solid var(--hairline); }
-    .stat:last-child { border-bottom: none; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { padding: 32px 20px; }
+    .stat + .stat { border-left: none; border-top: 1px solid var(--hairline); }
+    .stat:nth-child(2), .stat:nth-child(4) { border-left: none; }
     .stat .num { font-size: 44px; margin-bottom: 8px; }
+    .how { padding: 72px 0; }
+    .how-grid { margin-top: 28px; }
     section.about { padding: 72px 0 64px; }
     .about-cta-row { margin-top: 32px; }
     .two-col { grid-template-columns: 1fr; gap: 24px; }
@@ -485,6 +582,18 @@
 
 <div class="hero-wrap">
   <div class="container hero">
+    <div class="hero-text reveal">
+      <div class="eyebrow-pill">
+        <span class="dot"></span>
+        <span data-field="f-1">The coalition is continuously growing. We're building partnerships across early childhood, education, workforce support, and all of the other dimensions necessary to support family stability.</span>
+      </div>
+      <h1 data-field="f-2">Five organizations. One shared promise to Charlottesville's children and families.</h1>
+      <p class="lede" data-field="f-3">Pathways to Family Success (PFS) is a mutual aid coalition of five Charlottesville organizations sharing intake, referrals, and outcomes, to ensure families seeking support encounter one coordinated effort, not separate agencies.</p>
+      <div class="cta-row">
+        <a href="how-it-works.html" class="btn-dark" data-field="f-4">See how it works</a>
+        <a href="members.html" class="btn-ghost" data-field="f-5">Meet the partners</a>
+      </div>
+    </div>
     <!--
       HERO IMAGE PROMPT (4:5 portrait):
       A Black mother and her 6-year-old child sit at a small kitchen table in a modest
@@ -505,61 +614,111 @@
       glances at the camera, magic-hour lighting, blurred backgrounds, picturesque
       poverty aesthetic, branded clothing, aspirational lifestyle look.
     -->
-    <div class="hero-image">
+    <div class="hero-image reveal">
       <img src="images/hero.png" alt="A young child smiles brightly while peering out from under a peach-colored hood." >
     </div>
-    <div class="hero-text">
-      <div class="eyebrow-pill">
-        <span class="dot"></span>
-        <span data-field="f-1">The coalition is continuously growing. We're building partnerships across early childhood, education, workforce support, and all of the other dimensions necessary to support family stability.</span>
-      </div>
-      <h1 data-field="f-2">Five organizations. One shared promise to Charlottesville's children and families.</h1>
-      <p class="lede" data-field="f-3">Pathways to Family Success (PFS) is a mutual aid coalition of five Charlottesville organizations sharing intake, referrals, and outcomes, to ensure families seeking support encounter one coordinated effort, not separate agencies.</p>
-      <div class="cta-row">
-        <a href="how-it-works.html" class="btn-dark" data-field="f-4">See how it works</a>
-        <a href="members.html" class="btn-ghost" data-field="f-5">Meet the partners</a>
-      </div>
+  </div>
+</div>
+
+<div class="stats-band">
+  <div class="container">
+    <div class="stats">
+      <div class="stat reveal"><div class="num" data-field="f-6" data-count="5">5</div><div class="label" data-field="f-7">Member Organizations</div></div>
+      <div class="stat reveal"><div class="num" data-field="f-8" data-count="50" data-prefix="~">~50</div><div class="label" data-field="f-9">K–5 Students in Pilot</div></div>
+      <div class="stat reveal"><div class="num" data-field="f-10" data-count="1">1</div><div class="label" data-field="f-11">Pilot School · Trailblazer</div></div>
+      <div class="stat pop reveal"><div class="num" data-field="f-12" data-count="500" data-prefix="$" data-suffix="K">$500K</div><div class="label" data-field="f-13">Pilot Investment</div></div>
     </div>
   </div>
 </div>
 
 <div class="container">
 
-  <section class="stats">
-    <div class="stat"><div class="num" data-field="f-6">5</div><div class="label" data-field="f-7">Member Organizations</div></div>
-    <div class="stat"><div class="num" data-field="f-8">~50</div><div class="label" data-field="f-9">K–5 Students in Pilot</div></div>
-    <div class="stat"><div class="num" data-field="f-10">1</div><div class="label" data-field="f-11">Pilot School · Trailblazer</div></div>
-    <div class="stat pop"><div class="num" data-field="f-12">$500K</div><div class="label" data-field="f-13">Pilot Investment</div></div>
-  </section>
-
   <section class="about" id="about">
-    <div class="section-label" data-field="f-14">About the coalition</div>
-    <h2 data-field="f-15">Families deserve coordinated care, not fragmented services.</h2>
+    <div class="section-label reveal" data-field="f-14">About the coalition</div>
+    <h2 class="reveal" data-field="f-15">Families deserve coordinated care, not fragmented services.</h2>
     <div class="two-col">
-      <div>
+      <div class="reveal">
         <p data-field="f-16">Roughly one in four working families across our region can't afford the basics, and most are working full-time. For decades, Charlottesville's nonprofit ecosystem is resource rich but uncoordinated. A family in need will touch multiple organizations, repeating their story to each, and still fall through the cracks with regards to efficient service delivery.</p>
         <p data-field="f-17">PFS exists to change that. City of Promise, United Way of Greater Charlottesville, ReadyKids, University of Virginia Center for Community Partnerships, and Network2Work have worked diligently to formalize how they share intake, referrals, and outcomes. </p>
       </div>
-      <div>
+      <div class="reveal">
         <p data-field="f-47">Families tell their story once. Every referral is tracked, recorded, and followed through. Each family encounters one constellation of care, not five agencies.</p>
         <p data-field="f-18">Our work is grounded in mutual aid: each member organization brings its specific strengths, and together we cover the full continuum of support a family might need across a lifetime, from early childhood through college access and beyond. Truly, cradle-to-career.</p>
       </div>
     </div>
-    <div class="about-cta-row">
+    <div class="about-cta-row reveal">
       <a href="about.html" class="btn-dark" data-field="f-20">Read more about the coalition</a>
     </div>
   </section>
 
+</div>
+
+<section class="how">
+  <div class="container">
+    <div class="section-label reveal">How it works</div>
+    <h2 class="reveal">One story, told once.</h2>
+    <div class="how-grid">
+      <div class="how-step reveal">
+        <span class="n">1</span>
+        <h3>A family tells their story once</h3>
+        <p>A single shared intake means no family repeats their circumstances to five separate agencies.</p>
+      </div>
+      <div class="how-step reveal">
+        <span class="n">2</span>
+        <h3>Referrals move between partners</h3>
+        <p>Each referral is tracked, recorded, and followed through — handed off between member organizations, not dropped.</p>
+      </div>
+      <div class="how-step reveal">
+        <span class="n">3</span>
+        <h3>Outcomes are shared and measured</h3>
+        <p>The coalition measures what happens after the referral, so support continues across a family's whole journey.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
   <div class="pullquote">
-    <q data-field="f-21">We stopped asking families to repeat their story to five separate agencies. We started running the five as one.</q>
-    <cite data-field="f-22">From the 2025 Letter to the Community</cite>
+    <q class="reveal" data-field="f-21">We stopped asking families to repeat their story to five separate agencies. We started running the five as one.</q>
+    <cite class="reveal" data-field="f-22">From the 2025 Letter to the Community</cite>
   </div>
 
   <section class="members" id="members">
-    <div class="section-label" data-field="f-23">Coalition members</div>
-    <h2 data-field="f-24">Five organizations. One constellation of care.</h2>
+    <div class="section-label reveal" data-field="f-23">Coalition members</div>
+    <h2 class="reveal" data-field="f-24">Five organizations. One constellation of care.</h2>
     <div class="member-grid">
-      <div class="member-card">
+      <a class="member-card reveal" href="members.html#city-of-promise">
+        <!--
+          CITY OF PROMISE IMAGE PROMPT (16:9 landscape):
+          Two Black children — siblings, an 8-year-old girl and a 10-year-old boy — walk
+          home from school down a residential street in the 10th and Page neighborhood of
+          Charlottesville. Both wear backpacks and everyday clothes; the boy is a couple
+          of steps ahead, the girl just behind, talking to him. The street is lined with
+          two-story brick duplex houses with small front yards and concrete steps to the
+          sidewalk. A few parked cars line the curb. One house has a screen door propped
+          open; another has a child's bike on the porch. Old sycamore trees line the
+          sidewalk. Time: weekday afternoon, around 3:30pm — overcast daylight, not magic
+          hour. Composition: medium-wide shot from the sidewalk ahead of the children
+          looking back at them, eye-level; the children in the mid-ground, neighborhood
+          architecture visible in foreground and background. Layered depth: a tree branch
+          in upper frame, the children center, more houses receding into the background.
+          Color tones come from the setting itself: warm brick reds and browns, the
+          girl's persimmon backpack, cream sidewalks, gray-blue overcast sky. Mood:
+          rooted, alive — community as ongoing daily life. Aspect ratio 16:9 landscape.
+          Style: photojournalism in the tradition of Dawoud Bey, LaToya Ruby Frazier, and
+          Carrie Mae Weems. Avoid: drone shots, golden-hour beauty filtering, sentimental
+          nostalgia, sweeping establishing shots, romanticization of the neighborhood.
+        -->
+        <div class="member-img tone-4"><img src="images/city-of-promise.jpg" alt="A young child at a City of Promise community event grins behind a paper cup of shaved ice, sunlit lawn behind him." ></div>
+        <div class="member-body">
+          <div class="org" data-field="f-37">Member · 01</div>
+          <h3 data-field="f-38">City of Promise</h3>
+          <p data-field="f-39">Local hub for early intervention and dual generation support. Rooted in the Westhaven/10th &amp; Page community, with a focus on educational outcomes.</p>
+          <span class="read-more"><span data-field="f-40">Learn more</span> <span class="arrow">→</span></span>
+        </div>
+      </a>
+      <a class="member-card reveal" href="members.html#united-way">
         <!--
           UNITED WAY IMAGE PROMPT (16:9 landscape):
           A community meeting in the fellowship hall of a small Charlottesville church.
@@ -586,10 +745,10 @@
           <div class="org" data-field="f-25">Member · 02</div>
           <h3 data-field="f-26">United Way of Greater Charlottesville</h3>
           <p data-field="f-27">Convening, fundraising, and community-wide initiatives spanning health, education, and financial stability.</p>
-          <a href="members.html#united-way" class="read-more" data-field="f-28">Learn more</a>
+          <span class="read-more"><span data-field="f-28">Learn more</span> <span class="arrow">→</span></span>
         </div>
-      </div>
-      <div class="member-card">
+      </a>
+      <a class="member-card reveal" href="members.html#readykids">
         <!--
           READYKIDS IMAGE PROMPT (16:9 landscape):
           A ReadyKids family support worker — a Black woman in her 30s — sits on the floor
@@ -617,10 +776,10 @@
           <div class="org" data-field="f-29">Member · 03</div>
           <h3 data-field="f-30">ReadyKids</h3>
           <p data-field="f-31">Early childhood, family education, and trauma-informed mental health services for children birth through twelve.</p>
-          <a href="members.html#readykids" class="read-more" data-field="f-32">Learn more</a>
+          <span class="read-more"><span data-field="f-32">Learn more</span> <span class="arrow">→</span></span>
         </div>
-      </div>
-      <div class="member-card">
+      </a>
+      <a class="member-card reveal" href="members.html#vccp">
         <!--
           STARR HILL PATHWAYS IMAGE PROMPT (16:9 landscape):
           A Black high school student (a 16-year-old boy) and an adult mentor (a Black
@@ -649,41 +808,11 @@
           <div class="org" data-field="f-33">Member · 04</div>
           <h3 data-field="f-34">University of Virginia Center for Community Partnerships</h3>
           <p data-field="f-35">Long-term STEAM mentorship and college-access programming for middle and high school students.</p>
-          <a href="members.html#vccp" class="read-more" data-field="f-36">Learn more</a>
+          <span class="read-more"><span data-field="f-36">Learn more</span> <span class="arrow">→</span></span>
         </div>
-      </div>
-      <div class="member-card">
-        <!--
-          CITY OF PROMISE IMAGE PROMPT (16:9 landscape):
-          Two Black children — siblings, an 8-year-old girl and a 10-year-old boy — walk
-          home from school down a residential street in the 10th and Page neighborhood of
-          Charlottesville. Both wear backpacks and everyday clothes; the boy is a couple
-          of steps ahead, the girl just behind, talking to him. The street is lined with
-          two-story brick duplex houses with small front yards and concrete steps to the
-          sidewalk. A few parked cars line the curb. One house has a screen door propped
-          open; another has a child's bike on the porch. Old sycamore trees line the
-          sidewalk. Time: weekday afternoon, around 3:30pm — overcast daylight, not magic
-          hour. Composition: medium-wide shot from the sidewalk ahead of the children
-          looking back at them, eye-level; the children in the mid-ground, neighborhood
-          architecture visible in foreground and background. Layered depth: a tree branch
-          in upper frame, the children center, more houses receding into the background.
-          Color tones come from the setting itself: warm brick reds and browns, the
-          girl's persimmon backpack, cream sidewalks, gray-blue overcast sky. Mood:
-          rooted, alive — community as ongoing daily life. Aspect ratio 16:9 landscape.
-          Style: photojournalism in the tradition of Dawoud Bey, LaToya Ruby Frazier, and
-          Carrie Mae Weems. Avoid: drone shots, golden-hour beauty filtering, sentimental
-          nostalgia, sweeping establishing shots, romanticization of the neighborhood.
-        -->
-        <div class="member-img tone-4"><img src="images/city-of-promise.jpg" alt="A young child at a City of Promise community event grins behind a paper cup of shaved ice, sunlit lawn behind him." ></div>
-        <div class="member-body">
-          <div class="org" data-field="f-37">Member · 01</div>
-          <h3 data-field="f-38">City of Promise</h3>
-          <p data-field="f-39">Local hub for early intervention and dual generation support. Rooted in the Westhaven/10th &amp; Page community, with a focus on educational outcomes.</p>
-          <a href="members.html#city-of-promise" class="read-more" data-field="f-40">Learn more</a>
-        </div>
-      </div>
+      </a>
       <!-- 5th member card: Network2Work -->
-      <div class="member-card">
+      <a class="member-card reveal" href="members.html#network2work">
         <!--
           NETWORK2WORK IMAGE PROMPT (16:9 landscape):
           Candid photojournalistic image of Network2Work participants in a real workforce-
@@ -702,21 +831,21 @@
           <div class="org" data-field="f-41">Member · 05</div>
           <h3 data-field="f-42">Network2Work @ PVCC</h3>
           <p data-field="f-43">Workforce development for low-income job-seekers: credentialing, employer matching, and the wraparound supports families need for stable employment.</p>
-          <a href="members.html#network2work" class="read-more" data-field="f-44">Learn more</a>
+          <span class="read-more"><span data-field="f-44">Learn more</span> <span class="arrow">→</span></span>
         </div>
-      </div>
+      </a>
       <!-- Placeholder: signals an open, growing coalition -->
-      <div class="member-card member-card--placeholder">
+      <a class="member-card member-card--placeholder reveal" href="contact.html">
         <div class="placeholder-img"><span class="mark"></span></div>
         <div class="member-body">
           <div class="org" data-field="f-45">Open · Coalition</div>
           <h3 data-field="f-49">More members to come</h3>
           <p data-field="f-50">The coalition is still growing. We're building partnerships across early childhood, education, and workforce support.</p>
-          <a href="contact.html" class="read-more" data-field="f-48">Learn more</a>
+          <span class="read-more"><span data-field="f-48">Learn more</span> <span class="arrow">→</span></span>
         </div>
-      </div>
+      </a>
     </div>
-    <div class="about-cta-row">
+    <div class="about-cta-row reveal">
       <a href="members.html" class="btn-dark" data-field="f-46">Read more about the partners</a>
     </div>
   </section>
@@ -778,6 +907,67 @@
       }
     });
   });
+  (function () {
+    const nav = document.querySelector('nav.top');
+    if (!nav) return;
+    const onScroll = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Reveal on scroll
+  (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealEls = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      revealEls.forEach(el => el.classList.add('is-visible'));
+    } else {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => io.observe(el));
+    }
+  })();
+
+  // Animated stat counters
+  (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const counters = document.querySelectorAll('.stat .num[data-count]');
+    if (!counters.length) return;
+    const runCounter = el => {
+      const target = parseInt(el.dataset.count, 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      if (reduceMotion) { el.textContent = prefix + target + suffix; return; }
+      const duration = 1100;
+      let start = null;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if ('IntersectionObserver' in window) {
+      const cio = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) { runCounter(entry.target); cio.unobserve(entry.target); }
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(el => cio.observe(el));
+    } else {
+      counters.forEach(runCounter);
+    }
+  })();
 </script>
 
 </body>

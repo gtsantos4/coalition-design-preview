@@ -60,25 +60,30 @@
   nav.top {
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 80px;
-    background: transparent;
-    position: relative;
-    z-index: 2;
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250, 241, 223, 0.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent; transition: border-color .25s ease, background .25s ease;
   }
+  nav.top.is-scrolled { border-bottom-color: var(--hairline); background: rgba(250, 241, 223, 0.93); }
   nav.top .wordmark { display: inline-block; line-height: 1; }
   nav.top .wordmark img { display: block; width: 180px; height: auto; }
-  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 32px; align-items: center; }
-  nav.top a {
-    color: var(--charcoal); text-decoration: none;
-    font-size: 15px; font-weight: 400;
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; align-items: center; }
+  nav.top ul a {
+    font-size: 14.5px; font-weight: 500;
+    color: rgba(28, 28, 28, 0.78); text-decoration: none;
+    padding: 8px 14px; border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
   }
-  nav.top a:hover { text-decoration: underline; }
+  nav.top ul a:hover { background: rgba(28, 28, 28, 0.06); color: var(--charcoal); }
+  nav.top a.is-active { background: rgba(28, 28, 28, 0.07); color: var(--charcoal); }
   nav.top .nav-cta {
     background: var(--charcoal); color: var(--off-white);
-    padding: 8px 16px; border-radius: 6px;
+    padding: 10px 18px; border-radius: 999px;
     box-shadow: var(--inset-shadow); text-decoration: none;
-    font-size: 14px; font-weight: 400;
+    font-size: 14px; font-weight: 600;
   }
-  nav.top .nav-cta:hover { opacity: 0.85; text-decoration: none; }
+  nav.top .nav-cta:hover { background: var(--accent-deep); color: var(--off-white); }
   /* Current-page state on Contact: kept as button styling for consistency
      with index.html nav, but visually muted (no inset shadow, lower contrast)
      so users sense they're already here. */
@@ -86,10 +91,12 @@
     background: transparent;
     color: var(--charcoal);
     border: 1px solid var(--interactive-border);
+    border-radius: 999px;
     box-shadow: none;
   }
   nav.top .nav-cta[aria-current="page"]:hover {
     background: var(--hover-tint);
+    color: var(--charcoal);
   }
 
   /* Hero */
@@ -225,7 +232,7 @@
   }
   .btn-dark {
     background: var(--charcoal); color: var(--off-white);
-    padding: 12px 20px; border-radius: 6px; border: none;
+    padding: 13px 22px; border-radius: 999px; border: none;
     font-family: var(--sans); font-size: 15px; font-weight: 400;
     cursor: pointer; text-decoration: none;
     box-shadow: var(--inset-shadow);
@@ -481,7 +488,7 @@
   /* ---------- Mobile (≤760px) ---------- */
   @media (max-width: 760px) {
     .container { padding: 0 20px; }
-    nav.top { padding: 18px 20px; position: relative; }
+    nav.top { padding: 18px 20px; }
     nav.top .wordmark img { width: 140px; }
     .nav-toggle { display: flex; }
     nav.top ul {
@@ -808,6 +815,15 @@
       }
     });
   });
+
+  // Frosted header: add hairline once the page is scrolled.
+  (function () {
+    const nav = document.querySelector('nav.top');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
 </script>
 
 </body>
