@@ -11,15 +11,22 @@
   :root {
     /* Lovable palette — warm neutral, intentionally no saturated accent */
     --cream: #FAF1DF;            /* page + card surface — warmer than pure Lovable */
+    --paper: #FFFCF4;
     --off-white: #fcfbf8;        /* button text on dark */
     --charcoal: #1c1c1c;         /* primary ink */
+    --ink-soft: rgba(28, 28, 28, 0.82);
     --muted: #5f5f5d;            /* secondary text */
     --hairline: #ECE3CE;         /* warm divider — tracks the new cream */
     --accent: #DC6B3F;           /* persimmon — single color pop */
     --accent-deep: #B95527;
+    --accent-soft: rgba(220, 107, 63, 0.10);
+    --pine: #2E4036;
     --interactive-border: rgba(28, 28, 28, 0.4);
     --hover-tint: rgba(28, 28, 28, 0.04);
     --focus-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    --radius: 14px;
+    --shadow-soft: 0 1px 2px rgba(28,28,28,0.04), 0 8px 28px rgba(28,28,28,0.06);
+    --shadow-lift: 0 2px 4px rgba(28,28,28,0.05), 0 18px 44px rgba(28,28,28,0.10);
     --inset-shadow:
       rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
       rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
@@ -113,30 +120,47 @@
     margin-bottom: 32px;
   }
   .eyebrow-pill .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 9999px; }
+
+  /* ---------- Page intro ---------- */
+  .page-intro { padding: 72px 0 0; }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--accent-deep);
+    margin-bottom: 24px;
+  }
+  .kicker::before { content: ''; width: 22px; height: 1.5px; background: var(--accent); }
   h1 {
     font-family: var(--display); font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 60px; line-height: 1.08; letter-spacing: -1.0px;
-    margin: 0 0 28px; color: var(--charcoal);
+    font-size: 52px; line-height: 1.08; letter-spacing: -0.8px;
+    margin: 0 0 24px; color: var(--charcoal);
+    max-width: 760px;
   }
   h1 em {
-    font-style: normal;
-    font-weight: 500;
-    color: var(--accent);
+    font-style: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+  .page-intro .lede {
+    font-size: 18.5px; line-height: 1.6;
+    color: var(--muted); margin: 0;
+    max-width: 620px;
   }
   .lede {
     font-size: 18px; line-height: 1.55; font-weight: 400;
     max-width: 640px; color: var(--muted); margin: 0;
   }
 
-  /* Section heading shared */
+  /* ---------- Section labels + headings ---------- */
   .section-label {
-    font-size: 14px; color: var(--muted);
-    margin-bottom: 24px;
     display: inline-flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--accent-deep);
+    margin-bottom: 24px;
   }
   .section-label::before {
-    content: ''; width: 16px; height: 1px; background: var(--muted);
+    content: ''; width: 22px; height: 1.5px; background: var(--accent);
   }
   h2 {
     font-family: var(--display); font-weight: 500;
@@ -144,21 +168,28 @@
     font-size: 44px; line-height: 1.12; letter-spacing: -0.7px;
     margin: 0 0 40px; max-width: 760px; color: var(--charcoal);
   }
-  h2 em { font-style: normal; font-weight: 500; color: var(--accent); }
+  h2 em { font-style: inherit; font-weight: inherit; color: inherit; }
 
   /* Form + sidebar layout */
   .contact-grid {
     display: grid;
     grid-template-columns: 1.3fr 0.9fr;
-    gap: 80px;
+    gap: 32px;
     align-items: start;
     padding: 56px 0 128px;
   }
   @media (max-width: 900px) {
-    .contact-grid { grid-template-columns: 1fr; gap: 56px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 24px; }
   }
 
-  /* Form */
+  /* Form — on a paper card */
+  .form-card {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 36px;
+  }
   form.contact-form {
     display: grid;
     gap: 24px;
@@ -168,8 +199,8 @@
   }
   .field label {
     font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--charcoal);
     margin-bottom: 8px;
   }
@@ -178,14 +209,14 @@
   .field textarea {
     background: var(--cream);
     border: 1px solid var(--hairline);
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 12px 14px;
     font-family: var(--sans);
     font-size: 15px;
     color: var(--charcoal);
     line-height: 1.5;
     width: 100%;
-    transition: border-color .15s ease, box-shadow .15s ease;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
@@ -213,8 +244,9 @@
   .field select:focus,
   .field textarea:focus {
     outline: none;
-    border-color: rgba(31,27,22,0.4);
-    box-shadow: var(--focus-shadow);
+    background: var(--paper);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
   }
   .field-row {
     display: grid;
@@ -231,14 +263,17 @@
     margin-top: 8px;
   }
   .btn-dark {
+    display: inline-flex; align-items: center; gap: 10px;
     background: var(--charcoal); color: var(--off-white);
     padding: 13px 22px; border-radius: 999px; border: none;
-    font-family: var(--sans); font-size: 15px; font-weight: 400;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
     cursor: pointer; text-decoration: none;
     box-shadow: var(--inset-shadow);
-    transition: opacity .12s ease;
+    transition: background .15s ease, transform .15s ease;
   }
-  .btn-dark:hover { opacity: 0.85; }
+  .btn-dark .arrow { transition: transform .15s ease; }
+  .btn-dark:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .btn-dark:hover .arrow { transform: translateX(3px); }
   .form-note {
     font-size: 13px;
     color: var(--muted);
@@ -246,9 +281,10 @@
 
   /* Sidebar — direct coalition contact */
   .direct {
-    background: var(--cream);
+    background: var(--paper);
     border: 1px solid var(--hairline);
-    border-radius: 12px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
     padding: 32px;
   }
   .direct h3 {
@@ -260,35 +296,44 @@
   .direct dl {
     margin: 0;
     display: grid;
-    gap: 20px;
+    gap: 22px;
   }
   .direct dt {
     font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 4px;
+    color: var(--accent-deep);
+    margin-bottom: 5px;
   }
   .direct dd {
     margin: 0;
     font-size: 15px;
-    line-height: 1.55;
-    color: var(--charcoal);
+    line-height: 1.6;
+    color: var(--ink-soft);
   }
   .direct dd a {
-    color: var(--charcoal);
-    text-decoration: underline;
+    color: var(--accent-deep);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1.5px solid rgba(220, 107, 63, 0.35);
+    padding-bottom: 1px;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .direct dd a:hover { color: var(--accent-deep); }
+  .direct dd a:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .placeholder-flag {
     display: inline-block;
-    font-size: 11px;
-    color: var(--accent);
-    margin-left: 6px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    letter-spacing: 0.04em;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    background: var(--accent-soft);
+    border: 1px solid rgba(220, 107, 63, 0.25);
+    border-radius: 999px;
+    padding: 2px 9px;
+    margin-left: 8px;
     vertical-align: middle;
   }
 
@@ -301,15 +346,19 @@
   }
   .partner-row {
     display: grid;
-    grid-template-columns: 56px 1.4fr 1.2fr 0.9fr;
+    grid-template-columns: 64px 1.4fr 1.2fr 0.9fr;
     gap: 32px;
     align-items: center;
-    padding: 32px 0;
+    padding: 32px 16px;
+    margin: 0 -16px;
     border-bottom: 1px solid var(--hairline);
+    border-radius: 12px;
+    transition: background .15s ease;
   }
+  .partner-row:hover { background: var(--paper); }
   @media (max-width: 900px) {
     .partner-row {
-      grid-template-columns: 56px 1fr;
+      grid-template-columns: 64px 1fr;
       gap: 20px 24px;
     }
     .partner-row .partner-role,
@@ -318,10 +367,11 @@
     }
   }
   .partner-thumb {
-    width: 56px; height: 56px;
+    width: 64px; height: 64px;
     border-radius: 9999px;
     overflow: hidden;
     border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-soft);
     background: var(--cream);
   }
   .partner-thumb img {
@@ -347,14 +397,17 @@
   }
   .partner-contact {
     font-size: 14px;
-    line-height: 1.6;
-    color: var(--charcoal);
+    line-height: 1.7;
+    color: var(--ink-soft);
   }
   .partner-contact a {
     color: var(--charcoal);
-    text-decoration: underline;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(28, 28, 28, 0.25);
+    transition: color .15s ease, border-color .15s ease;
   }
-  .partner-contact a:hover { color: var(--accent-deep); }
+  .partner-contact a:hover { color: var(--accent-deep); border-bottom-color: var(--accent-deep); }
   .partner-contact .muted {
     color: var(--muted);
   }
@@ -366,10 +419,14 @@
     .partner-website { text-align: left; grid-column: 2 / -1; }
   }
   .partner-website a {
-    color: var(--charcoal);
-    text-decoration: underline;
+    color: var(--accent-deep);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1.5px solid rgba(220, 107, 63, 0.35);
+    padding-bottom: 1px;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .partner-website a:hover { color: var(--accent-deep); }
+  .partner-website a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
   /* Ways to engage */
   section.engage {
@@ -383,23 +440,25 @@
   @media (max-width: 900px) { .engage-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .engage-grid { grid-template-columns: 1fr; } }
   .engage-card {
-    background: var(--cream);
+    background: var(--paper);
     border: 1px solid var(--hairline);
-    border-radius: 12px;
+    border-radius: var(--radius);
     padding: 28px;
-    transition: border-color .15s ease, transform .15s ease;
+    display: flex; flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .engage-card:hover {
-    border-color: var(--interactive-border);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: rgba(28,28,28,0.18);
   }
   .engage-card .label {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--accent-deep);
     margin-bottom: 16px;
   }
   .engage-card h3 {
@@ -414,16 +473,22 @@
   }
   .engage-card p {
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.6;
     color: var(--muted);
-    margin: 0 0 16px;
+    margin: 0 0 20px;
   }
   .engage-card a {
+    margin-top: auto;
     color: var(--charcoal);
-    text-decoration: underline;
     font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1.5px solid rgba(28, 28, 28, 0.25);
+    align-self: flex-start;
+    padding-bottom: 1px;
+    transition: color .15s ease, border-color .15s ease;
   }
-  .engage-card a:hover { color: var(--accent-deep); }
+  .engage-card a:hover { color: var(--accent-deep); border-bottom-color: var(--accent-deep); }
 
   /* Footer with warm gradient bottom */
   footer {
@@ -453,9 +518,18 @@
   @media (max-width: 900px) { footer .container { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { footer .container { grid-template-columns: 1fr; gap: 40px; } }
 
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .engage-card, .btn-dark { transition: none; }
+    .engage-card:hover { transform: none; }
+  }
+
   /* Mobile headline scaling */
   @media (max-width: 900px) {
-    h1 { font-size: 48px; letter-spacing: -0.8px; }
+    h1 { font-size: 44px; letter-spacing: -0.7px; }
     h2 { font-size: 36px; letter-spacing: -0.5px; }
   }
   @media (max-width: 600px) {
@@ -517,9 +591,11 @@
       background: var(--charcoal); color: var(--off-white);
       padding: 10px 12px; box-shadow: var(--inset-shadow); text-align: center;
     }
-    h1 { font-size: 36px; letter-spacing: -0.5px; line-height: 1.1; }
+    .page-intro { padding-top: 44px; }
+    h1 { font-size: 32px; letter-spacing: -0.5px; line-height: 1.12; }
     h2 { font-size: 28px; letter-spacing: -0.4px; line-height: 1.15; margin-bottom: 28px; max-width: none; }
     .lede { font-size: 16px; max-width: none; }
+    .page-intro .lede { font-size: 16px; max-width: none; }
     section.block, section.cta-section { padding: 64px 0 0; }
     footer { padding: 56px 0; }
     footer .container { gap: 32px; }
@@ -527,11 +603,13 @@
     /* Contact page specifics */
     .contact-grid {
       grid-template-columns: 1fr;
-      gap: 40px;
-      padding: 40px 0 80px;
+      gap: 20px;
+      padding: 36px 0 72px;
     }
+    .form-card { padding: 24px; }
     .direct { padding: 24px; }
     .form-actions { flex-wrap: wrap; }
+    .partner-row { padding: 24px 12px; margin: 0 -12px; }
     section.partners { padding: 0 0 80px; }
     section.engage { padding: 0 0 96px; }
   }
@@ -558,7 +636,14 @@
 
 <div class="container content-top">
 
+  <div class="page-intro">
+    <div class="kicker reveal">Contact</div>
+    <h1 class="reveal">Get in touch.</h1>
+    <p class="lede reveal">Send a message to the coalition, or reach any member organization directly through the directory below.</p>
+  </div>
+
   <section class="contact-grid">
+    <div class="form-card reveal">
     <form class="contact-form" action="#" method="post" novalidate>
       <div class="field-row">
         <div class="field">
@@ -593,12 +678,13 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-dark" data-field="f-11">Send message</button>
+        <button type="submit" class="btn-dark"><span data-field="f-11">Send message</span> <span class="arrow">→</span></button>
         <span class="form-note" data-field="f-12">We aim to respond within two business days.</span>
       </div>
     </form>
+    </div>
 
-    <aside class="direct">
+    <aside class="direct reveal">
       <h3 data-field="f-13">Coalition contact</h3>
       <dl>
         <div>
@@ -630,12 +716,12 @@
   </section>
 
   <section class="partners" id="partners">
-    <div class="section-label" data-field="f-23">Partner directory</div>
-    <h2 data-field="f-24">Five organizations. Each one reachable on its own.</h2>
+    <div class="section-label reveal" data-field="f-23">Partner directory</div>
+    <h2 class="reveal" data-field="f-24">Five organizations. Each one reachable on its own.</h2>
 
     <div class="partner-list">
 
-      <div class="partner-row">
+      <div class="partner-row reveal">
         <div class="partner-thumb">
           <img src="images/city-of-promise.jpg" alt="" >
         </div>
@@ -653,7 +739,7 @@
         </div>
       </div>
 
-      <div class="partner-row">
+      <div class="partner-row reveal">
         <div class="partner-thumb">
           <img src="images/readykids.png" alt="" >
         </div>
@@ -671,7 +757,7 @@
         </div>
       </div>
 
-      <div class="partner-row">
+      <div class="partner-row reveal">
         <div class="partner-thumb">
           <img src="images/network2work.jpg" alt="" >
         </div>
@@ -687,7 +773,7 @@
         </div>
       </div>
 
-      <div class="partner-row">
+      <div class="partner-row reveal">
         <div class="partner-thumb">
           <img src="images/united-way.png" alt="" >
         </div>
@@ -705,7 +791,7 @@
         </div>
       </div>
 
-      <div class="partner-row">
+      <div class="partner-row reveal">
         <div class="partner-thumb">
           <img src="images/starr-hill.jpg" alt="" >
         </div>
@@ -727,28 +813,28 @@
   </section>
 
   <section class="engage">
-    <div class="section-label" data-field="f-53">Ways to engage</div>
-    <h2 data-field="f-54">Different ways to be part of the work.</h2>
+    <div class="section-label reveal" data-field="f-53">Ways to engage</div>
+    <h2 class="reveal" data-field="f-54">Different ways to be part of the work.</h2>
     <div class="engage-grid">
-      <div class="engage-card">
+      <div class="engage-card reveal">
         <div class="label" data-field="f-55">Volunteer</div>
         <h3 data-field="f-56">Tutor or mentor</h3>
         <p data-field="f-57">Most direct-service volunteering runs through City of Promise and Virginia Center for Community Partnerships.</p>
         <a href="https://www.cityofpromise.org/" target="_blank" rel="noopener" data-field="f-58">Start with City of Promise &rarr;</a>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal">
         <div class="label" data-field="f-59">Partner</div>
         <h3 data-field="f-60">Bring an organization in</h3>
         <p data-field="f-61">Schools, employers, and community groups can join the coordinated model.</p>
         <a href="mailto:info@pathwaystofamilysuccess.org?subject=Partnership%20interest" data-field="f-62">Email the coalition &rarr;</a>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal">
         <div class="label" data-field="f-63">Give</div>
         <h3 data-field="f-64">Fund the pilot</h3>
         <p data-field="f-65">United Way serves as the coalition's fiscal backbone for the Trailblazer pilot.</p>
         <a href="https://unitedwaycville.org/" target="_blank" rel="noopener" data-field="f-66">Give through United Way &rarr;</a>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal">
         <div class="label" data-field="f-67">Get help</div>
         <h3 data-field="f-68">For families</h3>
         <p data-field="f-69">Contact a partner directly. ReadyKids handles family well-being and behavioral health intake.</p>
@@ -823,6 +909,25 @@
     const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  })();
+
+  // Reveal on scroll
+  (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
   })();
 </script>
 
